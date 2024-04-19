@@ -1,5 +1,6 @@
 package com.thai27.trangtintuc_v4_be.Controller;
 
+import com.thai27.trangtintuc_v4_be.DTO.BaiBaoByDanhMucCon;
 import com.thai27.trangtintuc_v4_be.DTO.BaiBaoDetail;
 import com.thai27.trangtintuc_v4_be.DTO.DanhMucBaiBaoEdit;
 import com.thai27.trangtintuc_v4_be.Entity.BaiBao;
@@ -89,6 +90,11 @@ public class BaiBaoController {
         return baiBaoSrvImp.getBaiBaoById(id);
     }
 
+    @GetMapping("/get/getAllBaiBaoByDanhMucConId/{id}")
+    public Page<BaiBaoByDanhMucCon> getAllBaiBaoByDanhMucConId(@PathVariable Long id, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+        return baiBaoSrvImp.getAllBaiBaoByDanhMucConId(pageNum,pageSize,id);
+    }
+
     @GetMapping("/get/getBaiBaoDetailById/{id}")
     public BaiBaoDetail getBaiBaoDetailById(@PathVariable Long id) throws ResourceNotFoundException {
         return baiBaoSrvImp.getBaiBaoDetailById(id);
@@ -124,4 +130,5 @@ public class BaiBaoController {
     public void deleteBaiBao(@PathVariable Long id) {
         baiBaoSrvImp.deleteBaiBao(id);
     }
+
 }

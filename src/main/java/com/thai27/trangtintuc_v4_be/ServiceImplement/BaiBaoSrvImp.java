@@ -1,5 +1,6 @@
 package com.thai27.trangtintuc_v4_be.ServiceImplement;
 
+import com.thai27.trangtintuc_v4_be.DTO.BaiBaoByDanhMucCon;
 import com.thai27.trangtintuc_v4_be.DTO.BaiBaoDetail;
 import com.thai27.trangtintuc_v4_be.DTO.DanhMucBaiBaoEdit;
 import com.thai27.trangtintuc_v4_be.Entity.BaiBao;
@@ -85,6 +86,12 @@ public class BaiBaoSrvImp implements BaiBaoService {
     public Page<BaiBaoDetail> getAllBaiBao(Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNum, pageSize);
         return baiBaoRepo.getAllBaiBao(pageRequest);
+    }
+
+    @Override
+    public Page<BaiBaoByDanhMucCon> getAllBaiBaoByDanhMucConId(Integer pageNum, Integer pageSize, Long id) {
+        PageRequest pageRequest = PageRequest.of(pageNum, pageSize);
+        return baiBaoRepo.getAllBaiBaoByDanhMucCon(pageRequest, id);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.thai27.trangtintuc_v4_be.Repository;
 
+import com.thai27.trangtintuc_v4_be.DTO.BaiBaoByDanhMucCon;
 import com.thai27.trangtintuc_v4_be.DTO.BaiBaoDetail;
 import com.thai27.trangtintuc_v4_be.Entity.BaiBao;
 import org.springframework.data.domain.Page;
@@ -79,5 +80,14 @@ public interface BaiBaoRepo extends JpaRepository<BaiBao,Long> {
             "a.id = :id",nativeQuery = true)
     BaiBaoDetail getBaiBaoDetailById(@Param("id")Long id);
 
-
+    @Query(value = "select \n" +
+            " \ta.id as id, a.luot_xem as luotXem, a.ngay_dang as ngayDang, a.ten_bai_bao as tenBaiBao, a.thumbnail as thumbnail, a.tac_gia as tacGia, a.danh_muc_con_id as danhMucConId,\n" +
+            "\tb.ten_danh_muc_con as tenDanhMucCon\n" +
+            "from \n" +
+            " \tbai_bao a,\n" +
+            "\tdanh_muc_con b\n" +
+            "where \n" +
+            "\ta.danh_muc_con_id = b.id and\n" +
+            "\tb.id = :id ",nativeQuery = true)
+    Page<BaiBaoByDanhMucCon> getAllBaiBaoByDanhMucCon(PageRequest pageRequest, @Param("id")Long id);
 }
