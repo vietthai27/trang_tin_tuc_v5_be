@@ -1,6 +1,5 @@
 package com.thai27.trangtintuc_v4_be.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
