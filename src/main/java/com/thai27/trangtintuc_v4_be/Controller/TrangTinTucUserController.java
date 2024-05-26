@@ -11,8 +11,13 @@ import com.thai27.trangtintuc_v4_be.ServiceImplement.TrangTinTucUserServiceImple
 import com.thai27.trangtintuc_v4_be.ServiceImplement.UserDetailServiceImplement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpResponse;
 import java.util.List;
 
 @RestController
@@ -34,6 +39,9 @@ public class TrangTinTucUserController {
 
     @Autowired
     TrangTinTucUserRepo trangTinTucUserRepo;
+
+    @Autowired
+    UserDetailServiceImplement userDetailSrvImp;
 
     @PostMapping("/permit/login")
     public String login(@RequestBody TrangTinTucUser userData) {
