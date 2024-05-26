@@ -4,6 +4,7 @@ package com.thai27.trangtintuc_v4_be.ServiceImplement;
 import com.thai27.trangtintuc_v4_be.Entity.Role;
 import com.thai27.trangtintuc_v4_be.Entity.TrangTinTucUser;
 import com.thai27.trangtintuc_v4_be.Exception.ResourceNotFoundException;
+import com.thai27.trangtintuc_v4_be.Exception.TokenExpiredException;
 import com.thai27.trangtintuc_v4_be.Repository.RoleRepo;
 import com.thai27.trangtintuc_v4_be.Repository.TrangTinTucUserRepo;
 import com.thai27.trangtintuc_v4_be.Security.JWTAuthenProvider;
@@ -124,5 +125,14 @@ public class TrangTinTucUserServiceImplement implements TrangTinTucUserServiceIn
         changePassUser.setPassword(encoder.encode(password));
         trangTinTucUserRepo.save(changePassUser);
         return "Đổi mật khẩu thành công vui lòng đăng nhập lại";
+    }
+
+    @Override
+    public Boolean checkTokenExpired(String token) throws TokenExpiredException {
+        try {
+            return jwtUtil.isExpired(token);
+        } catch (Exception e) {
+            throw new TokenExpiredException("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại");
+        }
     }
 }

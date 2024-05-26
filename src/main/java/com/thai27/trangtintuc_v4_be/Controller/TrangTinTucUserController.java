@@ -4,6 +4,7 @@ package com.thai27.trangtintuc_v4_be.Controller;
 
 import com.thai27.trangtintuc_v4_be.Entity.TrangTinTucUser;
 import com.thai27.trangtintuc_v4_be.Exception.ResourceNotFoundException;
+import com.thai27.trangtintuc_v4_be.Exception.TokenExpiredException;
 import com.thai27.trangtintuc_v4_be.Repository.TrangTinTucUserRepo;
 import com.thai27.trangtintuc_v4_be.Security.JWTAuthenProvider;
 import com.thai27.trangtintuc_v4_be.Security.JWTUltil;
@@ -57,12 +58,14 @@ public class TrangTinTucUserController {
     public String getUsernameByToken(@RequestParam String token) {
         return trangTinTucUserServiceImplement.getUsernameByToken(token);
     }
-
+    @PostMapping("/permit/tokenIsExpired")
+    public Boolean tokenIsExpired(@RequestParam String token) throws TokenExpiredException  {
+        return trangTinTucUserServiceImplement.checkTokenExpired(token);
+    }
     @GetMapping("/permit/resetPassword")
     public String resetPassword (@RequestParam String email,@RequestParam String username)throws ResourceNotFoundException {
         return trangTinTucUserServiceImplement.resetPassword(username, email);
     }
-
     @GetMapping("/auth/changePassword")
     public String changePassword (@RequestParam String token,@RequestParam String password)throws ResourceNotFoundException {
         return trangTinTucUserServiceImplement.changePassword(token, password);

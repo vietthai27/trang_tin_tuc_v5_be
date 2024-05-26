@@ -13,7 +13,7 @@ import java.util.Date;
 
 @Service
 public class JWTUltil {
-	private static final int expireInMs = 6000 * 1000;
+	private static final int expireInMs = 10000;
 
 	private final static String key = "superwierdandlongkeyohmygodwhythishastobesolong";
 
@@ -22,8 +22,6 @@ public class JWTUltil {
 				.setExpiration(new Date(System.currentTimeMillis() + expireInMs))
 				.signWith(getSigningKey()).compact();
 	}
-
-
 
 	 private Key getSigningKey() {
 		  byte[] keyBytes = Decoders.BASE64.decode(key);

@@ -3,6 +3,7 @@ package com.thai27.trangtintuc_v4_be.ServicerInterface;
 
 import com.thai27.trangtintuc_v4_be.Entity.TrangTinTucUser;
 import com.thai27.trangtintuc_v4_be.Exception.ResourceNotFoundException;
+import com.thai27.trangtintuc_v4_be.Exception.TokenExpiredException;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -28,5 +29,7 @@ public interface TrangTinTucUserServiceInterface {
     String resetPassword (String username, String email) throws ResourceNotFoundException;
 
     String changePassword (String username, String password) throws ResourceNotFoundException;
+
+    Boolean checkTokenExpired (String token) throws TokenExpiredException;
 
 }
