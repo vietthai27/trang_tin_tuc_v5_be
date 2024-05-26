@@ -13,7 +13,7 @@ import java.util.Date;
 
 @Service
 public class JWTUltil {
-	private static final int expireInMs = 10000;
+	private static final int expireInMs = 86400000;
 
 	private final static String key = "superwierdandlongkeyohmygodwhythishastobesolong";
 
