@@ -1,5 +1,7 @@
+
 # Created at 2024-05-26T09:19:04.804
 Boot Manifest-JAR contains absolute paths in classpath 'D:\My projects\TrangTinTuc_V4\trangtintuc_v4_be\target\test-classes'
 Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
 'other' has different root
+
 

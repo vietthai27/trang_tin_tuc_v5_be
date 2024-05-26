@@ -65,6 +65,7 @@
     <property name="java.class.version" value="61.0"/>
   </properties>
   <testcase name="contextLoads" classname="com.thai27.trangtintuc_v4_be.TrangtintucV4BeApplicationTests" time="0.665">
+
     <system-out><![CDATA[09:19:05.935 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.thai27.trangtintuc_v4_be.TrangtintucV4BeApplicationTests]: TrangtintucV4BeApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
 09:19:06.066 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.thai27.trangtintuc_v4_be.TrangtintucV4BeApplication for test class com.thai27.trangtintuc_v4_be.TrangtintucV4BeApplicationTests
 
@@ -94,6 +95,7 @@
 2024-05-26T09:19:14.869+07:00  WARN 20792 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
 2024-05-26T09:19:15.081+07:00  INFO 20792 --- [           main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@649a6d88, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@69e23e94, org.springframework.security.web.context.SecurityContextHolderFilter@5bbb0a25, org.springframework.security.web.header.HeaderWriterFilter@363d29dd, org.springframework.web.filter.CorsFilter@55c78556, org.springframework.security.web.authentication.logout.LogoutFilter@735b1ad2, com.thai27.trangtintuc_v4_be.Security.JWTTokenFilter@2784145d, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@68aa1164, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@12e13abd, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@25134e01, org.springframework.security.web.session.SessionManagementFilter@213bd66a, org.springframework.security.web.access.ExceptionTranslationFilter@59301546, org.springframework.security.web.access.intercept.AuthorizationFilter@9e092b5]
 2024-05-26T09:19:15.846+07:00  INFO 20792 --- [           main] c.t.t.TrangtintucV4BeApplicationTests    : Started TrangtintucV4BeApplicationTests in 9.536 seconds (process running for 10.897)
+
 ]]></system-out>
   </testcase>
 </testsuite>
