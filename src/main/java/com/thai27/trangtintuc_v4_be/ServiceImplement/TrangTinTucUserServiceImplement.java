@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -116,7 +115,7 @@ public class TrangTinTucUserServiceImplement implements TrangTinTucUserServiceIn
     public String resetPassword(String username, String email) throws ResourceNotFoundException {
         TrangTinTucUser resetUser = trangTinTucUserRepo.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("Tên người dùng không tồn tại trong hệ thống: " + username));
         if (email.equals(resetUser.getEmail())) {
-            String newPassword = randomString.generateRandomCode(5);
+            String newPassword = randomString.generateRandomCode(8);
             String newEncodedPassword = encoder.encode(newPassword);
             resetUser.setPassword(newEncodedPassword);
             trangTinTucUserRepo.save(resetUser);
@@ -126,12 +125,14 @@ public class TrangTinTucUserServiceImplement implements TrangTinTucUserServiceIn
     }
 
     @Override
-    public String changePassword(String token, String password) throws ResourceNotFoundException {
+    public String changePassword(String token, String oldPassword, String newPassword) throws ResourceNotFoundException {
         String username = jwtUtil.getUsername(token);
         TrangTinTucUser changePassUser = trangTinTucUserRepo.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("Tên người dùng không tồn tại trong hệ thống: " + username));
-        changePassUser.setPassword(encoder.encode(password));
-        trangTinTucUserRepo.save(changePassUser);
-        return "Đổi mật khẩu thành công vui lòng đăng nhập lại";
+        if (encoder.matches(oldPassword, changePassUser.getPassword())) {
+            changePassUser.setPassword(encoder.encode(newPassword));
+            trangTinTucUserRepo.save(changePassUser);
+            return "Đổi mật khẩu thành công vui lòng đăng nhập lại";
+        } else throw new RuntimeException("Mật khẩu người dùng nhập không trùng với mật khẩu trên hệ thống");
     }
 
     @Override

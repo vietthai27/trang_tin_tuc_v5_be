@@ -29,7 +29,7 @@ public interface TrangTinTucUserServiceInterface {
     
     String resetPassword (String username, String email) throws ResourceNotFoundException;
 
-    String changePassword (String username, String password) throws ResourceNotFoundException;
+    String changePassword (String username, String oldPassword, String newPassword) throws ResourceNotFoundException;
 
     Boolean checkTokenExpired (String token) throws TokenExpiredException;
 

@@ -79,8 +79,8 @@ public class TrangTinTucUserController {
         return trangTinTucUserServiceImplement.resetPassword(username, email);
     }
     @GetMapping("/auth/changePassword")
-    public String changePassword (@RequestParam String token,@RequestParam String password)throws ResourceNotFoundException {
-        return trangTinTucUserServiceImplement.changePassword(token, password);
+    public String changePassword (@RequestParam String token,@RequestParam String oldPassword, @RequestParam String newPassword)throws ResourceNotFoundException {
+        return trangTinTucUserServiceImplement.changePassword(token, oldPassword, newPassword);
     }
 
     @PostMapping("/permit/getRoleByUsername")
