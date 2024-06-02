@@ -15,6 +15,7 @@ import java.util.Date;
 public class JWTUltil {
 	private static final int expireInMs = 86400000;
 
+
 	private final static String key = "superwierdandlongkeyohmygodwhythishastobesolong";
 
 	public String generate(String username) {

@@ -1,12 +1,13 @@
 package com.thai27.trangtintuc_v4_be.ServiceImplement;
 
 
-import com.thai27.trangtintuc_v4_be.Entity.Role;
 import com.thai27.trangtintuc_v4_be.Entity.TrangTinTucUser;
+import com.thai27.trangtintuc_v4_be.Entity.UserSignupRequest;
 import com.thai27.trangtintuc_v4_be.Exception.ResourceNotFoundException;
 import com.thai27.trangtintuc_v4_be.Exception.TokenExpiredException;
 import com.thai27.trangtintuc_v4_be.Repository.RoleRepo;
 import com.thai27.trangtintuc_v4_be.Repository.TrangTinTucUserRepo;
+import com.thai27.trangtintuc_v4_be.Repository.UserSignupRequestRepo;
 import com.thai27.trangtintuc_v4_be.Security.JWTAuthenProvider;
 import com.thai27.trangtintuc_v4_be.Security.JWTUltil;
 import com.thai27.trangtintuc_v4_be.ServicerInterface.TrangTinTucUserServiceInterface;
@@ -15,8 +16,8 @@ import com.thai27.trangtintuc_v4_be.Util.SendEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,8 +39,11 @@ public class TrangTinTucUserServiceImplement implements TrangTinTucUserServiceIn
     TrangTinTucUserRepo trangTinTucUserRepo;
 
     @Autowired
+    UserSignupRequestRepo userSignupRequestRepo;
+
+    @Autowired
     RoleRepo roleRepo;
-    
+
     @Autowired
     GenerateRandomString randomString;
 
@@ -48,16 +52,20 @@ public class TrangTinTucUserServiceImplement implements TrangTinTucUserServiceIn
 
 
     @Override
-    public String userSignup(TrangTinTucUser userInput) {
-        if (trangTinTucUserRepo.findByUsername(userInput.getUsername()).isEmpty()) {
+    public String userSignup(String validateCode, String email) throws ResourceNotFoundException {
+        UserSignupRequest userSignupRequest = userSignupRequestRepo.findByRequestCode(validateCode).orElseThrow(() -> new ResourceNotFoundException("Mã xác thực " + validateCode + " không tồn tại trong hệ thống"));
+        if (!userSignupRequestRepo.getCodeByEmail(email).equals(validateCode)) {
+            throw new RuntimeException("Mã xác thực đã hết hạn vui lòng kiểm tra lại email");
+        } else {
             TrangTinTucUser userData = new TrangTinTucUser();
-            userData.setUsername(userInput.getUsername());
-            userData.setPassword(encoder.encode(userInput.getPassword()));
-            userData.setEmail(userInput.getEmail());
+            userData.setUsername(userSignupRequest.getUsername());
+            userData.setPassword(encoder.encode(userSignupRequest.getPassword()));
+            userData.setEmail(userSignupRequest.getEmail());
             userData.setRoles(roleRepo.findByRolename("USER"));
             trangTinTucUserRepo.save(userData);
-            return "Thêm người dùng " + userInput.getUsername() + " thành công !!!";
-        } else return "Tên người dùng " + userInput.getUsername() + " đã tồn tại !!!";
+            userSignupRequestRepo.deleteAllByEmail(userSignupRequest.getEmail());
+            return sendEmail.sendSignupSuccess(userSignupRequest.getEmail(), userSignupRequest.getUsername());
+        }
     }
 
     @Override
@@ -91,32 +99,31 @@ public class TrangTinTucUserServiceImplement implements TrangTinTucUserServiceIn
     }
 
     @Override
-    public void setModerRole( Long userId) throws ResourceNotFoundException {
-        if(!trangTinTucUserRepo.existsById(userId)){
+    public void setModerRole(Long userId) throws ResourceNotFoundException {
+        if (!trangTinTucUserRepo.existsById(userId)) {
             throw new ResourceNotFoundException("Không có người dùng với id:" + userId);
-        }
-        else roleRepo.setModerRole(userId);
+        } else roleRepo.setModerRole(userId);
     }
 
     @Override
     public Page<TrangTinTucUser> findAllByUsername(String username, Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNum, pageSize);
-        String likeUsername = "%"+username+"%";
+        String likeUsername = "%" + username + "%";
         return trangTinTucUserRepo.findAllByUsernameLikeIgnoreCase(likeUsername, pageRequest);
     }
 
-	@Override
-	public String resetPassword(String username, String email) throws ResourceNotFoundException{
-		TrangTinTucUser resetUser = trangTinTucUserRepo.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("Tên người dùng không tồn tại trong hệ thống: " + username));
-		if(email.equals(resetUser.getEmail())) {
+    @Override
+    public String resetPassword(String username, String email) throws ResourceNotFoundException {
+        TrangTinTucUser resetUser = trangTinTucUserRepo.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("Tên người dùng không tồn tại trong hệ thống: " + username));
+        if (email.equals(resetUser.getEmail())) {
             String newPassword = randomString.generateRandomCode(5);
-			String newEncodedPassword =encoder.encode(newPassword);
-			resetUser.setPassword(newEncodedPassword);
+            String newEncodedPassword = encoder.encode(newPassword);
+            resetUser.setPassword(newEncodedPassword);
             trangTinTucUserRepo.save(resetUser);
-            sendEmail.sendNewPassword(resetUser.getEmail(),resetUser.getUsername(),newPassword);
+            sendEmail.sendNewPassword(resetUser.getEmail(), resetUser.getUsername(), newPassword);
             return "Đổi mật khẩu thành công, vui lòng check emal để biết mật khẩu mới";
-		} else throw new RuntimeException("Email người dùng nhập không khớp với email đã đăng ký");
-	}
+        } else throw new RuntimeException("Email người dùng nhập không khớp với email đã đăng ký");
+    }
 
     @Override
     public String changePassword(String token, String password) throws ResourceNotFoundException {

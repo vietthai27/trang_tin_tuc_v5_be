@@ -3,13 +3,16 @@ package com.thai27.trangtintuc_v4_be.Controller;
 
 
 import com.thai27.trangtintuc_v4_be.Entity.TrangTinTucUser;
+import com.thai27.trangtintuc_v4_be.Entity.UserSignupRequest;
 import com.thai27.trangtintuc_v4_be.Exception.ResourceNotFoundException;
 import com.thai27.trangtintuc_v4_be.Exception.TokenExpiredException;
+import com.thai27.trangtintuc_v4_be.Exception.UsernameAlreadyExistException;
 import com.thai27.trangtintuc_v4_be.Repository.TrangTinTucUserRepo;
 import com.thai27.trangtintuc_v4_be.Security.JWTAuthenProvider;
 import com.thai27.trangtintuc_v4_be.Security.JWTUltil;
 import com.thai27.trangtintuc_v4_be.ServiceImplement.TrangTinTucUserServiceImplement;
 import com.thai27.trangtintuc_v4_be.ServiceImplement.UserDetailServiceImplement;
+import com.thai27.trangtintuc_v4_be.ServiceImplement.UserSignupRequestSrvImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -44,15 +47,24 @@ public class TrangTinTucUserController {
     @Autowired
     UserDetailServiceImplement userDetailSrvImp;
 
+    @Autowired
+    UserSignupRequestSrvImp userSignupRequestSrvImp;
+
     @PostMapping("/permit/login")
     public String login(@RequestBody TrangTinTucUser userData) {
         return trangTinTucUserServiceImplement.login(userData);
     }
 
     @PostMapping("/permit/userSignup")
-    public String userSignup(@RequestBody TrangTinTucUser userData) {
-        return trangTinTucUserServiceImplement.userSignup(userData);
+    public String userSignup(@RequestParam String validateCode, @RequestParam String email) throws ResourceNotFoundException {
+        return trangTinTucUserServiceImplement.userSignup(validateCode, email);
     }
+
+    @PostMapping("/permit/userSignupRequest")
+    public String userSignupRequest(@RequestBody UserSignupRequest userData) throws UsernameAlreadyExistException {
+        return userSignupRequestSrvImp.createSignupRequest(userData);
+    }
+
 
     @PostMapping("/permit/getUsernameByToken")
     public String getUsernameByToken(@RequestParam String token) {

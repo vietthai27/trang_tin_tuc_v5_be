@@ -4,13 +4,14 @@ package com.thai27.trangtintuc_v4_be.ServicerInterface;
 import com.thai27.trangtintuc_v4_be.Entity.TrangTinTucUser;
 import com.thai27.trangtintuc_v4_be.Exception.ResourceNotFoundException;
 import com.thai27.trangtintuc_v4_be.Exception.TokenExpiredException;
+import com.thai27.trangtintuc_v4_be.Exception.UsernameAlreadyExistException;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface TrangTinTucUserServiceInterface {
 
-    String userSignup(TrangTinTucUser userInput);
+    String userSignup(String validateCode,String email) throws ResourceNotFoundException;
 
     String login(TrangTinTucUser userData);
 

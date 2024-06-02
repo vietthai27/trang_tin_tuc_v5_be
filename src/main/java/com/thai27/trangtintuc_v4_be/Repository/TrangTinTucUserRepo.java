@@ -17,6 +17,8 @@ public interface TrangTinTucUserRepo extends JpaRepository<TrangTinTucUser, Long
 
 	Optional<TrangTinTucUser> findByUsername(String username);
 
+	Optional<TrangTinTucUser> findByEmail(String username);
+
 	@Query(value = "delete from trangtintuc_user_roles where trang_tin_tuc_users_id = :userId",nativeQuery = true)
 	@Transactional
 	@Modifying
