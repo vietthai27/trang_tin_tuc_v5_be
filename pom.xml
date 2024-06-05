@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.thai27</groupId>
-	<artifactId>trangtintuc_v4_be</artifactId>
+	<artifactId>trang_tin_tuc_v5_be</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>trangtintuc_v4_be</name>
 	<description>trangtintuc_v4_be</description>
