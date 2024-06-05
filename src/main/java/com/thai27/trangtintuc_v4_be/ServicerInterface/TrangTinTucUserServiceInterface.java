@@ -5,6 +5,7 @@ import com.thai27.trangtintuc_v4_be.Entity.TrangTinTucUser;
 import com.thai27.trangtintuc_v4_be.Exception.ResourceNotFoundException;
 import com.thai27.trangtintuc_v4_be.Exception.TokenExpiredException;
 import com.thai27.trangtintuc_v4_be.Exception.UsernameAlreadyExistException;
+import com.thai27.trangtintuc_v4_be.Response.UserListResponse;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -19,13 +20,13 @@ public interface TrangTinTucUserServiceInterface {
 
     List<String> getRoleByUsername(String username);
 
-    Page<TrangTinTucUser> getAllUser(Integer pageNum, Integer pageSize);
+    UserListResponse getAllUser(Integer pageNum, Integer pageSize);
 
     TrangTinTucUser getUserById(Long id) throws ResourceNotFoundException;
 
     void setModerRole ( Long userId) throws ResourceNotFoundException;
 
-    Page<TrangTinTucUser> findAllByUsername(String username, Integer pageNum, Integer pageSize);
+    UserListResponse findAllByUsername(String username, Integer pageNum, Integer pageSize);
     
     String resetPassword (String username, String email) throws ResourceNotFoundException;
 

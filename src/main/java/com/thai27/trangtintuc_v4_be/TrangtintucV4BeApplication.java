@@ -1,5 +1,6 @@
 package com.thai27.trangtintuc_v4_be;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +17,11 @@ public class TrangtintucV4BeApplication {
 	@Bean
 	BCryptPasswordEncoder passencode() {;
 		return new BCryptPasswordEncoder();
+	}
+
+	@Bean
+	public ModelMapper modelMapper() {
+		return new ModelMapper();
 	}
 
 }

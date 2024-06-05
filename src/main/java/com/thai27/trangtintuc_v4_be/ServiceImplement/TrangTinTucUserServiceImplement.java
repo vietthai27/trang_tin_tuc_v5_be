@@ -1,6 +1,7 @@
 package com.thai27.trangtintuc_v4_be.ServiceImplement;
 
 
+import com.thai27.trangtintuc_v4_be.DTO.UserListDto;
 import com.thai27.trangtintuc_v4_be.Entity.TrangTinTucUser;
 import com.thai27.trangtintuc_v4_be.Entity.UserSignupRequest;
 import com.thai27.trangtintuc_v4_be.Exception.ResourceNotFoundException;
@@ -8,11 +9,13 @@ import com.thai27.trangtintuc_v4_be.Exception.TokenExpiredException;
 import com.thai27.trangtintuc_v4_be.Repository.RoleRepo;
 import com.thai27.trangtintuc_v4_be.Repository.TrangTinTucUserRepo;
 import com.thai27.trangtintuc_v4_be.Repository.UserSignupRequestRepo;
+import com.thai27.trangtintuc_v4_be.Response.UserListResponse;
 import com.thai27.trangtintuc_v4_be.Security.JWTAuthenProvider;
 import com.thai27.trangtintuc_v4_be.Security.JWTUltil;
 import com.thai27.trangtintuc_v4_be.ServicerInterface.TrangTinTucUserServiceInterface;
 import com.thai27.trangtintuc_v4_be.Util.GenerateRandomString;
 import com.thai27.trangtintuc_v4_be.Util.SendEmail;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TrangTinTucUserServiceImplement implements TrangTinTucUserServiceInterface {
@@ -49,6 +53,8 @@ public class TrangTinTucUserServiceImplement implements TrangTinTucUserServiceIn
     @Autowired
     SendEmail sendEmail;
 
+    @Autowired
+    ModelMapper modelMapper;
 
     @Override
     public String userSignup(String validateCode, String email) throws ResourceNotFoundException {
@@ -86,10 +92,20 @@ public class TrangTinTucUserServiceImplement implements TrangTinTucUserServiceIn
     }
 
     @Override
-    public Page<TrangTinTucUser> getAllUser(Integer pageNum, Integer pageSize) {
-
+    public UserListResponse getAllUser(Integer pageNum, Integer pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNum, pageSize);
-        return trangTinTucUserRepo.findAll(pageRequest);
+        Page<TrangTinTucUser> userListEntity = trangTinTucUserRepo.findAll(pageRequest);
+        List<UserListDto> userListDto = userListEntity
+                .stream().map(userList -> modelMapper.map(userList, UserListDto.class))
+                .collect(Collectors.toList());
+        UserListResponse userListResponse = new UserListResponse();
+        userListResponse.setContent(userListDto);
+        userListResponse.setPageNo(userListEntity.getNumber());
+        userListResponse.setPageSize(userListEntity.getSize());
+        userListResponse.setTotalElements(userListEntity.getTotalElements());
+        userListResponse.setTotalPages(userListEntity.getTotalPages());
+        userListResponse.setLast(userListEntity.isLast());
+        return userListResponse;
     }
 
     @Override
@@ -105,10 +121,22 @@ public class TrangTinTucUserServiceImplement implements TrangTinTucUserServiceIn
     }
 
     @Override
-    public Page<TrangTinTucUser> findAllByUsername(String username, Integer pageNum, Integer pageSize) {
-        PageRequest pageRequest = PageRequest.of(pageNum, pageSize);
+    public UserListResponse findAllByUsername(String username, Integer pageNum, Integer pageSize) {
         String likeUsername = "%" + username + "%";
-        return trangTinTucUserRepo.findAllByUsernameLikeIgnoreCase(likeUsername, pageRequest);
+        PageRequest pageRequest = PageRequest.of(pageNum, pageSize);
+        Page<TrangTinTucUser> userListEntity = trangTinTucUserRepo.
+                findAllByUsernameLikeIgnoreCase(likeUsername, pageRequest);
+        List<UserListDto> userListSearchDto = userListEntity
+                .stream().map(userList -> modelMapper.map(userList, UserListDto.class))
+                .collect(Collectors.toList());
+        UserListResponse userListResponse = new UserListResponse();
+        userListResponse.setContent(userListSearchDto);
+        userListResponse.setPageNo(userListEntity.getNumber());
+        userListResponse.setPageSize(userListEntity.getSize());
+        userListResponse.setTotalElements(userListEntity.getTotalElements());
+        userListResponse.setTotalPages(userListEntity.getTotalPages());
+        userListResponse.setLast(userListEntity.isLast());
+        return userListResponse;
     }
 
     @Override

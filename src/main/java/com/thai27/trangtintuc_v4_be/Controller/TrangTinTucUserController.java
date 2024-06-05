@@ -2,17 +2,20 @@ package com.thai27.trangtintuc_v4_be.Controller;
 
 
 
+import com.thai27.trangtintuc_v4_be.DTO.UserListDto;
 import com.thai27.trangtintuc_v4_be.Entity.TrangTinTucUser;
 import com.thai27.trangtintuc_v4_be.Entity.UserSignupRequest;
 import com.thai27.trangtintuc_v4_be.Exception.ResourceNotFoundException;
 import com.thai27.trangtintuc_v4_be.Exception.TokenExpiredException;
 import com.thai27.trangtintuc_v4_be.Exception.UsernameAlreadyExistException;
 import com.thai27.trangtintuc_v4_be.Repository.TrangTinTucUserRepo;
+import com.thai27.trangtintuc_v4_be.Response.UserListResponse;
 import com.thai27.trangtintuc_v4_be.Security.JWTAuthenProvider;
 import com.thai27.trangtintuc_v4_be.Security.JWTUltil;
 import com.thai27.trangtintuc_v4_be.ServiceImplement.TrangTinTucUserServiceImplement;
 import com.thai27.trangtintuc_v4_be.ServiceImplement.UserDetailServiceImplement;
 import com.thai27.trangtintuc_v4_be.ServiceImplement.UserSignupRequestSrvImp;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("*")
@@ -50,6 +54,9 @@ public class TrangTinTucUserController {
     @Autowired
     UserSignupRequestSrvImp userSignupRequestSrvImp;
 
+    @Autowired
+    ModelMapper modelMapper;
+
     @PostMapping("/permit/login")
     public String login(@RequestBody TrangTinTucUser userData) {
         return trangTinTucUserServiceImplement.login(userData);
@@ -64,7 +71,6 @@ public class TrangTinTucUserController {
     public String userSignupRequest(@RequestBody UserSignupRequest userData) throws UsernameAlreadyExistException {
         return userSignupRequestSrvImp.createSignupRequest(userData);
     }
-
 
     @PostMapping("/permit/getUsernameByToken")
     public String getUsernameByToken(@RequestParam String token) {
@@ -89,12 +95,13 @@ public class TrangTinTucUserController {
     }
 
     @GetMapping("/auth/getAllUser")
-    public Page<TrangTinTucUser> getAllUser (@RequestParam Integer pageNum, @RequestParam Integer pageSize ) {
-        return trangTinTucUserServiceImplement.getAllUser(pageNum,pageSize);
+    public ResponseEntity<UserListResponse> getAllUser (@RequestParam Integer pageNum, @RequestParam Integer pageSize ) {
+        UserListResponse userListData = trangTinTucUserServiceImplement.getAllUser(pageNum, pageSize);
+        return ResponseEntity.ok().body(userListData);
     }
 
     @GetMapping("/auth/searchAllUser")
-    public Page<TrangTinTucUser> searchAllUser (@RequestParam String search ,@RequestParam Integer pageNum, @RequestParam Integer pageSize ) {
+    public UserListResponse searchAllUser (@RequestParam String search ,@RequestParam Integer pageNum, @RequestParam Integer pageSize ) {
         return trangTinTucUserServiceImplement.findAllByUsername(search,pageNum,pageSize);
     }
 
