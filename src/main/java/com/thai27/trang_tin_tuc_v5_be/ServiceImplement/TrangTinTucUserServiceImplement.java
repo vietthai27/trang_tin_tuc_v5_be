@@ -1,6 +1,7 @@
 package com.thai27.trang_tin_tuc_v5_be.ServiceImplement;
 
 
+import com.thai27.trang_tin_tuc_v5_be.DTO.LoginResponseDTO;
 import com.thai27.trang_tin_tuc_v5_be.DTO.UserListDto;
 import com.thai27.trang_tin_tuc_v5_be.Entity.TrangTinTucUser;
 import com.thai27.trang_tin_tuc_v5_be.Entity.UserSignupRequest;
@@ -13,13 +14,14 @@ import com.thai27.trang_tin_tuc_v5_be.Response.UserListResponse;
 import com.thai27.trang_tin_tuc_v5_be.Security.JWTAuthenProvider;
 import com.thai27.trang_tin_tuc_v5_be.Security.JWTUltil;
 import com.thai27.trang_tin_tuc_v5_be.ServicerInterface.TrangTinTucUserServiceInterface;
-import com.thai27.trang_tin_tuc_v5_be.Util.GenerateRandomString;
-import com.thai27.trang_tin_tuc_v5_be.Util.SendEmail;
+import com.thai27.trang_tin_tuc_v5_be.ServicerInterface.Util.GenerateRandomString;
+import com.thai27.trang_tin_tuc_v5_be.ServicerInterface.Util.SendEmail;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -74,11 +76,18 @@ public class TrangTinTucUserServiceImplement implements TrangTinTucUserServiceIn
     }
 
     @Override
-    public String login(TrangTinTucUser userData) {
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userData.getUsername(), userData.getPassword());
-        jwtAuth.authenticate(token);
+    public LoginResponseDTO login(TrangTinTucUser userData) {
+        UsernamePasswordAuthenticationToken token =
+                new UsernamePasswordAuthenticationToken(userData.getUsername(), userData.getPassword());
+        Authentication legit = jwtAuth.authenticate(token);
         String jwtToken = jwtUtil.generate(userData.getUsername());
-        return jwtToken;
+        LoginResponseDTO loginResponseDTO = new LoginResponseDTO();
+        loginResponseDTO.setJWTtoken(jwtToken);
+        loginResponseDTO.setUsername(userData.getUsername());
+        loginResponseDTO.setUserRoles(legit.getAuthorities().stream()
+                .map(item -> item.getAuthority())
+                .collect(Collectors.toList()));
+        return loginResponseDTO;
     }
 
     @Override

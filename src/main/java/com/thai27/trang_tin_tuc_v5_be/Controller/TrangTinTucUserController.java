@@ -2,6 +2,7 @@ package com.thai27.trang_tin_tuc_v5_be.Controller;
 
 
 
+import com.thai27.trang_tin_tuc_v5_be.DTO.LoginResponseDTO;
 import com.thai27.trang_tin_tuc_v5_be.Entity.TrangTinTucUser;
 import com.thai27.trang_tin_tuc_v5_be.Entity.UserSignupRequest;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
@@ -51,8 +52,8 @@ public class TrangTinTucUserController {
     ModelMapper modelMapper;
 
     @PostMapping("/permit/login")
-    public String login(@RequestBody TrangTinTucUser userData) {
-        return trangTinTucUserServiceImplement.login(userData);
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody TrangTinTucUser userData) {
+        return ResponseEntity.ok(trangTinTucUserServiceImplement.login(userData));
     }
 
     @PostMapping("/permit/userSignup")
@@ -118,5 +119,7 @@ public class TrangTinTucUserController {
     public void deleteUserModer (@PathVariable Long userId) {
         trangTinTucUserRepo.deleteUserRoleModer(userId);
     }
+
+
 
 }

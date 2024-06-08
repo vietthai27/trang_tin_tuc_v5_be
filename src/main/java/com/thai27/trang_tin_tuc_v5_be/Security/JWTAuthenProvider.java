@@ -27,15 +27,13 @@ public class JWTAuthenProvider implements AuthenticationProvider {
 		String username = String.valueOf(authentication.getPrincipal());
 		String password = String.valueOf(authentication.getCredentials());
 		UserDetails userDetail = userDetailSrvImp.loadUserByUsername(username);
-		if (userDetail != null) {
 			if (encoder.matches(password, userDetail.getPassword())) {
-				UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password,
-						new ArrayList<>());
+				UsernamePasswordAuthenticationToken token =
+						new UsernamePasswordAuthenticationToken(userDetail.getUsername(), userDetail.getPassword(),
+						userDetail.getAuthorities());
 				return token;
-			}
+			} else throw new BadCredentialsException("Mật khẩu không chính xác");
 		}
-		throw new BadCredentialsException("Mật khẩu không chính xác");
-	}
 
 	@Override
 	public boolean supports(Class<?> authentication) {

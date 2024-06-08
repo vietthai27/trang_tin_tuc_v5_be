@@ -1,6 +1,7 @@
 package com.thai27.trang_tin_tuc_v5_be.ServicerInterface;
 
 
+import com.thai27.trang_tin_tuc_v5_be.DTO.LoginResponseDTO;
 import com.thai27.trang_tin_tuc_v5_be.Entity.TrangTinTucUser;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
 import com.thai27.trang_tin_tuc_v5_be.Exception.TokenExpiredException;
@@ -12,7 +13,7 @@ public interface TrangTinTucUserServiceInterface {
 
     String userSignup(String validateCode,String email) throws ResourceNotFoundException;
 
-    String login(TrangTinTucUser userData);
+    LoginResponseDTO login(TrangTinTucUser userData);
 
     String getUsernameByToken(String token);
 

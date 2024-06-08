@@ -32,9 +32,9 @@ public class WebSecurity {
 	@Autowired
 	JWTAuthenProvider authentication;
 
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.authenticationProvider(authentication);
-	}
+//	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//		auth.authenticationProvider(authentication);
+//	}
 
 	@Bean
 	public SecurityFilterChain applicationSecurity(HttpSecurity http) throws Exception {

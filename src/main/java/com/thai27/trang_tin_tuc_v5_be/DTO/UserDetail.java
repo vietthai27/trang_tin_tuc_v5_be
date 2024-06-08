@@ -29,18 +29,19 @@ public class UserDetail implements UserDetails {
 
 	private Collection<? extends GrantedAuthority> authorities;
 
-	public UserDetail(Long id, String username, String password, String email,
+	public UserDetail(Long id, String username, String password,
                       Collection<? extends GrantedAuthority> authorities) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.authorities = authorities;
+
 	}
 
 	public static UserDetail build(TrangTinTucUser user) {
 		List<GrantedAuthority> authorities = user.getRoles().stream()
 				.map(role -> new SimpleGrantedAuthority(role.getRolename())).collect(Collectors.toList());
-		return new UserDetail(user.getId(),user.getUsername(),user.getPassword(),user.getEmail(), authorities);
+		return new UserDetail(user.getId(),user.getUsername(),user.getPassword(), authorities);
 	}
 
 	@Override

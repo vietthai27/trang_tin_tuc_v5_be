@@ -5,8 +5,8 @@ import com.thai27.trang_tin_tuc_v5_be.Exception.UsernameAlreadyExistException;
 import com.thai27.trang_tin_tuc_v5_be.Repository.TrangTinTucUserRepo;
 import com.thai27.trang_tin_tuc_v5_be.Repository.UserSignupRequestRepo;
 import com.thai27.trang_tin_tuc_v5_be.ServicerInterface.UserSignupRequestService;
-import com.thai27.trang_tin_tuc_v5_be.Util.GenerateRandomString;
-import com.thai27.trang_tin_tuc_v5_be.Util.SendEmail;
+import com.thai27.trang_tin_tuc_v5_be.ServicerInterface.Util.GenerateRandomString;
+import com.thai27.trang_tin_tuc_v5_be.ServicerInterface.Util.SendEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
