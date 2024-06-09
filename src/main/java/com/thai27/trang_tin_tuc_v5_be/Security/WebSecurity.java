@@ -63,7 +63,7 @@ public class WebSecurity {
 	CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
 		configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type", "ngrok-skip-browser-warning"));
-		configuration.setAllowedOrigins(Arrays.asList("https://trang-tin-tuc-v5-fe.onrender.com"));
+		configuration.setAllowedOrigins(Arrays.asList("https://trang-tin-tuc-v5-fe.onrender.com","http://localhost:3000"));
 		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
 		configuration.setExposedHeaders(Arrays.asList("Authorization", "content-type"));
 		configuration.setAllowedHeaders(Arrays.asList("Authorization", "content-type"));
