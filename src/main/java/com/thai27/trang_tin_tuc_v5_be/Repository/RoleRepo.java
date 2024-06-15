@@ -15,18 +15,10 @@ public interface RoleRepo extends JpaRepository<Role, Long> {
 
 	List<Role> findByRolename(String userRole);
 
-	@Query(value = "SELECT  r.role_name\n" +
-			"\tFROM role r, trangtintuc_user u, trangtintuc_user_roles ur\n" +
-			"where \n" +
-			"u.id = ur.trang_tin_tuc_users_id and\n" +
-			"r.id = ur.roles_id and\n" +
-			"u.username = :username",nativeQuery = true)
-	List<String> findRoleByUsername(@Param("username") String username);
-
 	@Query(value = "INSERT INTO trangtintuc_user_roles(\n" +
 			"\ttrang_tin_tuc_users_id, roles_id)\n" +
-			"\tVALUES (:userId, 2)",nativeQuery = true)
+			"\tVALUES (:userId, (select id from role where role_name = 'MODER'))",nativeQuery = true)
 	@Modifying
 	@Transactional
-	void setModerRole (@Param("userId") Long userId);
+	void setUserModerRole(@Param("userId") Long userId);
 }

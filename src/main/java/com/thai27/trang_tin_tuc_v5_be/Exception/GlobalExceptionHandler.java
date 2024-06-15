@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(errorDetails, HttpStatus.FORBIDDEN);
 	}
 
-	@ExceptionHandler(UsernameAlreadyExistException.class)
+	@ExceptionHandler(UserInfoAlreadyExistException.class)
 	public ResponseEntity<?> usernameAlreadyExist(Exception ex, WebRequest request) {
 		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);

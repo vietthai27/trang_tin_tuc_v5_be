@@ -22,12 +22,12 @@ public interface TrangTinTucUserRepo extends JpaRepository<TrangTinTucUser, Long
 	@Query(value = "delete from trangtintuc_user_roles where trang_tin_tuc_users_id = :userId",nativeQuery = true)
 	@Transactional
 	@Modifying
-	void deleteUserRole(@Param("userId")Long userId);
+	void deleteAllUserRoles(@Param("userId")Long userId);
 
-	@Query(value = "delete from trangtintuc_user_roles where trang_tin_tuc_users_id = :userId and roles_id = 2",nativeQuery = true)
+	@Query(value = "delete from trangtintuc_user_roles where trang_tin_tuc_users_id = :userId and roles_id = (select id from role where role_name = 'MODER')",nativeQuery = true)
 	@Transactional
 	@Modifying
-	void deleteUserRoleModer(@Param("userId")Long userId);
+	void unsetUserModerRole(@Param("userId")Long userId);
 
 	@Query(value = "delete from trangtintuc_user where id = :userId", nativeQuery = true)
 	@Transactional

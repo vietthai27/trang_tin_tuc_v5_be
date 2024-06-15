@@ -1,12 +1,12 @@
 package com.thai27.trang_tin_tuc_v5_be.ServiceImplement;
 
 import com.thai27.trang_tin_tuc_v5_be.Entity.UserSignupRequest;
-import com.thai27.trang_tin_tuc_v5_be.Exception.UsernameAlreadyExistException;
+import com.thai27.trang_tin_tuc_v5_be.Exception.UserInfoAlreadyExistException;
 import com.thai27.trang_tin_tuc_v5_be.Repository.TrangTinTucUserRepo;
 import com.thai27.trang_tin_tuc_v5_be.Repository.UserSignupRequestRepo;
 import com.thai27.trang_tin_tuc_v5_be.ServicerInterface.UserSignupRequestService;
-import com.thai27.trang_tin_tuc_v5_be.ServicerInterface.Util.GenerateRandomString;
-import com.thai27.trang_tin_tuc_v5_be.ServicerInterface.Util.SendEmail;
+import com.thai27.trang_tin_tuc_v5_be.Util.GenerateRandomString;
+import com.thai27.trang_tin_tuc_v5_be.Util.SendEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,11 +29,11 @@ public class UserSignupRequestSrvImp implements UserSignupRequestService {
     TrangTinTucUserRepo trangTinTucUserRepo;
 
     @Override
-    public String createSignupRequest(UserSignupRequest userSignupRequest) throws UsernameAlreadyExistException {
+    public String createSignupRequest(UserSignupRequest userSignupRequest) throws UserInfoAlreadyExistException {
         if (!trangTinTucUserRepo.findByUsername(userSignupRequest.getUsername()).isEmpty()) {
-            throw new UsernameAlreadyExistException("Tên người dùng " + userSignupRequest.getUsername() + " đã tồn tại !!!");
+            throw new UserInfoAlreadyExistException("Tên người dùng " + userSignupRequest.getUsername() + " đã tồn tại !!!");
         } else if (!trangTinTucUserRepo.findByEmail(userSignupRequest.getEmail()).isEmpty()) {
-            throw new UsernameAlreadyExistException("Email " + userSignupRequest.getEmail() + " đã tồn tại !!!");
+            throw new UserInfoAlreadyExistException("Email " + userSignupRequest.getEmail() + " đã tồn tại !!!");
         } else {
             UserSignupRequest createUser = new UserSignupRequest();
             createUser.setUsername(userSignupRequest.getUsername());

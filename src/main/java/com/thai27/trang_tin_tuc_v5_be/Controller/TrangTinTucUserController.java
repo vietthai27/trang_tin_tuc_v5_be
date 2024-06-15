@@ -1,26 +1,25 @@
 package com.thai27.trang_tin_tuc_v5_be.Controller;
 
 
-
-import com.thai27.trang_tin_tuc_v5_be.DTO.LoginResponseDTO;
 import com.thai27.trang_tin_tuc_v5_be.Entity.TrangTinTucUser;
 import com.thai27.trang_tin_tuc_v5_be.Entity.UserSignupRequest;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
-import com.thai27.trang_tin_tuc_v5_be.Exception.TokenExpiredException;
-import com.thai27.trang_tin_tuc_v5_be.Exception.UsernameAlreadyExistException;
+import com.thai27.trang_tin_tuc_v5_be.Exception.UserInfoAlreadyExistException;
 import com.thai27.trang_tin_tuc_v5_be.Repository.TrangTinTucUserRepo;
+import com.thai27.trang_tin_tuc_v5_be.Request.UserChangePasswordRequest;
+import com.thai27.trang_tin_tuc_v5_be.Request.UserResetPasswordRequest;
+import com.thai27.trang_tin_tuc_v5_be.Request.UserValidateSignupRequest;
 import com.thai27.trang_tin_tuc_v5_be.Response.UserListResponse;
 import com.thai27.trang_tin_tuc_v5_be.Security.JWTAuthenProvider;
 import com.thai27.trang_tin_tuc_v5_be.Security.JWTUltil;
 import com.thai27.trang_tin_tuc_v5_be.ServiceImplement.TrangTinTucUserServiceImplement;
 import com.thai27.trang_tin_tuc_v5_be.ServiceImplement.UserDetailServiceImplement;
 import com.thai27.trang_tin_tuc_v5_be.ServiceImplement.UserSignupRequestSrvImp;
+import io.jsonwebtoken.Claims;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -52,51 +51,43 @@ public class TrangTinTucUserController {
     ModelMapper modelMapper;
 
     @PostMapping("/permit/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody TrangTinTucUser userData) {
+    public ResponseEntity<String> login(@RequestBody TrangTinTucUser userData) {
         return ResponseEntity.ok(trangTinTucUserServiceImplement.login(userData));
     }
 
     @PostMapping("/permit/userSignup")
-    public String userSignup(@RequestParam String validateCode, @RequestParam String email) throws ResourceNotFoundException {
-        return trangTinTucUserServiceImplement.userSignup(validateCode, email);
+    public ResponseEntity<String> userSignup(@RequestBody UserValidateSignupRequest request) throws ResourceNotFoundException {
+        return ResponseEntity.ok(trangTinTucUserServiceImplement.userSignup(request));
     }
 
     @PostMapping("/permit/userSignupRequest")
-    public String userSignupRequest(@RequestBody UserSignupRequest userData) throws UsernameAlreadyExistException {
-        return userSignupRequestSrvImp.createSignupRequest(userData);
+    public ResponseEntity<String> userSignupRequest(@RequestBody UserSignupRequest userData) throws UserInfoAlreadyExistException {
+        return ResponseEntity.ok(userSignupRequestSrvImp.createSignupRequest(userData));
     }
 
-    @PostMapping("/permit/getUsernameByToken")
-    public String getUsernameByToken(@RequestParam String token) {
-        return trangTinTucUserServiceImplement.getUsernameByToken(token);
-    }
-    @PostMapping("/permit/tokenIsExpired")
-    public Boolean tokenIsExpired(@RequestParam String token) throws TokenExpiredException  {
-        return trangTinTucUserServiceImplement.checkTokenExpired(token);
-    }
-    @GetMapping("/permit/resetPassword")
-    public String resetPassword (@RequestParam String email,@RequestParam String username)throws ResourceNotFoundException {
-        return trangTinTucUserServiceImplement.resetPassword(username, email);
-    }
-    @GetMapping("/auth/changePassword")
-    public String changePassword (@RequestParam String token,@RequestParam String oldPassword, @RequestParam String newPassword)throws ResourceNotFoundException {
-        return trangTinTucUserServiceImplement.changePassword(token, oldPassword, newPassword);
+    @PostMapping("/permit/resetPassword")
+    public ResponseEntity<String> resetPassword(@RequestBody UserResetPasswordRequest userRequest) throws ResourceNotFoundException {
+        return ResponseEntity.ok(trangTinTucUserServiceImplement.resetPassword(userRequest));
     }
 
-    @PostMapping("/permit/getRoleByUsername")
-    public List<String> getRoleByUsername(@RequestParam String username) {
-        return trangTinTucUserServiceImplement.getRoleByUsername(username);
+    @GetMapping("/permit/getClaimsFromToken")
+    public ResponseEntity<Claims> getClaimsFromToken(@RequestParam String token) {
+        return ResponseEntity.ok(trangTinTucUserServiceImplement.getClaimsFromToken(token));
+    }
+
+    @PostMapping("/auth/changePassword")
+    public ResponseEntity<String> changePassword(@RequestBody UserChangePasswordRequest userRequest) throws ResourceNotFoundException {
+        return ResponseEntity.ok(trangTinTucUserServiceImplement.changePassword(userRequest));
     }
 
     @GetMapping("/auth/getAllUser")
-    public ResponseEntity<UserListResponse> getAllUser (@RequestParam Integer pageNum, @RequestParam Integer pageSize ) {
-        UserListResponse userListData = trangTinTucUserServiceImplement.getAllUser(pageNum, pageSize);
-        return ResponseEntity.ok().body(userListData);
+    public ResponseEntity<UserListResponse> getAllUser(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+        return ResponseEntity.ok(trangTinTucUserServiceImplement.getAllUser(pageNum, pageSize));
     }
 
-    @GetMapping("/auth/searchAllUser")
-    public UserListResponse searchAllUser (@RequestParam String search ,@RequestParam Integer pageNum, @RequestParam Integer pageSize ) {
-        return trangTinTucUserServiceImplement.findAllByUsername(search,pageNum,pageSize);
+    @GetMapping("/auth/searchUser")
+    public ResponseEntity<UserListResponse> searchUser(@RequestParam String search, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+        return ResponseEntity.ok(trangTinTucUserServiceImplement.findAllByUsername(search, pageNum, pageSize));
     }
 
     @GetMapping("/auth/getUserById/{userId}")
@@ -104,22 +95,20 @@ public class TrangTinTucUserController {
         return trangTinTucUserServiceImplement.getUserById(userId);
     }
 
-    @PutMapping("/auth/setModerRole/{userId}")
-    public void setModerRole (@PathVariable Long userId) throws ResourceNotFoundException {
-        trangTinTucUserServiceImplement.setModerRole(userId);
+    @PutMapping("/auth/setUserModerRole/{userId}")
+    public ResponseEntity<String> setUserModerRole(@PathVariable Long userId) throws ResourceNotFoundException {
+        return ResponseEntity.ok(trangTinTucUserServiceImplement.setUserModerRole(userId));
+    }
+
+    @PutMapping("/auth/unsetUserModerRole/{userId}")
+    public ResponseEntity<String> unsetUserModerRole(@PathVariable Long userId) throws ResourceNotFoundException {
+        return ResponseEntity.ok(trangTinTucUserServiceImplement.unsetUserModerRoles(userId));
     }
 
     @DeleteMapping("/auth/deleteUserById/{userId}")
-    public void deleteUserById (@PathVariable Long userId) {
-        trangTinTucUserRepo.deleteUserRole(userId);
-        trangTinTucUserRepo.deleteUser(userId);
+    public ResponseEntity<String> deleteUserById(@PathVariable Long userId) {
+        return ResponseEntity.ok(trangTinTucUserServiceImplement.deleteUserById(userId));
     }
-
-    @DeleteMapping("/auth/deleteUserModer/{userId}")
-    public void deleteUserModer (@PathVariable Long userId) {
-        trangTinTucUserRepo.deleteUserRoleModer(userId);
-    }
-
 
 
 }
