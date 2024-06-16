@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.thai27.trang_tin_tuc_v5_be.TrangtintucV4BeApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.87 s - in com.thai27.trang_tin_tuc_v5_be.TrangtintucV4BeApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 16.48 s - in com.thai27.trang_tin_tuc_v5_be.TrangtintucV4BeApplicationTests

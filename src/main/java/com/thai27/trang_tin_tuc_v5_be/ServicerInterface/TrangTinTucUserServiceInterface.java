@@ -20,7 +20,7 @@ public interface TrangTinTucUserServiceInterface {
 
     String changePassword(UserChangePasswordRequest userRequest) throws ResourceNotFoundException;
 
-    Claims getClaimsFromToken(String token);
+    Claims getClaimsFromToken(String token) throws TokenExpiredException;
 
     UserListResponse getAllUser(Integer pageNum, Integer pageSize);
 

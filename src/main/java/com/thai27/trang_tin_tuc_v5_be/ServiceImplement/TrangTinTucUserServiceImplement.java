@@ -5,6 +5,7 @@ import com.thai27.trang_tin_tuc_v5_be.DTO.UserListDto;
 import com.thai27.trang_tin_tuc_v5_be.Entity.TrangTinTucUser;
 import com.thai27.trang_tin_tuc_v5_be.Entity.UserSignupRequest;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
+import com.thai27.trang_tin_tuc_v5_be.Exception.TokenExpiredException;
 import com.thai27.trang_tin_tuc_v5_be.Repository.RoleRepo;
 import com.thai27.trang_tin_tuc_v5_be.Repository.TrangTinTucUserRepo;
 import com.thai27.trang_tin_tuc_v5_be.Repository.UserSignupRequestRepo;
@@ -91,8 +92,12 @@ public class TrangTinTucUserServiceImplement implements TrangTinTucUserServiceIn
     }
 
     @Override
-    public Claims getClaimsFromToken(String token) {
-        return jwtUtil.getClaims(token);
+    public Claims getClaimsFromToken(String token) throws TokenExpiredException {
+        try {
+            return jwtUtil.getClaims(token);
+        } catch (Exception e) {
+            throw new TokenExpiredException("Phiên đăng nhập hết hạn vui lòng đăng nhập lại");
+        }
     }
 
     @Override

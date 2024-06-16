@@ -4,6 +4,7 @@ package com.thai27.trang_tin_tuc_v5_be.Controller;
 import com.thai27.trang_tin_tuc_v5_be.Entity.TrangTinTucUser;
 import com.thai27.trang_tin_tuc_v5_be.Entity.UserSignupRequest;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
+import com.thai27.trang_tin_tuc_v5_be.Exception.TokenExpiredException;
 import com.thai27.trang_tin_tuc_v5_be.Exception.UserInfoAlreadyExistException;
 import com.thai27.trang_tin_tuc_v5_be.Repository.TrangTinTucUserRepo;
 import com.thai27.trang_tin_tuc_v5_be.Request.UserChangePasswordRequest;
@@ -71,7 +72,7 @@ public class TrangTinTucUserController {
     }
 
     @GetMapping("/permit/getClaimsFromToken")
-    public ResponseEntity<Claims> getClaimsFromToken(@RequestParam String token) {
+    public ResponseEntity<Claims> getClaimsFromToken(@RequestParam String token) throws TokenExpiredException {
         return ResponseEntity.ok(trangTinTucUserServiceImplement.getClaimsFromToken(token));
     }
 
