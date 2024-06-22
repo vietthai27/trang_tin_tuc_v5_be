@@ -9,5 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DanhMucBaiBaoRepo extends JpaRepository<DanhMucBaiBao,Long> {
 
-    Page<DanhMucBaiBao> findAllByTenDanhMucLikeIgnoreCase(String search, PageRequest pageRequest);
+    Page<DanhMucBaiBao> findAllByTenDanhMucLikeIgnoreCaseOrderById(String search, PageRequest pageRequest);
+
+    Page<DanhMucBaiBao> findAllByOrderByIdAsc(PageRequest pageRequest);
 }

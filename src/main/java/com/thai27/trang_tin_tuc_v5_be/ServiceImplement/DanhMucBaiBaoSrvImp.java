@@ -17,15 +17,16 @@ public class DanhMucBaiBaoSrvImp implements DanhMucBaiBaoService {
     @Autowired
     DanhMucBaiBaoRepo danhMucBaiBaoRepo;
     @Override
-    public List<DanhMucBaiBao> getAllDanhMuc() {
-        return danhMucBaiBaoRepo.findAll();
+    public Page<DanhMucBaiBao> getAllDanhMuc() {
+        PageRequest searchDanhMucPaging = PageRequest.of(0,10);
+        return danhMucBaiBaoRepo.findAllByOrderByIdAsc(searchDanhMucPaging);
     }
 
     @Override
     public Page<DanhMucBaiBao> searchAllDanhMuc(String search, int pageNum, int pageSize) {
         PageRequest searchDanhMucPaging = PageRequest.of(pageNum,pageSize);
         String searchLike = "%" + search + "%";
-        return danhMucBaiBaoRepo.findAllByTenDanhMucLikeIgnoreCase(searchLike,searchDanhMucPaging);
+        return danhMucBaiBaoRepo.findAllByTenDanhMucLikeIgnoreCaseOrderById(searchLike,searchDanhMucPaging);
     }
 
     @Override
@@ -45,6 +46,7 @@ public class DanhMucBaiBaoSrvImp implements DanhMucBaiBaoService {
     public DanhMucBaiBao editDanhMuc(Long id, DanhMucBaiBao danhMucBaiBao) throws ResourceNotFoundException {
         DanhMucBaiBao editDanhMuc = danhMucBaiBaoRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục với id:" + id));
         editDanhMuc.setTenDanhMuc(danhMucBaiBao.getTenDanhMuc());
+        editDanhMuc.setId(id);
         return danhMucBaiBaoRepo.save(editDanhMuc);
     }
 

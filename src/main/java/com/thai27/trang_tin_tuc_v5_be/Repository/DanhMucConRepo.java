@@ -22,7 +22,7 @@ public interface DanhMucConRepo extends JpaRepository<DanhMucCon,Long> {
             "danh_muc_con \n" +
             "where \n" +
             "LOWER(ten_danh_muc_con) like LOWER (concat('%', :search,'%')) and \n" +
-            "danh_muc_bai_bao_id = :idCha", nativeQuery = true)
+            "danh_muc_bai_bao_id = :idCha order by id", nativeQuery = true)
     Page<QuanLyDanhMucCon> searchDanhMucConByIdCha(@Param("search") String search, @Param("idCha") Long idCha, PageRequest pageRequest);
 
     @Query(value = "SELECT \n" +

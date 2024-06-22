@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface DanhMucBaiBaoService {
 
-    List<DanhMucBaiBao> getAllDanhMuc();
+    Page<DanhMucBaiBao> getAllDanhMuc();
 
     Page<DanhMucBaiBao> searchAllDanhMuc(String search ,int pageNum, int pageSize);
 

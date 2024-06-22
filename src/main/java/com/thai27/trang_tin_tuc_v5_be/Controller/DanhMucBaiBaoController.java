@@ -28,7 +28,7 @@ public class DanhMucBaiBaoController {
     DanhMucBaiBaoRepo danhMucBaiBaoRepo;
 
     @GetMapping("/get/getAllDanhMucBaiBao")
-    public ResponseEntity<List<DanhMucBaiBao>> getAllDanhMucBaiBao(){
+    public ResponseEntity<Page<DanhMucBaiBao>> getAllDanhMucBaiBao(){
         return ResponseEntity.status(HttpStatus.OK).body(danhMucBaiBaoSrvImp.getAllDanhMuc());
     }
 
