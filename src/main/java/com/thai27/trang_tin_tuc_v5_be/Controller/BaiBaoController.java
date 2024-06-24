@@ -65,9 +65,6 @@ public class BaiBaoController {
 
         Long inst2 = System.nanoTime();;
 
-
-
-
         System.out.println("_______");
         System.out.println("_______");
         System.out.println("_______" + listdata);

@@ -35,7 +35,7 @@ public interface BaiBaoRepo extends JpaRepository<BaiBao,Long> {
             "where \n" +
             "a.danh_muc_con_id = b.id and \n" +
             "b.danh_muc_bai_bao_id = c.id and \n" +
-            "LOWER(a.ten_bai_bao)  LIKE LOWER (concat('%', :tenBaiBao,'%')) ",nativeQuery = true)
+            "LOWER(a.ten_bai_bao)  LIKE LOWER (concat('%', :tenBaiBao,'%')) order by id",nativeQuery = true)
     Page<BaiBaoDetail> searchAllBaiBao(@Param("tenBaiBao")String tenBaiBao, PageRequest pageRequest);
 
     @Query(value = "select \n" +

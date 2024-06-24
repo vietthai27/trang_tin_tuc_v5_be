@@ -45,10 +45,10 @@ public class WebSecurity {
                         .requestMatchers("/baibao/get/**").permitAll()
 						.requestMatchers("/danhmuc/get/**").permitAll()
 						.requestMatchers("/danhmuccon/get/**").permitAll()
-						.requestMatchers("/danhmuc//auth/**").hasAnyRole("MODER","ADMIN")
-						.requestMatchers("/danhmuccon//auth/**").hasAnyRole("MODER","ADMIN")
-						.requestMatchers("/baibao//modify/**").hasAnyRole("MODER","ADMIN")
-						.requestMatchers("/baibao//delete/**").hasRole("ADMIN")
+						.requestMatchers("/danhmuc//auth/**").hasAnyRole("ADMIN")
+						.requestMatchers("/danhmuccon//auth/**").hasAnyRole("ADMIN")
+						.requestMatchers("/baibao//modify/**").hasAnyRole("MODER")
+						.requestMatchers("/baibao//delete/**").hasRole("MODER")
 						.anyRequest().authenticated())
 				.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);

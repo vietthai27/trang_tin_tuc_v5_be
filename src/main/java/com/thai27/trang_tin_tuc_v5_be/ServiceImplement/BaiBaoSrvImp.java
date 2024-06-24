@@ -64,6 +64,7 @@ public class BaiBaoSrvImp implements BaiBaoService {
             editBaiBao.setTenBaiBao(baiBao.getTenBaiBao());
             editBaiBao.setTieuDe(baiBao.getTieuDe());
             editBaiBao.setNoiDung(baiBao.getNoiDung());
+            editBaiBao.setTacGia(baiBao.getTacGia());
             editBaiBao.setDanhMucCon(danhMucConRepo.getReferenceById(idCon));
             return baiBaoRepo.save(editBaiBao);
         }
