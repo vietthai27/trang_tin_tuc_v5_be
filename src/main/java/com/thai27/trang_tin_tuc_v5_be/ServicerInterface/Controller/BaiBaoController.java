@@ -1,4 +1,4 @@
-package com.thai27.trang_tin_tuc_v5_be.Controller;
+package com.thai27.trang_tin_tuc_v5_be.ServicerInterface.Controller;
 
 import com.thai27.trang_tin_tuc_v5_be.DTO.BaiBaoByDanhMucCon;
 import com.thai27.trang_tin_tuc_v5_be.DTO.BaiBaoDetail;
@@ -121,5 +121,11 @@ public class BaiBaoController {
     public void deleteBaiBao(@PathVariable Long id) {
         baiBaoSrvImp.deleteBaiBao(id);
     }
+
+    @GetMapping("/get/addViewBaiBao/{id}")
+    public void addViewBaiBao(@PathVariable Long id) {
+        baiBaoSrvImp.addViewBaiBao(id);
+    };
+
 
 }

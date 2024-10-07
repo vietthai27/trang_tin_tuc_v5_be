@@ -44,6 +44,8 @@ public class WebSecurity {
 						.requestMatchers("/user//auth/changePassword").hasAnyRole("USER","MODER","ADMIN")
                         .requestMatchers("/baibao/get/**").permitAll()
 						.requestMatchers("/danhmuc/get/**").permitAll()
+						.requestMatchers("/trangtintuc-endpoint/**").permitAll()
+						.requestMatchers("/like/get/**").permitAll()
 						.requestMatchers("/danhmuccon/get/**").permitAll()
 						.requestMatchers("/danhmuc//auth/**").hasAnyRole("ADMIN")
 						.requestMatchers("/danhmuccon//auth/**").hasAnyRole("ADMIN")

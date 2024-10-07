@@ -1,4 +1,4 @@
-package com.thai27.trang_tin_tuc_v5_be.Controller;
+package com.thai27.trang_tin_tuc_v5_be.ServicerInterface.Controller;
 
 import com.thai27.trang_tin_tuc_v5_be.Entity.DanhMucBaiBao;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ChildDataStillExist;

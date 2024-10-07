@@ -28,15 +28,15 @@ public class BaiBaoSrvImp implements BaiBaoService {
 
     @Override
     public Optional<BaiBao> getBaiBaoById(Long id) throws ResourceNotFoundException {
-        if(!baiBaoRepo.existsById(id)) throw new ResourceNotFoundException ("Không tìm thấy bài báo với id: "+ id);
+        if (!baiBaoRepo.existsById(id)) throw new ResourceNotFoundException("Không tìm thấy bài báo với id: " + id);
         else return baiBaoRepo.findById(id);
     }
 
     @Override
     public BaiBaoDetail getBaiBaoDetailById(Long id) throws ResourceNotFoundException {
-        if(!baiBaoRepo.existsById(id)) throw new ResourceNotFoundException ("Không tìm thấy bài báo với id: "+ id);
+        if (!baiBaoRepo.existsById(id)) throw new ResourceNotFoundException("Không tìm thấy bài báo với id: " + id);
         else
-        return baiBaoRepo.getBaiBaoDetailById(id);
+            return baiBaoRepo.getBaiBaoDetailById(id);
     }
 
     @Override
@@ -56,8 +56,8 @@ public class BaiBaoSrvImp implements BaiBaoService {
     }
 
     @Override
-    public BaiBao editBaiBao(Long id,Long idCon, BaiBao baiBao) throws ResourceNotFoundException {
-        if(!baiBaoRepo.existsById(id)) throw new ResourceNotFoundException ("Không tìm thấy bài báo với id: "+ id);
+    public BaiBao editBaiBao(Long id, Long idCon, BaiBao baiBao) throws ResourceNotFoundException {
+        if (!baiBaoRepo.existsById(id)) throw new ResourceNotFoundException("Không tìm thấy bài báo với id: " + id);
         else {
             BaiBao editBaiBao = baiBaoRepo.findById(id).orElse(null);
             editBaiBao.setThumbnail(baiBao.getThumbnail());
@@ -98,6 +98,15 @@ public class BaiBaoSrvImp implements BaiBaoService {
         return baiBaoRepo.searchAllBaiBao(tenBaiBao, pageRequest);
     }
 
+    @Override
+    public void addViewBaiBao(Long id) {
+        Optional<BaiBao> baiBao = baiBaoRepo.findById(id);
+        if (baiBao.isPresent()) {
+            BaiBao baiBaoData = baiBao.get();
+            baiBaoData.setLuotXem(baiBaoData.getLuotXem() + 1);
+            baiBaoRepo.save(baiBaoData);
+        }
+    }
 
 
 }

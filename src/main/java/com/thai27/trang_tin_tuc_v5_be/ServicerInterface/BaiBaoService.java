@@ -29,4 +29,6 @@ public interface BaiBaoService {
 
     Page<BaiBaoDetail> searchAllBaiBao(String tenBaiBao, Integer pageNum, Integer pageSize);
 
+    void addViewBaiBao (Long id);
+
 }
