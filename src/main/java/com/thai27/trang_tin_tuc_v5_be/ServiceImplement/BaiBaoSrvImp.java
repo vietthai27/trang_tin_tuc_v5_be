@@ -1,5 +1,6 @@
 package com.thai27.trang_tin_tuc_v5_be.ServiceImplement;
 
+import com.thai27.trang_tin_tuc_v5_be.Controller.NotificationController;
 import com.thai27.trang_tin_tuc_v5_be.DTO.BaiBaoByDanhMucCon;
 import com.thai27.trang_tin_tuc_v5_be.DTO.BaiBaoDetail;
 import com.thai27.trang_tin_tuc_v5_be.Entity.BaiBao;
@@ -7,6 +8,8 @@ import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
 import com.thai27.trang_tin_tuc_v5_be.Repository.BaiBaoRepo;
 import com.thai27.trang_tin_tuc_v5_be.Repository.DanhMucConRepo;
 import com.thai27.trang_tin_tuc_v5_be.ServicerInterface.BaiBaoService;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +28,9 @@ public class BaiBaoSrvImp implements BaiBaoService {
 
     @Autowired
     DanhMucConRepo danhMucConRepo;
+
+    @Autowired
+    NotificationController notificationController;
 
     @Override
     public Optional<BaiBao> getBaiBaoById(Long id) throws ResourceNotFoundException {
@@ -52,7 +58,18 @@ public class BaiBaoSrvImp implements BaiBaoService {
         addBaiBao.setTacGia(baiBao.getTacGia());
         addBaiBao.setLuotXem(0);
         addBaiBao.setDanhMucCon(danhMucConRepo.getReferenceById(idDanhMucCon));
+
+        notificationController.sendNotification(
+                new NotificationMessage("ARTICLE_ADDED", "Bài báo " + baiBao.getTenBaiBao() + " vừa được thêm")
+        );
         return baiBaoRepo.save(addBaiBao);
+    }
+
+    @Data
+    @AllArgsConstructor
+    public class NotificationMessage {
+        private String type;
+        private String content;
     }
 
     @Override

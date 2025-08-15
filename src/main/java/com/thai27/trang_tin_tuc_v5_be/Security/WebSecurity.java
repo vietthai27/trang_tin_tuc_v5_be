@@ -51,6 +51,7 @@ public class WebSecurity {
 						.requestMatchers("/danhmuccon//auth/**").hasAnyRole("ADMIN")
 						.requestMatchers("/baibao//modify/**").hasAnyRole("MODER")
 						.requestMatchers("/baibao//delete/**").hasRole("MODER")
+						.requestMatchers("/ws/**", "/ws/info/**").permitAll()
 						.anyRequest().authenticated())
 				.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
