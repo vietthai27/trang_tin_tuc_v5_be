@@ -3,25 +3,19 @@ FROM eclipse-temurin:17-jdk-alpine AS builder
 
 WORKDIR /app
 
-# Copy pom first (better Docker cache)
+# Install Maven
+RUN apk add --no-cache maven
+
 COPY pom.xml .
-COPY mvnw .
-COPY .mvn .mvn
+RUN mvn dependency:go-offline
 
-# Download dependencies
-RUN ./mvnw dependency:go-offline
-
-# Copy source code
 COPY src src
-
-# Build application
-RUN ./mvnw clean package -DskipTests
+RUN mvn clean package -DskipTests
 
 # ---------- RUNTIME STAGE ----------
 FROM eclipse-temurin:17-jre-alpine
 
 WORKDIR /app
-
 COPY --from=builder /app/target/*.jar app.jar
 
 EXPOSE 8080
