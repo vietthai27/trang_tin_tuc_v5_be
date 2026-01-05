@@ -4,6 +4,7 @@ package com.thai27.trang_tin_tuc_v5_be.Security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.config.Customizer;
@@ -51,7 +52,8 @@ public class WebSecurity {
 						.requestMatchers("/danhmuccon//auth/**").hasAnyRole("ADMIN")
 						.requestMatchers("/baibao//modify/**").hasAnyRole("MODER")
 						.requestMatchers("/baibao//delete/**").hasRole("MODER")
-						.requestMatchers("/ws/**", "/ws/info/**").permitAll()
+						.requestMatchers("/sse/**").permitAll()
+						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 						.anyRequest().authenticated())
 				.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
@@ -60,17 +62,37 @@ public class WebSecurity {
 
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
+
 		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type", "ngrok-skip-browser-warning"));
-		configuration.setAllowedOrigins(Arrays.asList("https://trang-tin-tuc-v5-fe.onrender.com","http://localhost:3000"));
-		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-		configuration.setExposedHeaders(Arrays.asList("Authorization", "content-type"));
-		configuration.setAllowedHeaders(Arrays.asList("Authorization", "content-type"));
+
+		configuration.setAllowedOrigins(List.of(
+				"http://localhost:3000",
+				"https://trang-tin-tuc-v5-fe.onrender.com"
+		));
+
+		configuration.setAllowedMethods(List.of(
+				"GET", "POST", "PUT", "DELETE", "OPTIONS"
+		));
+
+		configuration.setAllowedHeaders(List.of(
+				"Authorization",
+				"Content-Type",
+				"Cache-Control",
+				"ngrok-skip-browser-warning"
+		));
+
+		configuration.setExposedHeaders(List.of(
+				"Authorization"
+		));
+
 		configuration.setAllowCredentials(true);
+
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
+
 		return source;
 	}
+
 
 	@Bean
 	public JavaMailSender javaMailSender() {
