@@ -1,14 +1,11 @@
 package com.thai27.trang_tin_tuc_v5_be.Security;
 
-
+import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -19,9 +16,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 
 @Configuration
 @EnableMethodSecurity
@@ -40,18 +35,15 @@ public class WebSecurity {
 				.cors(Customizer.withDefaults())
 				.csrf(AbstractHttpConfigurer::disable)
 				.authorizeHttpRequests((auth) -> auth
-						.requestMatchers("/user/permit/**").permitAll()
-						.requestMatchers("/user//auth/**").hasRole("ADMIN")
-						.requestMatchers("/user//auth/changePassword").hasAnyRole("USER","MODER","ADMIN")
-                        .requestMatchers("/baibao/get/**").permitAll()
+						.requestMatchers("/api/user/permit/**").permitAll()
+						.requestMatchers("/baibao/get/**").permitAll()
 						.requestMatchers("/danhmuc/get/**").permitAll()
-						.requestMatchers("/trangtintuc-endpoint/**").permitAll()
-						.requestMatchers("/like/get/**").permitAll()
 						.requestMatchers("/danhmuccon/get/**").permitAll()
-						.requestMatchers("/danhmuc//auth/**").hasAnyRole("ADMIN")
-						.requestMatchers("/danhmuccon//auth/**").hasAnyRole("ADMIN")
-						.requestMatchers("/baibao//modify/**").hasAnyRole("MODER")
-						.requestMatchers("/baibao//delete/**").hasRole("MODER")
+						.requestMatchers("/api/user/auth/**").hasAuthority(Constant.ROLE_ADMIN)
+						.requestMatchers("/danhmuc//auth/**").hasAuthority(Constant.ROLE_ADMIN)
+						.requestMatchers("/danhmuccon//auth/**").hasAuthority(Constant.ROLE_ADMIN)
+						.requestMatchers("/baibao//modify/**").hasAuthority(Constant.ROLE_MODER)
+						.requestMatchers("/baibao//delete/**").hasAuthority(Constant.ROLE_MODER)
 						.requestMatchers("/sse/**").permitAll()
 						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 						.anyRequest().authenticated())
@@ -92,24 +84,5 @@ public class WebSecurity {
 
 		return source;
 	}
-
-
-	@Bean
-	public JavaMailSender javaMailSender() {
-		JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
-		javaMailSender.setProtocol("smtp");
-		javaMailSender.setHost("smtp.gmail.com");
-		javaMailSender.setPort(587);
-		javaMailSender.setUsername("FIS.auto.service@gmail.com");
-		javaMailSender.setPassword("qvaudviuwcblhqkq");
-
-		Properties props = javaMailSender.getJavaMailProperties();
-		props.put("mail.transport.protocol", "smtp");
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.debug", "true");
-		return javaMailSender;
-	}
-
 
 }

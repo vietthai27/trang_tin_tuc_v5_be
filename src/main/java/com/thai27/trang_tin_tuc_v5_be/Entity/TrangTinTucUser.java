@@ -24,7 +24,7 @@ public class TrangTinTucUser {
     @Column(name = "email")
     private String email;
 
-    @ManyToMany(targetEntity = Role.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(targetEntity = Role.class, fetch = FetchType.LAZY)
     private List<Role> roles;
 
 }

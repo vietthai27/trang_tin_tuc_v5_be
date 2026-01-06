@@ -3,6 +3,7 @@ package com.thai27.trang_tin_tuc_v5_be.ServicerInterface;
 
 import com.thai27.trang_tin_tuc_v5_be.Entity.TrangTinTucUser;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
+import com.thai27.trang_tin_tuc_v5_be.Exception.SignUpCodeExpiredException;
 import com.thai27.trang_tin_tuc_v5_be.Exception.TokenExpiredException;
 import com.thai27.trang_tin_tuc_v5_be.Request.UserChangePasswordRequest;
 import com.thai27.trang_tin_tuc_v5_be.Request.UserResetPasswordRequest;
@@ -12,7 +13,7 @@ import io.jsonwebtoken.Claims;
 
 public interface TrangTinTucUserServiceInterface {
 
-    String userSignup(UserValidateSignupRequest userRequest) throws ResourceNotFoundException;
+    String userSignup(UserValidateSignupRequest userRequest) throws ResourceNotFoundException, SignUpCodeExpiredException;
 
     String login(TrangTinTucUser userData);
 
@@ -32,6 +33,6 @@ public interface TrangTinTucUserServiceInterface {
 
     UserListResponse findAllByUsername(String username, Integer pageNum, Integer pageSize);
 
-    String deleteUserById(Long userId);
+    String deleteUserById(Long userId) throws ResourceNotFoundException;
 
 }

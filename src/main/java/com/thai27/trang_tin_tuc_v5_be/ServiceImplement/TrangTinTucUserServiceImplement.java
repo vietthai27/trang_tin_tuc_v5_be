@@ -1,10 +1,11 @@
 package com.thai27.trang_tin_tuc_v5_be.ServiceImplement;
 
-
 import com.thai27.trang_tin_tuc_v5_be.DTO.UserListDto;
+import com.thai27.trang_tin_tuc_v5_be.Entity.Role;
 import com.thai27.trang_tin_tuc_v5_be.Entity.TrangTinTucUser;
 import com.thai27.trang_tin_tuc_v5_be.Entity.UserSignupRequest;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
+import com.thai27.trang_tin_tuc_v5_be.Exception.SignUpCodeExpiredException;
 import com.thai27.trang_tin_tuc_v5_be.Exception.TokenExpiredException;
 import com.thai27.trang_tin_tuc_v5_be.Repository.RoleRepo;
 import com.thai27.trang_tin_tuc_v5_be.Repository.TrangTinTucUserRepo;
@@ -16,6 +17,7 @@ import com.thai27.trang_tin_tuc_v5_be.Response.UserListResponse;
 import com.thai27.trang_tin_tuc_v5_be.Security.JWTAuthenProvider;
 import com.thai27.trang_tin_tuc_v5_be.Security.JWTUltil;
 import com.thai27.trang_tin_tuc_v5_be.ServicerInterface.TrangTinTucUserServiceInterface;
+import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
 import com.thai27.trang_tin_tuc_v5_be.Util.GenerateRandomString;
 import com.thai27.trang_tin_tuc_v5_be.Util.SendEmail;
 import io.jsonwebtoken.Claims;
@@ -27,6 +29,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -74,17 +77,17 @@ public class TrangTinTucUserServiceImplement implements TrangTinTucUserServiceIn
     }
 
     @Override
-    public String userSignup(UserValidateSignupRequest request) throws ResourceNotFoundException {
+    public String userSignup(UserValidateSignupRequest request) throws ResourceNotFoundException, SignUpCodeExpiredException {
         UserSignupRequest userSignupRequest =
                 userSignupRequestRepo.findByRequestCode(request.getValidateCode()).orElseThrow(() -> new ResourceNotFoundException("Mã xác thực " + request.getValidateCode() + " không tồn tại trong hệ thống"));
         if (!userSignupRequestRepo.getCodeByEmail(request.getEmail()).equals(request.getValidateCode())) {
-            throw new RuntimeException("Mã xác thực đã hết hạn vui lòng kiểm tra lại email");
+            throw new SignUpCodeExpiredException("Mã xác thực không khớp vui lòng kiểm tra lại email");
         } else {
             TrangTinTucUser userData = new TrangTinTucUser();
             userData.setUsername(userSignupRequest.getUsername());
             userData.setPassword(encoder.encode(userSignupRequest.getPassword()));
             userData.setEmail(userSignupRequest.getEmail());
-            userData.setRoles(roleRepo.findByRolename("USER"));
+            userData.setRoles(roleRepo.findListByRolename(Constant.ROLE_USER));
             trangTinTucUserRepo.save(userData);
             userSignupRequestRepo.deleteAllByEmail(userSignupRequest.getEmail());
             return sendEmail.sendSignupSuccess(userSignupRequest.getEmail(), userSignupRequest.getUsername());
@@ -124,19 +127,39 @@ public class TrangTinTucUserServiceImplement implements TrangTinTucUserServiceIn
 
     @Override
     public String setUserModerRole(Long userId) throws ResourceNotFoundException {
-        if (!trangTinTucUserRepo.existsById(userId)) {
-            throw new ResourceNotFoundException("Không có người dùng với id:" + userId);
-        } else roleRepo.setUserModerRole(userId);
+        TrangTinTucUser user = trangTinTucUserRepo.findById(userId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Không có người dùng với id:" + userId));
+
+        Role moderRole = roleRepo.findByRolename(Constant.ROLE_MODER)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Không tìm thấy role MODER"));
+
+        if (!user.getRoles().contains(moderRole)) {
+            user.getRoles().add(moderRole);
+            trangTinTucUserRepo.save(user);
+        }
+
         return "Thêm quyền Moder thành công";
     }
 
     @Override
     public String unsetUserModerRoles(Long userId) throws ResourceNotFoundException {
-        if (!trangTinTucUserRepo.existsById(userId)) {
-            throw new ResourceNotFoundException("Không có người dùng với id:" + userId);
-        } else trangTinTucUserRepo.unsetUserModerRole(userId);
+
+        TrangTinTucUser user = trangTinTucUserRepo.findById(userId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Không có người dùng với id: " + userId)
+                );
+
+        user.getRoles().removeIf(role ->
+                Constant.ROLE_MODER.equalsIgnoreCase(role.getRolename())
+        );
+
+        trangTinTucUserRepo.save(user);
+
         return "Hủy quyền Moder thành công";
     }
+
 
     @Override
     public UserListResponse findAllByUsername(String username, Integer pageNum, Integer pageSize) {
@@ -158,9 +181,17 @@ public class TrangTinTucUserServiceImplement implements TrangTinTucUserServiceIn
     }
 
     @Override
-    public String deleteUserById(Long userId) {
-        trangTinTucUserRepo.deleteAllUserRoles(userId);
-        trangTinTucUserRepo.deleteUser(userId);
+    @Transactional
+    public String deleteUserById(Long userId) throws ResourceNotFoundException {
+
+        TrangTinTucUser user = trangTinTucUserRepo.findById(userId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Không có người dùng với id: " + userId)
+                );
+
+        user.getRoles().clear();
+        trangTinTucUserRepo.delete(user);
+
         return "Xóa người dùng thành công";
     }
 

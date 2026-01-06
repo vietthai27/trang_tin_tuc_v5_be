@@ -24,11 +24,6 @@ public interface TrangTinTucUserRepo extends JpaRepository<TrangTinTucUser, Long
 	@Modifying
 	void deleteAllUserRoles(@Param("userId")Long userId);
 
-	@Query(value = "delete from trangtintuc_user_roles where trang_tin_tuc_users_id = :userId and roles_id = (select id from role where role_name = 'MODER')",nativeQuery = true)
-	@Transactional
-	@Modifying
-	void unsetUserModerRole(@Param("userId")Long userId);
-
 	@Query(value = "delete from trangtintuc_user where id = :userId", nativeQuery = true)
 	@Transactional
 	@Modifying
