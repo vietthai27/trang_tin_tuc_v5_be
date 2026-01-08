@@ -1,5 +1,6 @@
 package com.thai27.trang_tin_tuc_v5_be.Security;
 
+import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -16,8 +17,8 @@ public class MailConfig {
         javaMailSender.setProtocol("smtp");
         javaMailSender.setHost("smtp.gmail.com");
         javaMailSender.setPort(587);
-        javaMailSender.setUsername("FIS.auto.service@gmail.com");
-        javaMailSender.setPassword("qvaudviuwcblhqkq");
+        javaMailSender.setUsername(Constant.EMAIL_SENDER);
+        javaMailSender.setPassword(Constant.EMAIL_PASSWORD);
 
         Properties props = javaMailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");

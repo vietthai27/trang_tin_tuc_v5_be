@@ -1,6 +1,6 @@
 package com.thai27.trang_tin_tuc_v5_be.Security;
 
-import com.thai27.trang_tin_tuc_v5_be.ServiceImplement.UserDetailServiceImplement;
+import com.thai27.trang_tin_tuc_v5_be.Service.UserDetailServiceImplement;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +19,7 @@ import java.io.IOException;
 public class JWTTokenFilter extends OncePerRequestFilter {
 
 	@Autowired
-	JWTUltil jwt;
+	JWTUtil jwt;
 
 	@Autowired
 	UserDetailServiceImplement userSrv;

@@ -40,7 +40,7 @@ public class UserDetail implements UserDetails {
 
 	public static UserDetail build(TrangTinTucUser user) {
 		List<GrantedAuthority> authorities = user.getRoles().stream()
-				.map(role -> new SimpleGrantedAuthority(role.getRolename())).collect(Collectors.toList());
+				.map(role -> new SimpleGrantedAuthority(role.getRoleName())).collect(Collectors.toList());
 		return new UserDetail(user.getId(),user.getUsername(),user.getPassword(), authorities);
 	}
 

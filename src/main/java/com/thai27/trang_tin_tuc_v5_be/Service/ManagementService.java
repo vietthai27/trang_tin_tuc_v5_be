@@ -1,0 +1,123 @@
+package com.thai27.trang_tin_tuc_v5_be.Service;
+
+import com.thai27.trang_tin_tuc_v5_be.Entity.Management;
+import com.thai27.trang_tin_tuc_v5_be.Entity.Role;
+import com.thai27.trang_tin_tuc_v5_be.Entity.TrangTinTucUser;
+import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
+import com.thai27.trang_tin_tuc_v5_be.Repository.ManagementRepo;
+import com.thai27.trang_tin_tuc_v5_be.Repository.RoleRepo;
+import com.thai27.trang_tin_tuc_v5_be.Repository.TrangTinTucUserRepo;
+import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
+import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class ManagementService {
+
+    @Autowired
+    ManagementRepo managementRepo;
+
+    @Autowired
+    RoleRepo roleRepo;
+
+    @Autowired
+    TrangTinTucUserRepo trangTinTucUserRepo;
+
+    public ResponseEntity<ApiResponse<List<Management>>> getAllManagement(String username) throws ResourceNotFoundException {
+
+        TrangTinTucUser user = trangTinTucUserRepo
+                .findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        List<Role> roles = user.getRoles();
+
+        List<Management> managements = roles.stream()
+                .flatMap(role -> role.getManagements().stream())
+                .distinct()
+                .toList();
+
+        return ResponseEntity.ok(ApiResponse.<List<Management>>builder()
+                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
+                .message("Lấy dữ liệu quản lý thành công")
+                .data(managements)
+                .build());
+    }
+
+    @Transactional
+    public ResponseEntity<ApiResponse<Management>> addManagement(
+            Management management,
+            List<Long> listIdRole) throws ResourceNotFoundException {
+
+        Management addManagement = new Management();
+        addManagement.setName(management.getName());
+
+        if (listIdRole != null && !listIdRole.isEmpty()) {
+            List<Role> roles = roleRepo.findAllById(listIdRole);
+
+            if (roles.size() != listIdRole.size()) {
+                throw new ResourceNotFoundException("Một hoặc nhiều Role không tồn tại");
+            }
+
+            addManagement.setRolesManage(roles);
+        }
+
+        Management savedManagement = managementRepo.save(addManagement);
+
+        return ResponseEntity.ok(
+                ApiResponse.<Management>builder()
+                        .responseCode(Constant.RESPONSE_CODE_SUCCESS)
+                        .message("Thêm quản lý thành công")
+                        .data(savedManagement)
+                        .build()
+        );
+    }
+
+
+    @Transactional
+    public ResponseEntity<ApiResponse<Management>> editManagement(
+            Long id,
+            Management request,
+            List<Long> roleIds) throws ResourceNotFoundException {
+
+        Management management = managementRepo.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Không tìm thấy quản lý với id: " + id));
+
+        if (request.getName() != null && !request.getName().isBlank()) {
+            management.setName(request.getName());
+        }
+
+        if (roleIds != null) {
+            if (roleIds.isEmpty()) {
+                management.getRolesManage().clear();
+            } else {
+                List<Role> roles = roleRepo.findAllById(roleIds);
+
+                if (roles.size() != roleIds.size()) {
+                    throw new ResourceNotFoundException("Một hoặc nhiều Role không tồn tại");
+                }
+
+                management.setRolesManage(roles);
+            }
+        }
+
+        Management savedManagement = managementRepo.save(management);
+
+        return ResponseEntity.ok(
+                ApiResponse.<Management>builder()
+                        .responseCode(Constant.RESPONSE_CODE_SUCCESS)
+                        .message("Sửa quản lý thành công")
+                        .data(savedManagement)
+                        .build()
+        );
+    }
+
+}

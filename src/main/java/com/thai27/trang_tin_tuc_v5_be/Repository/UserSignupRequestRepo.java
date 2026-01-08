@@ -12,14 +12,16 @@ import java.util.Optional;
 
 @Repository
 public interface UserSignupRequestRepo extends JpaRepository<UserSignupRequest, Long> {
+
     Optional<UserSignupRequest> findByRequestCode(String validateCode);
+
     @Query(value = "SELECT request_code\n" +
             "FROM user_signup_request where email = :email and request_time = ( \n" +
             "SELECT \n" +
-            "MAX(request_time) from user_signup_request)",nativeQuery = true)
+            "MAX(request_time) from user_signup_request)", nativeQuery = true)
     String getCodeByEmail(@Param("email") String email);
 
     @Modifying
     @Transactional
-    void deleteAllByEmail (String email);
+    void deleteAllByEmail(String email);
 }

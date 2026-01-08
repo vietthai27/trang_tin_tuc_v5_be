@@ -1,6 +1,6 @@
 package com.thai27.trang_tin_tuc_v5_be.Security;
 
-import com.thai27.trang_tin_tuc_v5_be.ServiceImplement.UserDetailServiceImplement;
+import com.thai27.trang_tin_tuc_v5_be.Service.UserDetailServiceImplement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;

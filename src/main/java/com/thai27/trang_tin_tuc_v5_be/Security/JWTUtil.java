@@ -11,7 +11,7 @@ import java.security.Key;
 import java.util.Date;
 
 @Service
-public class JWTUltil {
+public class JWTUtil {
     private static final int expireInMs = 86400000;
 
     private final static String key = "superwierdandlongkeyohmygodwhythishastobesolong";
@@ -34,10 +34,7 @@ public class JWTUltil {
     }
 
     public boolean validate(String token) {
-        if (getUsername(token) != null && isExpired(token)) {
-            return true;
-        }
-        return false;
+        return getUsername(token) != null && isExpired(token);
     }
 
     public String getUsername(String token) {
