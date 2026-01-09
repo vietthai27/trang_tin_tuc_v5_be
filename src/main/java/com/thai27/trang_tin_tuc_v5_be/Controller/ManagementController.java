@@ -1,7 +1,7 @@
 package com.thai27.trang_tin_tuc_v5_be.Controller;
 
-import com.thai27.trang_tin_tuc_v5_be.Entity.Category;
 import com.thai27.trang_tin_tuc_v5_be.Entity.Management;
+import com.thai27.trang_tin_tuc_v5_be.Entity.Role;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
 import com.thai27.trang_tin_tuc_v5_be.Service.ManagementService;
 import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
@@ -28,6 +28,11 @@ public class ManagementController {
         return managementService.searchAllManagement(search, pageNum, pageSize);
     }
 
+    @GetMapping("/get-all-role")
+    public ResponseEntity<ApiResponse<List<Role>>> getAllRole() {
+        return managementService.getAllRole();
+    }
+
     /**
      * Get all managements by username (from user's roles)
      * GET /api/managements?username=admin
@@ -42,12 +47,12 @@ public class ManagementController {
     /**
      * Add management + assign roles
      * POST /api/managements
-     *
+     * <p>
      * body:
      * {
-     *   "name": "USER_MANAGEMENT"
+     * "name": "USER_MANAGEMENT"
      * }
-     *
+     * <p>
      * params:
      * roleIds=1,2,3
      */
@@ -59,10 +64,16 @@ public class ManagementController {
         return managementService.addManagement(management, roleIds);
     }
 
+    @GetMapping("/get-by-id/{id}")
+    public ResponseEntity<ApiResponse<Management>> getById(@PathVariable Long id
+    ) throws ResourceNotFoundException {
+        return managementService.getById(id);
+    }
+
     /**
      * Edit management + update roles
      * PUT /api/managements/{id}
-     *
+     * <p>
      * params:
      * roleIds=1,2,3
      */

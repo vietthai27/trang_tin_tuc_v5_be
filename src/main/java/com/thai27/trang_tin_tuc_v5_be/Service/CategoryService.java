@@ -60,6 +60,15 @@ public class CategoryService {
                 .build());
     }
 
+    public ResponseEntity<ApiResponse<Category>> getById(Long id) throws ResourceNotFoundException {
+        Category category = categoryRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục với id:" + id));
+        return ResponseEntity.ok(ApiResponse.<Category>builder()
+                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
+                .message("Lấy dữ liệu thành công")
+                .data(category)
+                .build());
+    }
+
     public ResponseEntity<ApiResponse<Object>> deleteCategory(Long id) throws ResourceNotFoundException {
         Category deleteCategory = categoryRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục với id:" + id));
         categoryRepo.delete(deleteCategory);

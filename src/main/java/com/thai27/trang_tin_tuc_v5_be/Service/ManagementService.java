@@ -81,6 +81,20 @@ public class ManagementService {
         );
     }
 
+    public ResponseEntity<ApiResponse<Management>> getById(Long id) throws ResourceNotFoundException {
+        Management management = managementRepo.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Không tìm thấy quản lý với id: " + id));
+
+        return ResponseEntity.ok(
+                ApiResponse.<Management>builder()
+                        .responseCode(Constant.RESPONSE_CODE_SUCCESS)
+                        .message("Lấy dữ liệu thành công")
+                        .data(management)
+                        .build()
+        );
+    }
+
 
     @Transactional
     public ResponseEntity<ApiResponse<Management>> editManagement(
@@ -143,6 +157,14 @@ public class ManagementService {
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)
                 .message("Lấy dữ liệu thành công")
                 .data(managementRepo.findAllByNameLikeIgnoreCaseOrderById(searchLike, searchManagementPaging))
+                .build());
+    }
+
+    public ResponseEntity<ApiResponse<List<Role>>> getAllRole() {
+        return ResponseEntity.ok(ApiResponse.<List<Role>>builder()
+                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
+                .message("Lấy dữ liệu thành công")
+                .data(roleRepo.findAll())
                 .build());
     }
 
