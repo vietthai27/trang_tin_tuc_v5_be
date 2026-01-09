@@ -1,8 +1,12 @@
 package com.thai27.trang_tin_tuc_v5_be.Service;
 
+import com.thai27.trang_tin_tuc_v5_be.DTO.Request.ChangeModerRoleRequest;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Request.UserChangePasswordRequest;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Request.UserResetPasswordRequest;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Response.LoginResponse;
+import com.thai27.trang_tin_tuc_v5_be.DTO.Response.UserResponse;
+import com.thai27.trang_tin_tuc_v5_be.Entity.Management;
+import com.thai27.trang_tin_tuc_v5_be.Entity.Role;
 import com.thai27.trang_tin_tuc_v5_be.Entity.TrangTinTucUser;
 import com.thai27.trang_tin_tuc_v5_be.Entity.UserSignupRequest;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
@@ -21,6 +25,9 @@ import com.thai27.trang_tin_tuc_v5_be.Util.GenerateRandomString;
 import io.jsonwebtoken.Claims;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,6 +36,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Service
 public class TrangTinTucUserService {
@@ -164,5 +172,53 @@ public class TrangTinTucUserService {
                     .build());
         } else throw new RuntimeException("Mật khẩu người dùng nhập không trùng với mật khẩu trên hệ thống");
     }
+
+    public ResponseEntity<ApiResponse<Page<UserResponse>>> searchUserByUsername(
+            String keyword,
+            int page,
+            int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<TrangTinTucUser> userPage = trangTinTucUserRepo
+                .findByUsernameContainingIgnoreCase(keyword.trim(), pageable);
+
+        Page<UserResponse> userPageResponse = userPage.map(user ->
+                new UserResponse(
+                        user.getId(),
+                        user.getUsername(),
+                        user.getEmail(),
+                        user.getRoles()
+                                .stream()
+                                .map(Role::getRoleName)
+                                .toList()
+                )
+        );
+        return ResponseEntity.ok(ApiResponse.<Page<UserResponse>>builder()
+                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
+                .message("Lấy dữ liệu thành công")
+                .data(userPageResponse)
+                .build());
+    }
+
+    public ResponseEntity<ApiResponse<Object>> changeModerRole(
+            ChangeModerRoleRequest request
+    ) throws ResourceNotFoundException {
+        TrangTinTucUser user = trangTinTucUserRepo.findById(request.getUserId()).orElseThrow(() -> new ResourceNotFoundException("Người dùng không tồn tại trong hệ thống: "));
+        if (request.isSetModer()) {
+            user.setRoles(roleRepo.findListByRoleName(Constant.ROLE_MODER));
+        } else {
+            List<Role> roles = user.getRoles();
+            roles.removeIf(r -> r.getRoleName().equals(Constant.ROLE_MODER));
+            user.setRoles(roles);
+        }
+        trangTinTucUserRepo.save(user);
+        return ResponseEntity.ok(ApiResponse.builder()
+                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
+                .message("Đổi role thành công")
+                .data(null)
+                .build());
+    }
+
 
 }

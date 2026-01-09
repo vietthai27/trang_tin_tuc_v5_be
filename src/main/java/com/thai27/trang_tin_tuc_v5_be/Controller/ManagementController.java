@@ -1,10 +1,12 @@
 package com.thai27.trang_tin_tuc_v5_be.Controller;
 
+import com.thai27.trang_tin_tuc_v5_be.Entity.Category;
 import com.thai27.trang_tin_tuc_v5_be.Entity.Management;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
 import com.thai27.trang_tin_tuc_v5_be.Service.ManagementService;
 import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +18,15 @@ public class ManagementController {
 
     @Autowired
     private ManagementService managementService;
+
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse<Page<Management>>> searchCategory(
+            @RequestParam(defaultValue = "") String search,
+            @RequestParam(defaultValue = "0") int pageNum,
+            @RequestParam(defaultValue = "10") int pageSize
+    ) {
+        return managementService.searchAllManagement(search, pageNum, pageSize);
+    }
 
     /**
      * Get all managements by username (from user's roles)
@@ -62,5 +73,12 @@ public class ManagementController {
             @RequestParam(required = false) List<Long> roleIds
     ) throws ResourceNotFoundException {
         return managementService.editManagement(id, management, roleIds);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Object>> deleteManagement(
+            @PathVariable Long id
+    ) throws ResourceNotFoundException {
+        return managementService.deleteManagement(id);
     }
 }

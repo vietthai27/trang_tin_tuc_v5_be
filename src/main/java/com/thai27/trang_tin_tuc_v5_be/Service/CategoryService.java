@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class CategoryService {
@@ -56,6 +57,16 @@ public class CategoryService {
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)
                 .message("Sửa dữ liệu thành công")
                 .data(categoryRepo.save(editCategory))
+                .build());
+    }
+
+    public ResponseEntity<ApiResponse<Object>> deleteCategory(Long id) throws ResourceNotFoundException {
+        Category deleteCategory = categoryRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục với id:" + id));
+        categoryRepo.delete(deleteCategory);
+        return ResponseEntity.ok(ApiResponse.builder()
+                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
+                .message("Xóa dữ liệu thành công")
+                .data(null)
                 .build());
     }
 

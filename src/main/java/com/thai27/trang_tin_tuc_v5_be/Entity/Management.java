@@ -21,6 +21,9 @@ public class Management {
     @Column(name = "icon")
     private String icon;
 
+    @Column(name = "path")
+    private String path;
+
     @ManyToMany(targetEntity = Role.class, fetch = FetchType.LAZY)
     private List<Role> rolesManage;
 

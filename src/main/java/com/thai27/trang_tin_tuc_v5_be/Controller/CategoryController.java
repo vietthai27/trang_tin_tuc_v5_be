@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/categories")
@@ -61,5 +62,12 @@ public class CategoryController {
             @RequestBody Category category
     ) throws ResourceNotFoundException {
         return categoryService.editCategory(id, category);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Object>> deleteCategory(
+            @PathVariable Long id
+    ) throws ResourceNotFoundException {
+        return categoryService.deleteCategory(id);
     }
 }

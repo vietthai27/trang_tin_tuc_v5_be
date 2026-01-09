@@ -11,5 +11,4 @@ public interface CategoryRepo extends JpaRepository<Category,Long> {
 
     Page<Category> findAllByNameLikeIgnoreCaseOrderById(String search, PageRequest pageRequest);
 
-    Page<Category> findAllByOrderByIdAsc(PageRequest pageRequest);
 }

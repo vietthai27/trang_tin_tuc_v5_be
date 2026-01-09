@@ -1,5 +1,6 @@
 package com.thai27.trang_tin_tuc_v5_be.Service;
 
+import com.thai27.trang_tin_tuc_v5_be.Entity.Category;
 import com.thai27.trang_tin_tuc_v5_be.Entity.Management;
 import com.thai27.trang_tin_tuc_v5_be.Entity.Role;
 import com.thai27.trang_tin_tuc_v5_be.Entity.TrangTinTucUser;
@@ -118,6 +119,31 @@ public class ManagementService {
                         .data(savedManagement)
                         .build()
         );
+    }
+
+    public ResponseEntity<ApiResponse<Object>> deleteManagement(
+            Long id) throws ResourceNotFoundException {
+        Management management = managementRepo.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Không tìm thấy quản lý với id: " + id));
+        management.getRolesManage().clear();
+        managementRepo.delete(management);
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .responseCode(Constant.RESPONSE_CODE_SUCCESS)
+                        .message("Xóa thành công")
+                        .data(null)
+                        .build()
+        );
+    }
+
+    public ResponseEntity<ApiResponse<Page<Management>>> searchAllManagement(String search, int pageNum, int pageSize) {
+        PageRequest searchManagementPaging = PageRequest.of(pageNum, pageSize);
+        String searchLike = "%" + search + "%";
+        return ResponseEntity.ok(ApiResponse.<Page<Management>>builder()
+                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
+                .message("Lấy dữ liệu thành công")
+                .data(managementRepo.findAllByNameLikeIgnoreCaseOrderById(searchLike, searchManagementPaging))
+                .build());
     }
 
 }
