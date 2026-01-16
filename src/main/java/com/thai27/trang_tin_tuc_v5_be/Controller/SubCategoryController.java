@@ -1,0 +1,100 @@
+package com.thai27.trang_tin_tuc_v5_be.Controller;
+
+import com.thai27.trang_tin_tuc_v5_be.Entity.SubCategory;
+import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
+import com.thai27.trang_tin_tuc_v5_be.Service.SubCategoryService;
+import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/sub-categories")
+public class SubCategoryController {
+
+    @Autowired
+    private SubCategoryService subCategoryService;
+
+    /**
+     * Search + pagination
+     * GET /api/sub-categories/search?search=abc&pageNum=0&pageSize=10
+     */
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse<Page<SubCategory>>> searchSubCategory(
+            @RequestParam(defaultValue = "") String search,
+            @RequestParam(defaultValue = "0") int pageNum,
+            @RequestParam(defaultValue = "10") int pageSize
+    ) {
+        return subCategoryService.searchAllSubCategory(search, pageNum, pageSize);
+    }
+
+    /**
+     * Get all subcategories
+     * GET /api/sub-categories
+     */
+    @GetMapping("/permit/get-all")
+    public ResponseEntity<ApiResponse<List<SubCategory>>> getAllSubCategory() {
+        return subCategoryService.getAllSubCategory();
+    }
+
+    /**
+     * Get subcategories by category ID
+     * GET /api/sub-categories/by-category/{categoryId}
+     */
+    @GetMapping("/by-category/{categoryId}")
+    public ResponseEntity<ApiResponse<List<SubCategory>>> getSubCategoriesByCategoryId(
+            @PathVariable Long categoryId
+    ) throws ResourceNotFoundException {
+        return subCategoryService.getSubCategoriesByCategoryId(categoryId);
+    }
+
+    /**
+     * Add subcategory
+     * POST /api/sub-categories?categoryId=1
+     */
+    @PostMapping
+    public ResponseEntity<ApiResponse<SubCategory>> addSubCategory(
+            @RequestBody SubCategory subCategory,
+            @RequestParam Long categoryId
+    ) throws ResourceNotFoundException {
+        return subCategoryService.addSubCategory(subCategory, categoryId);
+    }
+
+    /**
+     * Edit subcategory
+     * PUT /api/sub-categories/{id}?categoryId=1
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<SubCategory>> editSubCategory(
+            @PathVariable Long id,
+            @RequestBody SubCategory subCategory,
+            @RequestParam(required = false) Long categoryId
+    ) throws ResourceNotFoundException {
+        return subCategoryService.editSubCategory(id, subCategory, categoryId);
+    }
+
+    /**
+     * Get subcategory by ID
+     * GET /api/sub-categories/get-by-id/{id}
+     */
+    @GetMapping("/get-by-id/{id}")
+    public ResponseEntity<ApiResponse<SubCategory>> getById(
+            @PathVariable Long id
+    ) throws ResourceNotFoundException {
+        return subCategoryService.getById(id);
+    }
+
+    /**
+     * Delete subcategory
+     * DELETE /api/sub-categories/{id}
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Object>> deleteSubCategory(
+            @PathVariable Long id
+    ) throws ResourceNotFoundException {
+        return subCategoryService.deleteSubCategory(id);
+    }
+}

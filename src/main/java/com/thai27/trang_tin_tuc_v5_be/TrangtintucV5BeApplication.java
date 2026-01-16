@@ -21,7 +21,7 @@ public class TrangtintucV5BeApplication {
     }
 
     @Bean
-    public ModelMapper modelMapper() {
+    ModelMapper modelMapper() {
         return new ModelMapper();
     }
 
