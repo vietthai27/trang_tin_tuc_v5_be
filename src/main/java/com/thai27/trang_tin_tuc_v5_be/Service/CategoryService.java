@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class CategoryService {
@@ -50,6 +49,9 @@ public class CategoryService {
     }
 
     public ResponseEntity<ApiResponse<Category>> editCategory(Long id, Category category) throws ResourceNotFoundException {
+        if (id == null) {
+            throw new ResourceNotFoundException("ID không được để trống");
+        }
         Category editCategory = categoryRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục với id:" + id));
         editCategory.setName(category.getName());
         editCategory.setId(id);
@@ -61,6 +63,9 @@ public class CategoryService {
     }
 
     public ResponseEntity<ApiResponse<Category>> getById(Long id) throws ResourceNotFoundException {
+        if (id == null) {
+            throw new ResourceNotFoundException("ID không được để trống");
+        }
         Category category = categoryRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục với id:" + id));
         return ResponseEntity.ok(ApiResponse.<Category>builder()
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)
@@ -70,7 +75,13 @@ public class CategoryService {
     }
 
     public ResponseEntity<ApiResponse<Object>> deleteCategory(Long id) throws ResourceNotFoundException {
+        if (id == null) {
+            throw new ResourceNotFoundException("ID không được để trống");
+        }
         Category deleteCategory = categoryRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục với id:" + id));
+        if (deleteCategory == null) {
+            throw new ResourceNotFoundException("Không tìm thấy danh mục");
+        }
         categoryRepo.delete(deleteCategory);
         return ResponseEntity.ok(ApiResponse.builder()
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)

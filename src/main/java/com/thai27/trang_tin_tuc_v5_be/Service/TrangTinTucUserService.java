@@ -5,7 +5,6 @@ import com.thai27.trang_tin_tuc_v5_be.DTO.Request.UserChangePasswordRequest;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Request.UserResetPasswordRequest;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Response.LoginResponse;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Response.UserResponse;
-import com.thai27.trang_tin_tuc_v5_be.Entity.Management;
 import com.thai27.trang_tin_tuc_v5_be.Entity.Role;
 import com.thai27.trang_tin_tuc_v5_be.Entity.TrangTinTucUser;
 import com.thai27.trang_tin_tuc_v5_be.Entity.UserSignupRequest;
@@ -78,7 +77,7 @@ public class TrangTinTucUserService {
         String jwtToken = jwtUtil.generate(authen);
         return ResponseEntity.ok(ApiResponse.<LoginResponse>builder()
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Đăng nhập thành công")
+                .message("Đăng nhập thành công 1")
                 .data(new LoginResponse(jwtToken))
                 .build());
     }
@@ -204,7 +203,11 @@ public class TrangTinTucUserService {
     public ResponseEntity<ApiResponse<Object>> changeModerRole(
             ChangeModerRoleRequest request
     ) throws ResourceNotFoundException {
-        TrangTinTucUser user = trangTinTucUserRepo.findById(request.getUserId()).orElseThrow(() -> new ResourceNotFoundException("Người dùng không tồn tại trong hệ thống: "));
+        Long userId = request.getUserId();
+        if (userId == null) {
+            throw new ResourceNotFoundException("ID người dùng không được để trống");
+        }
+        TrangTinTucUser user = trangTinTucUserRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Người dùng không tồn tại trong hệ thống: "));
         if (request.isSetModer()) {
             user.setRoles(roleRepo.findListByRoleName(Constant.ROLE_MODER));
         } else {

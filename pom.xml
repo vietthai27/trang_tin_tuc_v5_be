@@ -5,14 +5,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.5</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>3.3.5</version>
+		<relativePath/>
 	</parent>
 	<groupId>com.thai27</groupId>
 	<artifactId>trang_tin_tuc_v5_be</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>trangtintuc_v4_be</name>
-	<description>trangtintuc_v4_be</description>
+	<name>trangtintuc_v5_be</name>
+	<description>trangtintuc_v5_be</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>

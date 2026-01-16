@@ -1,6 +1,5 @@
 package com.thai27.trang_tin_tuc_v5_be.Service;
 
-import com.thai27.trang_tin_tuc_v5_be.Entity.Category;
 import com.thai27.trang_tin_tuc_v5_be.Entity.Management;
 import com.thai27.trang_tin_tuc_v5_be.Entity.Role;
 import com.thai27.trang_tin_tuc_v5_be.Entity.TrangTinTucUser;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ManagementService {
@@ -82,6 +80,9 @@ public class ManagementService {
     }
 
     public ResponseEntity<ApiResponse<Management>> getById(Long id) throws ResourceNotFoundException {
+        if (id == null) {
+            throw new ResourceNotFoundException("ID không được để trống");
+        }
         Management management = managementRepo.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Không tìm thấy quản lý với id: " + id));
@@ -101,7 +102,9 @@ public class ManagementService {
             Long id,
             Management request,
             List<Long> roleIds) throws ResourceNotFoundException {
-
+        if (id == null) {
+            throw new ResourceNotFoundException("ID không được để trống");
+        }
         Management management = managementRepo.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Không tìm thấy quản lý với id: " + id));
@@ -124,6 +127,9 @@ public class ManagementService {
             }
         }
 
+        if (management == null) {
+            throw new ResourceNotFoundException("Không tìm thấy quản lý");
+        }
         Management savedManagement = managementRepo.save(management);
 
         return ResponseEntity.ok(
@@ -137,6 +143,9 @@ public class ManagementService {
 
     public ResponseEntity<ApiResponse<Object>> deleteManagement(
             Long id) throws ResourceNotFoundException {
+        if (id == null) {
+            throw new ResourceNotFoundException("ID không được để trống");
+        }
         Management management = managementRepo.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Không tìm thấy quản lý với id: " + id));
         management.getRolesManage().clear();
