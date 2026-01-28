@@ -77,7 +77,7 @@ public class TrangTinTucUserService {
         String jwtToken = jwtUtil.generate(authen);
         return ResponseEntity.ok(ApiResponse.<LoginResponse>builder()
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Đăng nhập thành công 1")
+                .message("Đăng nhập thành công")
                 .data(new LoginResponse(jwtToken))
                 .build());
     }

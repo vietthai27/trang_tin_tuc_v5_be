@@ -1,5 +1,6 @@
 package com.thai27.trang_tin_tuc_v5_be.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -21,5 +22,9 @@ public class SubCategory {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
+    @JsonIgnore
     private Category category;
+
+
+
 }

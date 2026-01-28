@@ -1,5 +1,6 @@
 package com.thai27.trang_tin_tuc_v5_be.Controller;
 
+import com.thai27.trang_tin_tuc_v5_be.DTO.Response.CategoryNewResponse;
 import com.thai27.trang_tin_tuc_v5_be.Entity.SubCategory;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
 import com.thai27.trang_tin_tuc_v5_be.Service.SubCategoryService;
@@ -25,19 +26,11 @@ public class SubCategoryController {
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<Page<SubCategory>>> searchSubCategory(
             @RequestParam(defaultValue = "") String search,
+            @RequestParam(defaultValue = "") Long categoryId,
             @RequestParam(defaultValue = "0") int pageNum,
             @RequestParam(defaultValue = "10") int pageSize
     ) {
-        return subCategoryService.searchAllSubCategory(search, pageNum, pageSize);
-    }
-
-    /**
-     * Get all subcategories
-     * GET /api/sub-categories
-     */
-    @GetMapping("/permit/get-all")
-    public ResponseEntity<ApiResponse<List<SubCategory>>> getAllSubCategory() {
-        return subCategoryService.getAllSubCategory();
+        return subCategoryService.searchAllSubCategory(search, categoryId, pageNum, pageSize);
     }
 
     /**
@@ -45,7 +38,14 @@ public class SubCategoryController {
      * GET /api/sub-categories/by-category/{categoryId}
      */
     @GetMapping("/by-category/{categoryId}")
-    public ResponseEntity<ApiResponse<List<SubCategory>>> getSubCategoriesByCategoryId(
+    public ResponseEntity<ApiResponse<CategoryNewResponse>> getSubCategoriesByCategoryId(
+            @PathVariable Long categoryId
+    ) throws ResourceNotFoundException {
+        return subCategoryService.getSubCategoriesByCategoryId(categoryId);
+    }
+
+    @GetMapping("/permit/by-category/{categoryId}")
+    public ResponseEntity<ApiResponse<CategoryNewResponse>> getSubCategoriesByCategoryIdPermit(
             @PathVariable Long categoryId
     ) throws ResourceNotFoundException {
         return subCategoryService.getSubCategoriesByCategoryId(categoryId);

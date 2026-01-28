@@ -1,5 +1,6 @@
 package com.thai27.trang_tin_tuc_v5_be.Service;
 
+import com.thai27.trang_tin_tuc_v5_be.DTO.Response.CategoryNewResponse;
 import com.thai27.trang_tin_tuc_v5_be.Entity.Category;
 import com.thai27.trang_tin_tuc_v5_be.Entity.SubCategory;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
@@ -96,34 +97,29 @@ public class SubCategoryService {
                 .build());
     }
 
-    public ResponseEntity<ApiResponse<List<SubCategory>>> getAllSubCategory() {
-        return ResponseEntity.ok(ApiResponse.<List<SubCategory>>builder()
-                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Lấy dữ liệu thành công")
-                .data(subCategoryRepo.findAll())
-                .build());
-    }
-
-    public ResponseEntity<ApiResponse<Page<SubCategory>>> searchAllSubCategory(String search, int pageNum, int pageSize) {
+    public ResponseEntity<ApiResponse<Page<SubCategory>>> searchAllSubCategory(String search, Long categoryId, int pageNum, int pageSize) {
         PageRequest searchSubCategoryPaging = PageRequest.of(pageNum, pageSize);
         String searchLike = "%" + search + "%";
         return ResponseEntity.ok(ApiResponse.<Page<SubCategory>>builder()
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)
                 .message("Lấy dữ liệu thành công")
-                .data(subCategoryRepo.findAllByNameLikeIgnoreCaseOrderById(searchLike, searchSubCategoryPaging))
+                .data(subCategoryRepo.findAllByNameLikeIgnoreCaseAndCategory_IdOrderById(searchLike, categoryId, searchSubCategoryPaging))
                 .build());
     }
 
-    public ResponseEntity<ApiResponse<List<SubCategory>>> getSubCategoriesByCategoryId(Long categoryId) throws ResourceNotFoundException {
+    public ResponseEntity<ApiResponse<CategoryNewResponse>> getSubCategoriesByCategoryId(Long categoryId) throws ResourceNotFoundException {
         if (categoryId == null) {
             throw new ResourceNotFoundException("ID danh mục không được để trống");
         }
         Category category = categoryRepo.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục với id: " + categoryId));
         List<SubCategory> subCategories = subCategoryRepo.findByCategory(category);
-        return ResponseEntity.ok(ApiResponse.<List<SubCategory>>builder()
+        CategoryNewResponse categoryNewResponse = new CategoryNewResponse();
+        categoryNewResponse.setCategoryName(category.getName());
+        categoryNewResponse.setData(subCategories);
+        return ResponseEntity.ok(ApiResponse.<CategoryNewResponse>builder()
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)
                 .message("Lấy dữ liệu thành công")
-                .data(subCategories)
+                .data(categoryNewResponse)
                 .build());
     }
 }
