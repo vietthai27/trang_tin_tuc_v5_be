@@ -2,6 +2,7 @@ package com.thai27.trang_tin_tuc_v5_be.Controller;
 
 import com.thai27.trang_tin_tuc_v5_be.DTO.Request.NewsCreateRequest;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Response.GetNewsByIdResponse;
+import com.thai27.trang_tin_tuc_v5_be.DTO.Response.NewsListDTO;
 import com.thai27.trang_tin_tuc_v5_be.Entity.Category;
 import com.thai27.trang_tin_tuc_v5_be.Entity.ImageKit;
 import com.thai27.trang_tin_tuc_v5_be.Entity.News;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/news")
@@ -50,7 +52,7 @@ public class NewsController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse<Page<News>>> searchCategory(
+    public ResponseEntity<ApiResponse<Page<NewsListDTO>>> searchCategory(
             @RequestParam(defaultValue = "") String title,
             @RequestParam(defaultValue = "0") int pageNum,
             @RequestParam(defaultValue = "10") int pageSize
@@ -80,5 +82,17 @@ public class NewsController {
             @PathVariable Long id
     ) throws ResourceNotFoundException {
         return newsService.getById(id);
+    }
+
+    @GetMapping("/permit/get-latest-news")
+    public ResponseEntity<ApiResponse<List<NewsListDTO>>> getLatestNews() {
+        return newsService.getLatestNews();
+    }
+
+    @GetMapping("/permit/get-news-detail/{id}")
+    public ResponseEntity<ApiResponse<News>> getNewsDetail(
+            @PathVariable Long id
+    ) throws ResourceNotFoundException {
+        return newsService.getNewsDetail(id);
     }
 }
