@@ -3,7 +3,6 @@ package com.thai27.trang_tin_tuc_v5_be.Controller;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Request.NewsCreateRequest;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Response.GetNewsByIdResponse;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Response.NewsListDTO;
-import com.thai27.trang_tin_tuc_v5_be.Entity.Category;
 import com.thai27.trang_tin_tuc_v5_be.Entity.ImageKit;
 import com.thai27.trang_tin_tuc_v5_be.Entity.News;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
@@ -94,5 +93,15 @@ public class NewsController {
             @PathVariable Long id
     ) throws ResourceNotFoundException {
         return newsService.getNewsDetail(id);
+    }
+
+    @GetMapping("/permit/get-news-by-sub-category")
+    public ResponseEntity<ApiResponse<Page<NewsListDTO>>> getNewsBySubCategory(
+            @RequestParam(defaultValue = "") String title,
+            @RequestParam(defaultValue = "0") Long categoryId,
+            @RequestParam(defaultValue = "0") int pageNum,
+            @RequestParam(defaultValue = "10") int pageSize
+    ) {
+        return newsService.getNewsBySubCategory(title, categoryId, pageNum, pageSize);
     }
 }

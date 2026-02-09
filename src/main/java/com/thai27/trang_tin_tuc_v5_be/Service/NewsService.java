@@ -98,6 +98,15 @@ public class NewsService {
                 .build());
     }
 
+    public ResponseEntity<ApiResponse<Page<NewsListDTO>>> getNewsBySubCategory(String title, Long categoryId, int pageNum, int pageSize) {
+        PageRequest searchNewsPaging = PageRequest.of(pageNum, pageSize);
+        return ResponseEntity.ok(ApiResponse.<Page<NewsListDTO>>builder()
+                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
+                .message("Lấy dữ liệu thành công")
+                .data(newsRepository.findByTitleContainingIgnoreCaseAndSubCategory_IdOrderByCreatedAtDesc(title, categoryId, searchNewsPaging))
+                .build());
+    }
+
     public ResponseEntity<ApiResponse<List<NewsListDTO>>> getLatestNews() {
         return ResponseEntity.ok(ApiResponse.<List<NewsListDTO>>builder()
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)

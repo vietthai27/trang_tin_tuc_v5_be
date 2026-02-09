@@ -74,6 +74,18 @@ public class CategoryService {
                 .build());
     }
 
+//    public ResponseEntity<ApiResponse<Page<Category>>> getByCategoryId(Long id) throws ResourceNotFoundException {
+//        if (id == null) {
+//            throw new ResourceNotFoundException("ID không được để trống");
+//        }
+//        Category category = categoryRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục với id:" + id));
+//        return ResponseEntity.ok(ApiResponse.<Page<Category>>builder()
+//                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
+//                .message("Lấy dữ liệu thành công")
+//                .data(category)
+//                .build());
+//    }
+
     public ResponseEntity<ApiResponse<Object>> deleteCategory(Long id) throws ResourceNotFoundException {
         if (id == null) {
             throw new ResourceNotFoundException("ID không được để trống");

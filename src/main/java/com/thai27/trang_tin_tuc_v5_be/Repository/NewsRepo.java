@@ -17,6 +17,13 @@ public interface NewsRepo extends JpaRepository<News, Long> {
             Pageable pageable
     );
 
+    Page<NewsListDTO> findByTitleContainingIgnoreCaseAndSubCategory_IdOrderByCreatedAtDesc(
+            String title,
+            Long subCategoryId,
+            Pageable pageable
+    );
+
+
 
     List<NewsListDTO> findTop5ByOrderByIdDesc();
 

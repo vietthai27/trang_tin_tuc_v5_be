@@ -31,6 +31,13 @@ public class CategoryController {
         return categoryService.searchAllCategory(search, pageNum, pageSize);
     }
 
+    @GetMapping("/get-by-category-id/{id}")
+    public ResponseEntity<ApiResponse<Category>> getByCategoryId(
+            @PathVariable Long id
+    ) throws ResourceNotFoundException {
+        return categoryService.getById(id);
+    }
+
     /**
      * Get all categories
      * GET /api/categories
