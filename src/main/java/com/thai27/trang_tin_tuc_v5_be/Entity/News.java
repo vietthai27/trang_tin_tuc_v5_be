@@ -2,15 +2,20 @@ package com.thai27.trang_tin_tuc_v5_be.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString(exclude = {"comments", "likes", "images", "subCategory"})
+@EqualsAndHashCode(exclude = {"comments", "likes", "images", "subCategory"})
 @Entity
 @Table(name = "news")
-@Data
 public class News {
 
     @Id
@@ -45,4 +50,11 @@ public class News {
     @JsonIgnore
     private List<ImageKit> images = new ArrayList<>();
 
+    @OneToMany(mappedBy = "news", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<NewsLike> likes;
+
+    @OneToMany(mappedBy = "news", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
+    private List<Comment> comments;
 }

@@ -1,13 +1,19 @@
 package com.thai27.trang_tin_tuc_v5_be.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString(exclude = {"comments", "likedNews", "roles"})
+@EqualsAndHashCode(exclude = {"comments", "likedNews", "roles"})
 @Entity
 @Table(name = "trangtintuc_user")
-@Data
 public class TrangTinTucUser {
 
     @Id
@@ -27,4 +33,11 @@ public class TrangTinTucUser {
     @ManyToMany(targetEntity = Role.class, fetch = FetchType.LAZY)
     private List<Role> roles;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<NewsLike> likedNews;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Comment> comments;
 }
