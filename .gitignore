@@ -31,5 +31,8 @@ build/
 ### Maven ###
 target/
 
+# config
+src/main/resources/application-dev.yml
+
 # Private/public keys
 src/main/resources/key/
