@@ -3,20 +3,16 @@ package com.thai27.trang_tin_tuc_v5_be.Security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.security.Key;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.Date;
 
@@ -24,10 +20,52 @@ import java.util.Date;
 public class JWTUtil {
 
     @Value("${jwt.private-key}")
-    private String privateKey;
+    private String privateKeyValue;
 
     @Value("${jwt.public-key}")
-    private String publicKey;
+    private String publicKeyValue;
+
+    public PrivateKey loadPrivateKey() throws Exception {
+        String keyContent;
+        // 👉 DEV: load from file
+        if (privateKeyValue.startsWith("file:")) {
+            Path path = Paths.get(privateKeyValue.replace("file:", ""));
+            keyContent = Files.readString(path);
+        }
+        // 👉 PROD: load from Fly secret
+        else {
+            keyContent = privateKeyValue;
+        }
+        keyContent = keyContent
+                .replace("-----BEGIN PRIVATE KEY-----", "")
+                .replace("-----END PRIVATE KEY-----", "")
+                .replaceAll("\\s", "");
+
+        byte[] decoded = Base64.getDecoder().decode(keyContent);
+        return KeyFactory.getInstance("RSA")
+                .generatePrivate(new PKCS8EncodedKeySpec(decoded));
+    }
+
+    public PrivateKey loadPublicKey() throws Exception {
+        String keyContent;
+        // 👉 DEV: load from file
+        if (publicKeyValue.startsWith("file:")) {
+            Path path = Paths.get(publicKeyValue.replace("file:", ""));
+            keyContent = Files.readString(path);
+        }
+        // 👉 PROD: load from Fly secret
+        else {
+            keyContent = publicKeyValue;
+        }
+        keyContent = keyContent
+                .replace("-----BEGIN PUBLIC KEY-----", "")
+                .replace("-----END PUBLIC KEY-----", "")
+                .replaceAll("\\s", "");
+
+        byte[] decoded = Base64.getDecoder().decode(keyContent);
+        return KeyFactory.getInstance("RSA")
+                .generatePrivate(new PKCS8EncodedKeySpec(decoded));
+    }
 
     private static final int expireInMs = 86400000;
 
@@ -60,30 +98,4 @@ public class JWTUtil {
         return Jwts.parserBuilder().setSigningKey(loadPublicKey()).build().parseClaimsJws(token).getBody();
     }
 
-    public PrivateKey loadPrivateKey() throws Exception {
-        String key = privateKey
-                .replaceAll("-----BEGIN PRIVATE KEY-----", "")
-                .replaceAll("-----END PRIVATE KEY-----", "")
-                .replaceAll("\\s", "");
-
-        byte[] decoded = Base64.getDecoder().decode(key);
-        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(decoded);
-        return KeyFactory.getInstance("RSA").generatePrivate(spec);
-    }
-
-    public PublicKey loadPublicKey() throws Exception {
-        String key = publicKey
-                .replaceAll("-----BEGIN PUBLIC KEY-----", "")
-                .replaceAll("-----END PUBLIC KEY-----", "")
-                .replaceAll("\\s", "");
-
-        byte[] decoded = Base64.getDecoder().decode(key);
-        X509EncodedKeySpec spec = new X509EncodedKeySpec(decoded);
-        return KeyFactory.getInstance("RSA").generatePublic(spec);
-    }
-
-    public String readKey(String path) throws IOException {
-        ClassPathResource resource = new ClassPathResource(path);
-        return new String(resource.getInputStream().readAllBytes());
-    }
 }

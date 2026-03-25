@@ -7,6 +7,7 @@ import com.thai27.trang_tin_tuc_v5_be.Repository.ManagementRepo;
 import com.thai27.trang_tin_tuc_v5_be.Repository.RoleRepo;
 import com.thai27.trang_tin_tuc_v5_be.Repository.TrangTinTucUserRepo;
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -14,19 +15,16 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class InitData {
 
-    @Autowired
-    TrangTinTucUserRepo trangTinTucUserRepo;
+    private final TrangTinTucUserRepo trangTinTucUserRepo;
 
-    @Autowired
-    RoleRepo roleRepo;
+    private final RoleRepo roleRepo;
 
-    @Autowired
-    ManagementRepo managementRepo;
+    private final ManagementRepo managementRepo;
 
-    @Autowired
-    PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
 
     @PostConstruct
     private void createData() {

@@ -1,7 +1,7 @@
 package com.thai27.trang_tin_tuc_v5_be.Security;
 
 import com.thai27.trang_tin_tuc_v5_be.Service.UserDetailServiceImplement;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,13 +12,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class JWTAuthenProvider implements AuthenticationProvider {
 
-	@Autowired
-	UserDetailServiceImplement userDetailSrvImp;
+	private final UserDetailServiceImplement userDetailSrvImp;
 
-	@Autowired
-	PasswordEncoder encoder;
+	private final PasswordEncoder encoder;
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -26,10 +25,8 @@ public class JWTAuthenProvider implements AuthenticationProvider {
 		String password = String.valueOf(authentication.getCredentials());
 		UserDetails userDetail = userDetailSrvImp.loadUserByUsername(username);
 			if (encoder.matches(password, userDetail.getPassword())) {
-				UsernamePasswordAuthenticationToken token =
-						new UsernamePasswordAuthenticationToken(userDetail.getUsername(), userDetail.getPassword(),
+				return new UsernamePasswordAuthenticationToken(userDetail.getUsername(), userDetail.getPassword(),
 						userDetail.getAuthorities());
-				return token;
 			} else throw new BadCredentialsException("Mật khẩu không chính xác");
 		}
 

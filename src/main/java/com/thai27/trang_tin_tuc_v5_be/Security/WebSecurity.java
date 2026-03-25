@@ -1,7 +1,7 @@
 package com.thai27.trang_tin_tuc_v5_be.Security;
 
 import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -20,10 +20,10 @@ import java.util.List;
 
 @Configuration
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class WebSecurity {
 
-	@Autowired
-	JWTTokenFilter tokenFilter;
+	private final JWTTokenFilter tokenFilter;
 
 	@Bean
 	public SecurityFilterChain applicationSecurity(HttpSecurity http) throws Exception {
