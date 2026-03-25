@@ -67,7 +67,7 @@ public class TrangTinTucUserService {
     @Autowired
     ModelMapper modelMapper;
 
-    public ResponseEntity<ApiResponse<LoginResponse>> login(TrangTinTucUser userData) {
+    public ResponseEntity<ApiResponse<LoginResponse>> login(TrangTinTucUser userData) throws Exception {
         UsernamePasswordAuthenticationToken token =
                 new UsernamePasswordAuthenticationToken(
                         userData.getUsername(),
@@ -158,7 +158,7 @@ public class TrangTinTucUserService {
         } else throw new RuntimeException("Email người dùng nhập không khớp với email đã đăng ký");
     }
 
-    public ResponseEntity<ApiResponse<Object>> changePassword(UserChangePasswordRequest userRequest) throws ResourceNotFoundException {
+    public ResponseEntity<ApiResponse<Object>> changePassword(UserChangePasswordRequest userRequest) throws Exception {
         String username = jwtUtil.getUsername(userRequest.getToken());
         TrangTinTucUser changePassUser = trangTinTucUserRepo.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("Tên người dùng không tồn tại trong hệ thống: " + username));
         if (encoder.matches(userRequest.getOldPassword(), changePassUser.getPassword())) {

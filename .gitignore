@@ -31,3 +31,5 @@ build/
 ### Maven ###
 target/
 
+# Private/public keys
+src/main/resources/key/

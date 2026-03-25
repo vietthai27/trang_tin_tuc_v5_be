@@ -34,11 +34,20 @@ public class JWTTokenFilter extends OncePerRequestFilter {
 			return;
 		}
 		String token = authorHeader.split(" ")[1].trim();
-		if (!jwt.validate(token)) {
-			filterChain.doFilter(request, response);
-			return;
+		try {
+			if (!jwt.isTokenValid(token)) {
+				filterChain.doFilter(request, response);
+				return;
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		String username = jwt.getUsername(token);
+		String username = null;
+		try {
+			username = jwt.getUsername(token);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 		UserDetails userInfo = userSrv.loadUserByUsername(username);
 		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, null,
 				userInfo.getAuthorities());

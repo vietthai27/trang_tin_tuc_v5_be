@@ -31,7 +31,7 @@ public class TrangTinTucUserController {
     @PostMapping("/permit/login")
     public ResponseEntity<ApiResponse<LoginResponse>> login(
             @RequestBody TrangTinTucUser user
-    ) {
+    ) throws Exception {
         return userService.login(user);
     }
 
@@ -75,7 +75,7 @@ public class TrangTinTucUserController {
     @PostMapping("/auth/change-password")
     public ResponseEntity<ApiResponse<Object>> changePassword(
             @RequestBody UserChangePasswordRequest request
-    ) throws ResourceNotFoundException {
+    ) throws Exception {
         return userService.changePassword(request);
     }
 

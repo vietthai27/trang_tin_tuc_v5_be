@@ -15,10 +15,16 @@ public interface UserSignupRequestRepo extends JpaRepository<UserSignupRequest, 
 
     Optional<UserSignupRequest> findByRequestCode(String validateCode);
 
-    @Query(value = "SELECT request_code\n" +
-            "FROM user_signup_request where email = :email and request_time = ( \n" +
-            "SELECT \n" +
-            "MAX(request_time) from user_signup_request)", nativeQuery = true)
+    @Query(value = """
+        SELECT request_code
+        FROM user_signup_request
+        WHERE email = :email
+          AND request_time = (
+                SELECT MAX(request_time)
+                FROM user_signup_request
+          )
+        """,
+            nativeQuery = true)
     String getCodeByEmail(@Param("email") String email);
 
     @Modifying

@@ -12,8 +12,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"comments", "likes", "images", "subCategory"})
-@EqualsAndHashCode(exclude = {"comments", "likes", "images", "subCategory"})
+@ToString(exclude = {"comments", "likes", "images", "subCategory", "tags"})
+@EqualsAndHashCode(exclude = {"comments", "likes", "images", "subCategory", "tags"})
 @Entity
 @Table(name = "news")
 public class News {
@@ -57,4 +57,8 @@ public class News {
     @OneToMany(mappedBy = "news", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonIgnore
     private List<Comment> comments;
+
+    @OneToMany(mappedBy = "news", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<NewsTag> tags;
 }

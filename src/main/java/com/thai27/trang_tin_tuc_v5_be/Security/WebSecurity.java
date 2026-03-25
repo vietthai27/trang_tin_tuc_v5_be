@@ -25,9 +25,6 @@ public class WebSecurity {
 	@Autowired
 	JWTTokenFilter tokenFilter;
 
-	@Autowired
-	JWTAuthenProvider authentication;
-
 	@Bean
 	public SecurityFilterChain applicationSecurity(HttpSecurity http) throws Exception {
 
