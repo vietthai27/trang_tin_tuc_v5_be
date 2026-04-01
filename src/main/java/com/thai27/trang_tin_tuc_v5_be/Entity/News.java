@@ -58,7 +58,7 @@ public class News {
     @JsonIgnore
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "news", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(targetEntity = NewsTag.class, fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<NewsTag> tags;
+    private List<NewsTag> newsTags;
 }

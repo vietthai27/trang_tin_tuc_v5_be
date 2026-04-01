@@ -3,6 +3,8 @@ package com.thai27.trang_tin_tuc_v5_be.Entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Data
 @Table(name = "news_tag")
@@ -14,8 +16,7 @@ public class NewsTag {
     @Column(name = "tag_name")
     private String tagName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "news_id", nullable = false)
-    private News news;
+    @ManyToMany(targetEntity = News.class, fetch = FetchType.LAZY)
+    private List<News> news;
 
 }

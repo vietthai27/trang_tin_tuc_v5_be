@@ -23,8 +23,6 @@ public interface NewsRepo extends JpaRepository<News, Long> {
             Pageable pageable
     );
 
-
-
     List<NewsListDTO> findTop5ByOrderByIdDesc();
 
 }

@@ -12,7 +12,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.Date;
 
@@ -46,7 +48,7 @@ public class JWTUtil {
                 .generatePrivate(new PKCS8EncodedKeySpec(decoded));
     }
 
-    public PrivateKey loadPublicKey() throws Exception {
+    public PublicKey loadPublicKey() throws Exception {
         String keyContent;
         // 👉 DEV: load from file
         if (publicKeyValue.startsWith("file:")) {
@@ -64,7 +66,7 @@ public class JWTUtil {
 
         byte[] decoded = Base64.getDecoder().decode(keyContent);
         return KeyFactory.getInstance("RSA")
-                .generatePrivate(new PKCS8EncodedKeySpec(decoded));
+                .generatePublic(new X509EncodedKeySpec(decoded));
     }
 
     private static final int expireInMs = 86400000;

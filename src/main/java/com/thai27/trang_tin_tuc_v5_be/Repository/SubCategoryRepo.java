@@ -14,8 +14,6 @@ public interface SubCategoryRepo extends JpaRepository<SubCategory, Long> {
 
     List<SubCategory> findByCategory(Category category);
 
-    Page<SubCategory> findByCategoryId(Long categoryId, Pageable pageable);
-
     Page<SubCategory> findAllByNameLikeIgnoreCaseAndCategory_IdOrderById(String search, Long categoryId, Pageable pageable);
 
 }

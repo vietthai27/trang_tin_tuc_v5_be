@@ -1,10 +1,12 @@
 package com.thai27.trang_tin_tuc_v5_be.Controller;
 
+import com.thai27.trang_tin_tuc_v5_be.DTO.Response.NewsTagDTO;
 import com.thai27.trang_tin_tuc_v5_be.Entity.NewsTag;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
 import com.thai27.trang_tin_tuc_v5_be.Service.NewsTagService;
 import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,10 +14,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/news-tags")
+@AllArgsConstructor
 public class NewsTagController {
 
-    @Autowired
-    private NewsTagService newsTagService;
+    private final NewsTagService newsTagService;
 
     /**
      * Get all news tags
@@ -30,7 +32,7 @@ public class NewsTagController {
      * Get news tags by news ID
      * GET /api/news-tags/by-news/{newsId}
      */
-    @GetMapping("/by-news/{newsId}")
+    @GetMapping("/permit/by-news/{newsId}")
     public ResponseEntity<ApiResponse<List<NewsTag>>> getNewsTagsByNewsId(
             @PathVariable Long newsId
     ) throws ResourceNotFoundException {
@@ -43,10 +45,9 @@ public class NewsTagController {
      */
     @PostMapping
     public ResponseEntity<ApiResponse<NewsTag>> addNewsTag(
-            @RequestBody NewsTag newsTag,
-            @RequestParam Long newsId
+            @RequestBody NewsTag newsTag
     ) throws ResourceNotFoundException {
-        return newsTagService.addNewsTag(newsTag, newsId);
+        return newsTagService.addNewsTag(newsTag);
     }
 
     /**
@@ -56,10 +57,9 @@ public class NewsTagController {
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<NewsTag>> editNewsTag(
             @PathVariable Long id,
-            @RequestBody NewsTag newsTag,
-            @RequestParam(required = false) Long newsId
+            @RequestBody NewsTag newsTag
     ) throws ResourceNotFoundException {
-        return newsTagService.editNewsTag(id, newsTag, newsId);
+        return newsTagService.editNewsTag(id, newsTag);
     }
 
     /**
@@ -82,5 +82,26 @@ public class NewsTagController {
             @PathVariable Long id
     ) throws ResourceNotFoundException {
         return newsTagService.deleteNewsTag(id);
+    }
+
+    @DeleteMapping("/remove-from-news/{newsId}")
+    public ResponseEntity<ApiResponse<Object>> deleteTagToNews(
+            @PathVariable Long newsId,
+            @RequestBody List<Long> tagIds
+    ) {
+        return newsTagService.deleteTagToNews(newsId, tagIds);
+    }
+
+    /**
+     * Search news tags (pagination)
+     * GET /api/news-tags/search?search=abc&pageNum=0&pageSize=10
+     */
+    @GetMapping("/permit/search")
+    public ResponseEntity<ApiResponse<Page<NewsTagDTO>>> searchNewsTag(
+            @RequestParam(defaultValue = "") String search,
+            @RequestParam(defaultValue = "0") int pageNum,
+            @RequestParam(defaultValue = "10") int pageSize
+    ) {
+        return newsTagService.searchNewsTag(search, pageNum, pageSize);
     }
 }
