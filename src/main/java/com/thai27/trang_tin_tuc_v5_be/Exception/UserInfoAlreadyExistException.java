@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-public class UserInfoAlreadyExistException extends Exception{
+public class UserInfoAlreadyExistException extends RuntimeException{
     public UserInfoAlreadyExistException(String message){
         super(message);
     }

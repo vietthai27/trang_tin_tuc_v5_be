@@ -3,6 +3,7 @@ package com.thai27.trang_tin_tuc_v5_be.Service;
 import com.thai27.trang_tin_tuc_v5_be.Entity.News;
 import com.thai27.trang_tin_tuc_v5_be.Entity.NewsLike;
 import com.thai27.trang_tin_tuc_v5_be.Entity.TrangTinTucUser;
+import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
 import com.thai27.trang_tin_tuc_v5_be.Repository.NewsLikeRepo;
 import com.thai27.trang_tin_tuc_v5_be.Repository.NewsRepo;
 import com.thai27.trang_tin_tuc_v5_be.Repository.TrangTinTucUserRepo;
@@ -17,69 +18,65 @@ import org.springframework.stereotype.Service;
 public class NewsLikeService {
 
     private final NewsLikeRepo newsLikeRepo;
-
     private final TrangTinTucUserRepo trangTinTucUserRepo;
-
     private final NewsRepo newsRepo;
 
     public ResponseEntity<ApiResponse<Object>> likeNews(String username, Long newsId) {
         TrangTinTucUser user = trangTinTucUserRepo.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User không tồn tại"));
+                .orElseThrow(() -> new ResourceNotFoundException("User khong ton tai"));
 
         News news = newsRepo.findById(newsId)
-                .orElseThrow(() -> new RuntimeException("News không tồn tại"));
+                .orElseThrow(() -> new ResourceNotFoundException("News khong ton tai"));
 
         NewsLike like = new NewsLike();
         like.setUser(user);
         like.setNews(news);
-
         newsLikeRepo.save(like);
+
         return ResponseEntity.ok(ApiResponse.builder()
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Đã like bài báo")
+                .message("Da like bai bao")
                 .data(null)
                 .build());
     }
 
     public ResponseEntity<ApiResponse<Object>> unlikeNews(String username, Long newsId) {
         TrangTinTucUser user = trangTinTucUserRepo.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User không tồn tại"));
+                .orElseThrow(() -> new ResourceNotFoundException("User khong ton tai"));
 
         News news = newsRepo.findById(newsId)
-                .orElseThrow(() -> new RuntimeException("News không tồn tại"));
+                .orElseThrow(() -> new ResourceNotFoundException("News khong ton tai"));
 
-        newsLikeRepo.findByUserAndNews(user, news)
-                .ifPresent(newsLikeRepo::delete);
+        newsLikeRepo.findByUserAndNews(user, news).ifPresent(newsLikeRepo::delete);
 
         return ResponseEntity.ok(ApiResponse.builder()
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Đã hủy like bài báo")
+                .message("Da huy like bai bao")
                 .data(null)
                 .build());
     }
 
     public ResponseEntity<ApiResponse<Long>> countLikes(Long newsId) {
         News news = newsRepo.findById(newsId)
-                .orElseThrow(() -> new RuntimeException("News không tồn tại"));
+                .orElseThrow(() -> new ResourceNotFoundException("News khong ton tai"));
 
         return ResponseEntity.ok(ApiResponse.<Long>builder()
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Đã like bài báo")
+                .message("Da like bai bao")
                 .data(newsLikeRepo.countByNews(news))
                 .build());
-
     }
 
     public ResponseEntity<ApiResponse<Boolean>> isLikedByUser(String username, Long newsId) {
         TrangTinTucUser user = trangTinTucUserRepo.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User không tồn tại"));
+                .orElseThrow(() -> new ResourceNotFoundException("User khong ton tai"));
 
         News news = newsRepo.findById(newsId)
-                .orElseThrow(() -> new RuntimeException("News không tồn tại"));
+                .orElseThrow(() -> new ResourceNotFoundException("News khong ton tai"));
 
         return ResponseEntity.ok(ApiResponse.<Boolean>builder()
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Đã like bài báo")
+                .message("Da like bai bao")
                 .data(newsLikeRepo.existsByUserAndNews(user, news))
                 .build());
     }

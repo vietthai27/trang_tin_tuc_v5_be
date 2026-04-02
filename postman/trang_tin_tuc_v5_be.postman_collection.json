@@ -1,0 +1,659 @@
+{
+  "info": {
+    "_postman_id": "b2b37378-0611-4d52-8a56-67d381e966f8",
+    "name": "trang_tin_tuc_v5_be",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "token", "value": "" },
+    { "key": "username", "value": "admin" },
+    { "key": "categoryId", "value": "1" },
+    { "key": "subCategoryId", "value": "1" },
+    { "key": "newsId", "value": "1" },
+    { "key": "commentId", "value": "1" },
+    { "key": "managementId", "value": "1" },
+    { "key": "tagId", "value": "1" },
+    { "key": "userId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "CategoryController",
+      "item": [
+        {
+          "name": "Search Categories",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/categories/search?search=&pageNum=0&pageSize=10"
+          }
+        },
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/categories/permit/get-all"
+          }
+        },
+        {
+          "name": "Get Category By Category Id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/categories/get-by-category-id/{{categoryId}}"
+          }
+        },
+        {
+          "name": "Get Category By Id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/categories/get-by-id/{{categoryId}}"
+          }
+        },
+        {
+          "name": "Add Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Tin moi\",\n  \"icon\": \"newspaper\"\n}"
+            },
+            "url": "{{baseUrl}}/api/categories"
+          }
+        },
+        {
+          "name": "Edit Category",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Tin cap nhat\",\n  \"icon\": \"edit\"\n}"
+            },
+            "url": "{{baseUrl}}/api/categories/{{categoryId}}"
+          }
+        },
+        {
+          "name": "Delete Category",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/categories/{{categoryId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CommentController",
+      "item": [
+        {
+          "name": "Add Comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Bai viet hay\"\n}"
+            },
+            "url": "{{baseUrl}}/api/comments?username={{username}}&newsId={{newsId}}"
+          }
+        },
+        {
+          "name": "Edit Comment",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Binh luan da sua\"\n}"
+            },
+            "url": "{{baseUrl}}/api/comments?commentId={{commentId}}&username={{username}}&newsId={{newsId}}"
+          }
+        },
+        {
+          "name": "Delete Comment",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/comments/{{commentId}}"
+          }
+        },
+        {
+          "name": "Get Comments By News",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/comments/permit/news/{{newsId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ManagementController",
+      "item": [
+        {
+          "name": "Search Managements",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/managements/search?search=&pageNum=0&pageSize=10"
+          }
+        },
+        {
+          "name": "Get All Roles",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/managements/get-all-role"
+          }
+        },
+        {
+          "name": "Get All Managements By Username",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/managements?username={{username}}"
+          }
+        },
+        {
+          "name": "Add Management",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"USER_MANAGEMENT\",\n  \"icon\": \"assignment\",\n  \"path\": \"user-page\"\n}"
+            },
+            "url": "{{baseUrl}}/api/managements?roleIds=1&roleIds=2"
+          }
+        },
+        {
+          "name": "Get Management By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/managements/get-by-id/{{managementId}}"
+          }
+        },
+        {
+          "name": "Edit Management",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"USER_MANAGEMENT_UPDATED\",\n  \"icon\": \"assignment\",\n  \"path\": \"user-page\"\n}"
+            },
+            "url": "{{baseUrl}}/api/managements/{{managementId}}?roleIds=1&roleIds=2"
+          }
+        },
+        {
+          "name": "Delete Management",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/managements/{{managementId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "NewsController",
+      "item": [
+        {
+          "name": "Create News",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Bai viet moi\",\n  \"description\": \"Mo ta ngan\",\n  \"content\": \"Noi dung bai viet\",\n  \"subCategoryId\": {{subCategoryId}},\n  \"imagesUrl\": [\n    \"https://example.com/image-1.jpg\"\n  ]\n}"
+            },
+            "url": "{{baseUrl}}/api/news"
+          }
+        },
+        {
+          "name": "Edit News",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Bai viet cap nhat\",\n  \"description\": \"Mo ta cap nhat\",\n  \"content\": \"Noi dung cap nhat\",\n  \"subCategoryId\": {{subCategoryId}},\n  \"imagesUrl\": [\n    \"https://example.com/image-1.jpg\"\n  ]\n}"
+            },
+            "url": "{{baseUrl}}/api/news/{{newsId}}"
+          }
+        },
+        {
+          "name": "Search News",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/news/search?title=&pageNum=0&pageSize=10"
+          }
+        },
+        {
+          "name": "Upload Image",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "file", "type": "file", "src": [] }
+              ]
+            },
+            "url": "{{baseUrl}}/api/news/imagekit/upload"
+          }
+        },
+        {
+          "name": "Delete Image",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/news/imagekit?url=https://example.com/image-1.jpg"
+          }
+        },
+        {
+          "name": "Delete News",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/news/{{newsId}}"
+          }
+        },
+        {
+          "name": "Get News By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/news/get-by-id/{{newsId}}"
+          }
+        },
+        {
+          "name": "Get Latest News",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/news/permit/get-latest-news"
+          }
+        },
+        {
+          "name": "Get News Detail",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/news/permit/get-news-detail/{{newsId}}"
+          }
+        },
+        {
+          "name": "Get News By Sub Category",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/news/permit/get-news-by-sub-category?title=&categoryId={{subCategoryId}}&pageNum=0&pageSize=10"
+          }
+        }
+      ]
+    },
+    {
+      "name": "NewsLikeController",
+      "item": [
+        {
+          "name": "Like News",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/news-like/{{newsId}}/like?username={{username}}"
+          }
+        },
+        {
+          "name": "Unlike News",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/news-like/{{newsId}}/unlike?username={{username}}"
+          }
+        },
+        {
+          "name": "Count Likes",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/news-like/permit/{{newsId}}/count"
+          }
+        },
+        {
+          "name": "Is Like By User",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/news-like/{{newsId}}/is-like-by-user?username={{username}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "NewsTagController",
+      "item": [
+        {
+          "name": "Get All News Tags",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/news-tags/permit/get-all"
+          }
+        },
+        {
+          "name": "Get News Tags By News Id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/news-tags/permit/by-news/{{newsId}}"
+          }
+        },
+        {
+          "name": "Add News Tag",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tagName\": \"java\"\n}"
+            },
+            "url": "{{baseUrl}}/api/news-tags"
+          }
+        },
+        {
+          "name": "Edit News Tag",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tagName\": \"spring-boot\"\n}"
+            },
+            "url": "{{baseUrl}}/api/news-tags/{{tagId}}"
+          }
+        },
+        {
+          "name": "Get News Tag By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/news-tags/get-by-id/{{tagId}}"
+          }
+        },
+        {
+          "name": "Delete News Tag",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/news-tags/{{tagId}}"
+          }
+        },
+        {
+          "name": "Remove Tags From News",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[1, 2]"
+            },
+            "url": "{{baseUrl}}/api/news-tags/remove-from-news/{{newsId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "SubCategoryController",
+      "item": [
+        {
+          "name": "Search Sub Categories",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/sub-categories/search?search=&categoryId={{categoryId}}&pageNum=0&pageSize=10"
+          }
+        },
+        {
+          "name": "Get Sub Categories By Category Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/sub-categories/by-category/{{categoryId}}"
+          }
+        },
+        {
+          "name": "Get Sub Categories By Category Id Permit",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/sub-categories/permit/by-category/{{categoryId}}"
+          }
+        },
+        {
+          "name": "Add Sub Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Cong nghe\",\n  \"icon\": \"memory\"\n}"
+            },
+            "url": "{{baseUrl}}/api/sub-categories?categoryId={{categoryId}}"
+          }
+        },
+        {
+          "name": "Edit Sub Category",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Cong nghe moi\",\n  \"icon\": \"memory\"\n}"
+            },
+            "url": "{{baseUrl}}/api/sub-categories/{{subCategoryId}}?categoryId={{categoryId}}"
+          }
+        },
+        {
+          "name": "Get Sub Category By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/sub-categories/get-by-id/{{subCategoryId}}"
+          }
+        },
+        {
+          "name": "Delete Sub Category",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/sub-categories/{{subCategoryId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "TrangTinTucUserController",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"123456\"\n}"
+            },
+            "url": "{{baseUrl}}/api/user/permit/login"
+          }
+        },
+        {
+          "name": "Signup Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"newuser\",\n  \"password\": \"123456\",\n  \"email\": \"newuser@example.com\"\n}"
+            },
+            "url": "{{baseUrl}}/api/user/permit/signup-request"
+          }
+        },
+        {
+          "name": "Signup Validate",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"newuser@example.com\",\n  \"validateCode\": \"12345\"\n}"
+            },
+            "url": "{{baseUrl}}/api/user/permit/signup"
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"email\": \"admin@example.com\"\n}"
+            },
+            "url": "{{baseUrl}}/api/user/permit/reset-password"
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"{{token}}\",\n  \"oldPassword\": \"123456\",\n  \"newPassword\": \"654321\"\n}"
+            },
+            "url": "{{baseUrl}}/api/user/auth/change-password"
+          }
+        },
+        {
+          "name": "Change Role Moder",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": {{userId}},\n  \"setModer\": true\n}"
+            },
+            "url": "{{baseUrl}}/api/user/auth/change-role-moder"
+          }
+        },
+        {
+          "name": "Search Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/api/user/auth/search-users?search=&pageNum=0&pageSize=10"
+          }
+        },
+        {
+          "name": "Get Claims From Token",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/user/permit/get-claims-from-token?token={{token}}"
+          }
+        }
+      ]
+    }
+  ]
+}

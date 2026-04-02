@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE)
-public class SignUpCodeExpiredException extends Exception{
+public class SignUpCodeExpiredException extends RuntimeException{
     public SignUpCodeExpiredException(String message){
         super(message);
     }
