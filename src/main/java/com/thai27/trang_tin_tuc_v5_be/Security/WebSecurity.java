@@ -32,6 +32,7 @@ public class WebSecurity {
 				.cors(Customizer.withDefaults())
 				.csrf(AbstractHttpConfigurer::disable)
 				.authorizeHttpRequests((auth) -> auth
+						.requestMatchers("/api/charts/permit/**").permitAll()
 						.requestMatchers("/api/comments/permit/**").permitAll()
 						.requestMatchers("/api/news-like/permit/**").permitAll()
 						.requestMatchers("/api/user/permit/**").permitAll()

@@ -1,16 +1,16 @@
 package com.thai27.trang_tin_tuc_v5_be.Service;
 
 import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class SendEmailService {
 
-    @Autowired
-    JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
 
     public String sendNewPassword(String userMail, String username, String password) {
         SimpleMailMessage message = new SimpleMailMessage();

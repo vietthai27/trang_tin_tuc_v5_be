@@ -3,7 +3,6 @@ package com.thai27.trang_tin_tuc_v5_be;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -23,11 +22,6 @@ public class TrangtintucV5BeApplication {
     @Bean
     BCryptPasswordEncoder passencode() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    ModelMapper modelMapper() {
-        return new ModelMapper();
     }
 
     @Bean

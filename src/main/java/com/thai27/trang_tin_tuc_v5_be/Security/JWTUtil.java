@@ -17,6 +17,7 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Objects;
 
 @Service
 public class JWTUtil {
@@ -29,12 +30,10 @@ public class JWTUtil {
 
     public PrivateKey loadPrivateKey() throws Exception {
         String keyContent;
-        // 👉 DEV: load from file
         if (privateKeyValue.startsWith("file:")) {
             Path path = Paths.get(privateKeyValue.replace("file:", ""));
             keyContent = Files.readString(path);
         }
-        // 👉 PROD: load from Fly secret
         else {
             keyContent = privateKeyValue;
         }
@@ -50,12 +49,10 @@ public class JWTUtil {
 
     public PublicKey loadPublicKey() throws Exception {
         String keyContent;
-        // 👉 DEV: load from file
         if (publicKeyValue.startsWith("file:")) {
             Path path = Paths.get(publicKeyValue.replace("file:", ""));
             keyContent = Files.readString(path);
         }
-        // 👉 PROD: load from Fly secret
         else {
             keyContent = publicKeyValue;
         }
@@ -73,13 +70,11 @@ public class JWTUtil {
 
     public String generate(Authentication userData) throws Exception {
         return Jwts
-                .builder()
-                .setSubject(userData.getPrincipal().toString())
-                .setIssuer("thai27")
-                .claim("roles",userData.getAuthorities())
+                .builder().subject(Objects.requireNonNull(userData.getPrincipal()).toString()).issuer("thai27")
+                .claim("roles", userData.getAuthorities())
                 .claim("username", userData.getPrincipal())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expireInMs))
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + expireInMs))
                 .signWith(loadPrivateKey(), SignatureAlgorithm.RS256).compact();
     }
 
@@ -97,7 +92,11 @@ public class JWTUtil {
     }
 
     public Claims getClaims(String token) throws Exception {
-        return Jwts.parserBuilder().setSigningKey(loadPublicKey()).build().parseClaimsJws(token).getBody();
+        return Jwts.parser()
+                .verifyWith(loadPublicKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
 }

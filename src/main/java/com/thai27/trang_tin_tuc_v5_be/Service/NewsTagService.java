@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -103,46 +105,6 @@ public class NewsTagService {
                 .build());
     }
 
-    public ResponseEntity<ApiResponse<Object>> addTagToNews(Long newsId, List<Long> tagIds)
-            throws ResourceNotFoundException {
-
-        // 1. Check news tồn tại
-        News news = newsRepo.findById(newsId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Không tìm thấy tin tức với id: " + newsId));
-
-        // 2. Lấy tags
-        List<NewsTag> tags = newsTagRepo.findAllById(tagIds);
-
-        if (tags.isEmpty()) {
-            throw new ResourceNotFoundException("Không tìm thấy tag nào");
-        }
-
-        // 3. Lấy danh sách tag đã tồn tại của news (để tránh duplicate)
-        List<NewsTag> existingNewsTags = newsTagRepo.findByNewsId(newsId);
-
-        Set<Long> existingTagIds = existingNewsTags.stream()
-                .map(nt -> nt.getTag().getId())
-                .collect(Collectors.toSet());
-
-        // 4. Tạo mới NewsTag nếu chưa tồn tại
-        List<NewsTag> newNewsTags = tags.stream()
-                .filter(tag -> !existingTagIds.contains(tag.getId()))
-                .map(tag -> new NewsTag(news, tag))
-                .toList();
-
-        // 5. Save
-        if (!newNewsTags.isEmpty()) {
-            newsTagRepo.saveAll(newNewsTags);
-        }
-
-        return ResponseEntity.ok(ApiResponse.builder()
-                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Thêm tag cho bài báo thành công")
-                .data(null)
-                .build());
-    }
-
     public ResponseEntity<ApiResponse<Object>> deleteTagToNews(Long newsId, List<Long> tagIds) {
         newsTagRepo.deleteByNewsIdAndTagIds(newsId, tagIds);
         return ResponseEntity.ok(ApiResponse.builder()
@@ -152,13 +114,4 @@ public class NewsTagService {
                 .build());
     }
 
-    public ResponseEntity<ApiResponse<Page<NewsTagDTO>>> searchNewsTag(String search, int pageNum, int pageSize) {
-        PageRequest searchCategoryPaging = PageRequest.of(pageNum, pageSize);
-        String searchLike = "%" + search + "%";
-        return ResponseEntity.ok(ApiResponse.<Page<NewsTagDTO>>builder()
-                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Lấy dữ liệu thành công")
-                .data(newsTagRepo.findAllByTagNameLikeIgnoreCaseOrderById(searchLike, searchCategoryPaging))
-                .build());
-    }
 }

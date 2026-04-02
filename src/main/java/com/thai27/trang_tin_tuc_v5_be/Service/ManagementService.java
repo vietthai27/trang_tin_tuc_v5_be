@@ -9,7 +9,7 @@ import com.thai27.trang_tin_tuc_v5_be.Repository.RoleRepo;
 import com.thai27.trang_tin_tuc_v5_be.Repository.TrangTinTucUserRepo;
 import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
 import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -19,16 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ManagementService {
 
-    @Autowired
-    ManagementRepo managementRepo;
+    private final ManagementRepo managementRepo;
 
-    @Autowired
-    RoleRepo roleRepo;
+    private final RoleRepo roleRepo;
 
-    @Autowired
-    TrangTinTucUserRepo trangTinTucUserRepo;
+    private final TrangTinTucUserRepo trangTinTucUserRepo;
 
     public ResponseEntity<ApiResponse<List<Management>>> getAllManagement(String username) throws ResourceNotFoundException {
 

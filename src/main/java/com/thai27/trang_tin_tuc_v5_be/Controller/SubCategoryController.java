@@ -5,7 +5,7 @@ import com.thai27.trang_tin_tuc_v5_be.Entity.SubCategory;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
 import com.thai27.trang_tin_tuc_v5_be.Service.SubCategoryService;
 import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +14,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/sub-categories")
+@RequiredArgsConstructor
 public class SubCategoryController {
 
-    @Autowired
-    private SubCategoryService subCategoryService;
+    private final SubCategoryService subCategoryService;
 
     /**
      * Search + pagination

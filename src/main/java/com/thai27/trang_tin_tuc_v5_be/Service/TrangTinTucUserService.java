@@ -22,8 +22,7 @@ import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
 import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
 import com.thai27.trang_tin_tuc_v5_be.Util.GenerateRandomString;
 import io.jsonwebtoken.Claims;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,34 +37,24 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class TrangTinTucUserService {
 
-    @Autowired
-    JWTUtil jwtUtil;
+    private final JWTUtil jwtUtil;
 
-    @Autowired
-    JWTAuthenProvider jwtAuth;
+    private final JWTAuthenProvider jwtAuth;
 
-    @Autowired
-    PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
 
-    @Autowired
-    TrangTinTucUserRepo trangTinTucUserRepo;
+    private final TrangTinTucUserRepo trangTinTucUserRepo;
 
-    @Autowired
-    UserSignupRequestRepo userSignupRequestRepo;
+    private final UserSignupRequestRepo userSignupRequestRepo;
 
-    @Autowired
-    RoleRepo roleRepo;
+    private final RoleRepo roleRepo;
 
-    @Autowired
-    GenerateRandomString randomString;
+    private final GenerateRandomString randomString;
 
-    @Autowired
-    SendEmailService sendEmailService;
-
-    @Autowired
-    ModelMapper modelMapper;
+    private final SendEmailService sendEmailService;
 
     public ResponseEntity<ApiResponse<LoginResponse>> login(TrangTinTucUser userData) throws Exception {
         UsernamePasswordAuthenticationToken token =

@@ -12,17 +12,17 @@ import com.thai27.trang_tin_tuc_v5_be.Exception.*;
 import com.thai27.trang_tin_tuc_v5_be.Service.TrangTinTucUserService;
 import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
 import io.jsonwebtoken.Claims;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
+@RequiredArgsConstructor
 public class TrangTinTucUserController {
 
-    @Autowired
-    private TrangTinTucUserService userService;
+    private final TrangTinTucUserService userService;
 
     /**
      * LOGIN

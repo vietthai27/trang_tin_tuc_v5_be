@@ -5,7 +5,7 @@ import com.thai27.trang_tin_tuc_v5_be.Entity.Role;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
 import com.thai27.trang_tin_tuc_v5_be.Service.ManagementService;
 import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +14,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/managements")
+@RequiredArgsConstructor
 public class ManagementController {
 
-    @Autowired
-    private ManagementService managementService;
+    private final ManagementService managementService;
 
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<Page<Management>>> searchCategory(

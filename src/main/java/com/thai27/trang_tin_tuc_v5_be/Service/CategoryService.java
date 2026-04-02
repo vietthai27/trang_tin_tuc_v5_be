@@ -6,7 +6,7 @@ import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
 import com.thai27.trang_tin_tuc_v5_be.Repository.CategoryRepo;
 import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
 import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +15,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryService {
 
-    @Autowired
-    CategoryRepo categoryRepo;
+    private final CategoryRepo categoryRepo;
 
     public ResponseEntity<ApiResponse<Page<Category>>> searchAllCategory(String search, int pageNum, int pageSize) {
         PageRequest searchCategoryPaging = PageRequest.of(pageNum, pageSize);

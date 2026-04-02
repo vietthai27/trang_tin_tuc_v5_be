@@ -1,11 +1,10 @@
 package com.thai27.trang_tin_tuc_v5_be.Service;
 
 import com.thai27.trang_tin_tuc_v5_be.Entity.ImageKit;
-import com.thai27.trang_tin_tuc_v5_be.Entity.SubCategory;
 import com.thai27.trang_tin_tuc_v5_be.Repository.ImageKitRepo;
 import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
 import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
@@ -21,10 +20,10 @@ import java.util.Map;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class ImageKitService {
 
-    @Autowired
-    ImageKitRepo imageKitRepo;
+    private final ImageKitRepo imageKitRepo;
 
     private final RestTemplate restTemplate = new RestTemplate();
 

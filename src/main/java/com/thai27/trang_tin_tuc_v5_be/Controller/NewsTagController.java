@@ -1,12 +1,10 @@
 package com.thai27.trang_tin_tuc_v5_be.Controller;
 
-import com.thai27.trang_tin_tuc_v5_be.DTO.Response.NewsTagDTO;
 import com.thai27.trang_tin_tuc_v5_be.Entity.NewsTag;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
 import com.thai27.trang_tin_tuc_v5_be.Service.NewsTagService;
 import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -92,16 +90,4 @@ public class NewsTagController {
         return newsTagService.deleteTagToNews(newsId, tagIds);
     }
 
-    /**
-     * Search news tags (pagination)
-     * GET /api/news-tags/search?search=abc&pageNum=0&pageSize=10
-     */
-    @GetMapping("/permit/search")
-    public ResponseEntity<ApiResponse<Page<NewsTagDTO>>> searchNewsTag(
-            @RequestParam(defaultValue = "") String search,
-            @RequestParam(defaultValue = "0") int pageNum,
-            @RequestParam(defaultValue = "10") int pageSize
-    ) {
-        return newsTagService.searchNewsTag(search, pageNum, pageSize);
-    }
 }

@@ -8,7 +8,7 @@ import com.thai27.trang_tin_tuc_v5_be.Repository.CategoryRepo;
 import com.thai27.trang_tin_tuc_v5_be.Repository.SubCategoryRepo;
 import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
 import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +17,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class SubCategoryService {
 
-    @Autowired
-    SubCategoryRepo subCategoryRepo;
+    private final SubCategoryRepo subCategoryRepo;
 
-    @Autowired
-    CategoryRepo categoryRepo;
+    private final CategoryRepo categoryRepo;
 
     public ResponseEntity<ApiResponse<SubCategory>> addSubCategory(SubCategory subCategory, Long categoryId) throws ResourceNotFoundException {
         if (categoryId == null) {
