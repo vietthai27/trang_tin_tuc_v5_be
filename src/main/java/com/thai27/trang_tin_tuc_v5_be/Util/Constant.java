@@ -19,9 +19,6 @@ public class Constant {
     public static final String USER_PAGE_PATH = "user-page";
     public static final String USER_PAGE_ICON = "user_attributes";
 
-    public static final String EMAIL_SENDER = "FIS.auto.service@gmail.com";
-    public static final String EMAIL_PASSWORD = "qvaudviuwcblhqkq";
-
     public static final int RESPONSE_CODE_SUCCESS = 200;
 
 }

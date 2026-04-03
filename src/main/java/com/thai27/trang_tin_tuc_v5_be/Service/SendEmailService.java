@@ -2,6 +2,7 @@ package com.thai27.trang_tin_tuc_v5_be.Service;
 
 import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -10,11 +11,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SendEmailService {
 
+    @Value("${email.mail}")
+    private String emailSender;
+
     private final JavaMailSender mailSender;
 
     public String sendNewPassword(String userMail, String username, String password) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(Constant.EMAIL_SENDER);
+        message.setFrom(emailSender);
         message.setTo(userMail);
         message.setSubject("Tài khoản " + username + " đã reset mật khẩu thành công");
         message.setText("Mật khẩu mới là: " + password);
@@ -24,7 +28,7 @@ public class SendEmailService {
 
     public String sendSignupSuccess(String userMail, String username) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(Constant.EMAIL_SENDER);
+        message.setFrom(emailSender);
         message.setTo(userMail);
         message.setSubject("WELCOME");
         message.setText("Tài khoản với tên người dùng: " + username + " đã đăng ký thành công");
@@ -38,7 +42,7 @@ public class SendEmailService {
 
     public String sendSignupRequest(String userMail, String username, String code) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(Constant.EMAIL_SENDER);
+        message.setFrom(emailSender);
         message.setTo(userMail);
         message.setSubject("Đăng ký tạo tài thành công");
         message.setText("Bạn vừa đăng ký tạo tài khoản với tên người dùng: " + username + ". " +

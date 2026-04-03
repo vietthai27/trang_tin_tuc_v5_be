@@ -17,7 +17,6 @@ import com.thai27.trang_tin_tuc_v5_be.Exception.TokenExpiredException;
 import com.thai27.trang_tin_tuc_v5_be.Repository.RoleRepo;
 import com.thai27.trang_tin_tuc_v5_be.Repository.TrangTinTucUserRepo;
 import com.thai27.trang_tin_tuc_v5_be.Repository.UserSignupRequestRepo;
-import com.thai27.trang_tin_tuc_v5_be.Security.JWTAuthenProvider;
 import com.thai27.trang_tin_tuc_v5_be.Security.JWTUtil;
 import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
 import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
@@ -28,8 +27,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +43,7 @@ import java.util.List;
 public class TrangTinTucUserService {
 
     private final JWTUtil jwtUtil;
-    private final JWTAuthenProvider jwtAuth;
+    private final UserDetailServiceImplement userDetailService;
     private final PasswordEncoder encoder;
     private final TrangTinTucUserRepo trangTinTucUserRepo;
     private final UserSignupRequestRepo userSignupRequestRepo;
@@ -51,9 +52,13 @@ public class TrangTinTucUserService {
     private final SendEmailService sendEmailService;
 
     public ResponseEntity<ApiResponse<LoginResponse>> login(TrangTinTucUser userData) throws Exception {
-        UsernamePasswordAuthenticationToken token =
-                new UsernamePasswordAuthenticationToken(userData.getUsername(), userData.getPassword());
-        Authentication authen = jwtAuth.authenticate(token);
+        UserDetails userDetail = userDetailService.loadUserByUsername(userData.getUsername());
+        if (!encoder.matches(userData.getPassword(), userDetail.getPassword())) {
+            throw new BadCredentialsException("Mat khau khong chinh xac");
+        }
+
+        Authentication authen =
+                new UsernamePasswordAuthenticationToken(userDetail.getUsername(), null, userDetail.getAuthorities());
         String jwtToken = jwtUtil.generate(authen);
         return ResponseEntity.ok(ApiResponse.<LoginResponse>builder()
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)

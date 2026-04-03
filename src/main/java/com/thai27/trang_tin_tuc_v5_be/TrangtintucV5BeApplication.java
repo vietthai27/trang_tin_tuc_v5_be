@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 @SpringBootApplication
 public class TrangtintucV5BeApplication {
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         SpringApplication.run(TrangtintucV5BeApplication.class, args);
     }
 

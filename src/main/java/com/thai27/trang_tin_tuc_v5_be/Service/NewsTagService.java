@@ -1,7 +1,5 @@
 package com.thai27.trang_tin_tuc_v5_be.Service;
 
-import com.thai27.trang_tin_tuc_v5_be.DTO.Response.NewsTagDTO;
-import com.thai27.trang_tin_tuc_v5_be.Entity.Category;
 import com.thai27.trang_tin_tuc_v5_be.Entity.News;
 import com.thai27.trang_tin_tuc_v5_be.Entity.NewsTag;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
@@ -10,14 +8,10 @@ import com.thai27.trang_tin_tuc_v5_be.Repository.NewsTagRepo;
 import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
 import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
