@@ -33,6 +33,7 @@ target/
 
 # config
 src/main/resources/application-dev.yml
+src/main/resources/application.yml
 
 # Private/public keys
 src/main/resources/key/
