@@ -26,7 +26,7 @@ public class WebSecurity {
 	private final JWTTokenFilter tokenFilter;
 
 	@Bean
-	public SecurityFilterChain applicationSecurity(HttpSecurity http) throws Exception {
+	public SecurityFilterChain applicationSecurity(HttpSecurity http) {
 
 		http
 				.cors(Customizer.withDefaults())

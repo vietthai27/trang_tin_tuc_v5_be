@@ -33,10 +33,6 @@ public class ManagementController {
         return managementService.getAllRole();
     }
 
-    /**
-     * Get all managements by username (from user's roles)
-     * GET /api/managements?username=admin
-     */
     @GetMapping
     public ResponseEntity<ApiResponse<List<Management>>> getAllManagement(
             @RequestParam String username
@@ -44,18 +40,6 @@ public class ManagementController {
         return managementService.getAllManagement(username);
     }
 
-    /**
-     * Add management + assign roles
-     * POST /api/managements
-     * <p>
-     * body:
-     * {
-     * "name": "USER_MANAGEMENT"
-     * }
-     * <p>
-     * params:
-     * roleIds=1,2,3
-     */
     @PostMapping
     public ResponseEntity<ApiResponse<Management>> addManagement(
             @RequestBody Management management,
@@ -70,13 +54,6 @@ public class ManagementController {
         return managementService.getById(id);
     }
 
-    /**
-     * Edit management + update roles
-     * PUT /api/managements/{id}
-     * <p>
-     * params:
-     * roleIds=1,2,3
-     */
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Management>> editManagement(
             @PathVariable Long id,

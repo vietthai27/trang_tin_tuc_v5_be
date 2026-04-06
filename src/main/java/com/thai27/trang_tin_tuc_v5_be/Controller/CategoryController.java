@@ -18,10 +18,6 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    /**
-     * Search + pagination
-     * GET /api/categories/search?search=abc&pageNum=0&pageSize=10
-     */
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<Page<Category>>> searchCategory(
             @RequestParam(defaultValue = "") String search,
@@ -38,19 +34,11 @@ public class CategoryController {
         return categoryService.getById(id);
     }
 
-    /**
-     * Get all categories
-     * GET /api/categories
-     */
     @GetMapping("/permit/get-all")
     public ResponseEntity<ApiResponse<List<Category>>> getAllCategory() {
         return categoryService.getAllCategory();
     }
 
-    /**
-     * Add category
-     * POST /api/categories
-     */
     @PostMapping
     public ResponseEntity<ApiResponse<Category>> addCategory(
             @RequestBody Category category
@@ -58,10 +46,6 @@ public class CategoryController {
         return categoryService.addCategory(category);
     }
 
-    /**
-     * Edit category
-     * PUT /api/categories/{id}
-     */
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Category>> editCategory(
             @PathVariable Long id,
