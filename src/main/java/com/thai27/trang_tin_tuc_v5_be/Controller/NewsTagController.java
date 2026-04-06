@@ -17,19 +17,11 @@ public class NewsTagController {
 
     private final NewsTagService newsTagService;
 
-    /**
-     * Get all news tags
-     * GET /api/news-tags
-     */
     @GetMapping("/permit/get-all")
     public ResponseEntity<ApiResponse<List<NewsTag>>> getAllNewsTag() {
         return newsTagService.getAllNewsTag();
     }
 
-    /**
-     * Get news tags by news ID
-     * GET /api/news-tags/by-news/{newsId}
-     */
     @GetMapping("/permit/by-news/{newsId}")
     public ResponseEntity<ApiResponse<List<NewsTag>>> getNewsTagsByNewsId(
             @PathVariable Long newsId
@@ -37,10 +29,6 @@ public class NewsTagController {
         return newsTagService.getNewsTagsByNewsId(newsId);
     }
 
-    /**
-     * Add news tag
-     * POST /api/news-tags?newsId=1
-     */
     @PostMapping
     public ResponseEntity<ApiResponse<NewsTag>> addNewsTag(
             @RequestBody NewsTag newsTag
@@ -48,10 +36,6 @@ public class NewsTagController {
         return newsTagService.addNewsTag(newsTag);
     }
 
-    /**
-     * Edit news tag
-     * PUT /api/news-tags/{id}?newsId=1
-     */
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<NewsTag>> editNewsTag(
             @PathVariable Long id,
@@ -60,10 +44,6 @@ public class NewsTagController {
         return newsTagService.editNewsTag(id, newsTag);
     }
 
-    /**
-     * Get news tag by ID
-     * GET /api/news-tags/get-by-id/{id}
-     */
     @GetMapping("/get-by-id/{id}")
     public ResponseEntity<ApiResponse<NewsTag>> getById(
             @PathVariable Long id
@@ -71,10 +51,6 @@ public class NewsTagController {
         return newsTagService.getById(id);
     }
 
-    /**
-     * Delete news tag
-     * DELETE /api/news-tags/{id}
-     */
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Object>> deleteNewsTag(
             @PathVariable Long id

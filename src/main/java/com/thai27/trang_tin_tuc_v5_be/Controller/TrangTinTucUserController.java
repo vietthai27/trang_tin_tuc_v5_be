@@ -24,10 +24,6 @@ public class TrangTinTucUserController {
 
     private final TrangTinTucUserService userService;
 
-    /**
-     * LOGIN
-     * POST /api/auth/login
-     */
     @PostMapping("/permit/login")
     public ResponseEntity<ApiResponse<LoginResponse>> login(
             @RequestBody TrangTinTucUser user
@@ -35,10 +31,6 @@ public class TrangTinTucUserController {
         return userService.login(user);
     }
 
-    /**
-     * CREATE SIGNUP REQUEST (send mail)
-     * POST /api/auth/signup-request
-     */
     @PostMapping("/permit/signup-request")
     public ResponseEntity<ApiResponse<Object>> signupRequest(
             @RequestBody UserSignupRequest request
@@ -46,10 +38,6 @@ public class TrangTinTucUserController {
         return userService.createSignupRequest(request);
     }
 
-    /**
-     * VALIDATE SIGNUP (verify code)
-     * POST /api/auth/signup-validate
-     */
     @PostMapping("/permit/signup")
     public ResponseEntity<ApiResponse<Object>> validateSignup(
             @RequestBody UserValidateSignupRequest request
@@ -57,10 +45,6 @@ public class TrangTinTucUserController {
         return userService.userSignup(request);
     }
 
-    /**
-     * RESET PASSWORD (forgot password)
-     * POST /api/auth/reset-password
-     */
     @PostMapping("/permit/reset-password")
     public ResponseEntity<ApiResponse<Object>> resetPassword(
             @RequestBody UserResetPasswordRequest request
@@ -68,10 +52,6 @@ public class TrangTinTucUserController {
         return userService.resetPassword(request);
     }
 
-    /**
-     * CHANGE PASSWORD (logged in)
-     * POST /api/auth/change-password
-     */
     @PostMapping("/auth/change-password")
     public ResponseEntity<ApiResponse<Object>> changePassword(
             @RequestBody UserChangePasswordRequest request
@@ -95,10 +75,6 @@ public class TrangTinTucUserController {
         return userService.searchUserByUsername(search, pageNum, pageSize);
     }
 
-    /**
-     * GET CLAIMS FROM TOKEN
-     * POST /api/auth/token-info
-     */
     @GetMapping("/permit/get-claims-from-token")
     public ResponseEntity<ApiResponse<Claims>> getTokenInfo(
             @RequestParam String token

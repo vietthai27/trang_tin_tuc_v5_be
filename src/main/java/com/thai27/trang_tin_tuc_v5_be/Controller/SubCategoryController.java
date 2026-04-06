@@ -19,10 +19,6 @@ public class SubCategoryController {
 
     private final SubCategoryService subCategoryService;
 
-    /**
-     * Search + pagination
-     * GET /api/sub-categories/search?search=abc&pageNum=0&pageSize=10
-     */
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<Page<SubCategory>>> searchSubCategory(
             @RequestParam(defaultValue = "") String search,
@@ -33,10 +29,6 @@ public class SubCategoryController {
         return subCategoryService.searchAllSubCategory(search, categoryId, pageNum, pageSize);
     }
 
-    /**
-     * Get subcategories by category ID
-     * GET /api/sub-categories/by-category/{categoryId}
-     */
     @GetMapping("/by-category/{categoryId}")
     public ResponseEntity<ApiResponse<CategoryNewResponse>> getSubCategoriesByCategoryId(
             @PathVariable Long categoryId
@@ -51,10 +43,6 @@ public class SubCategoryController {
         return subCategoryService.getSubCategoriesByCategoryId(categoryId);
     }
 
-    /**
-     * Add subcategory
-     * POST /api/sub-categories?categoryId=1
-     */
     @PostMapping
     public ResponseEntity<ApiResponse<SubCategory>> addSubCategory(
             @RequestBody SubCategory subCategory,
@@ -63,10 +51,6 @@ public class SubCategoryController {
         return subCategoryService.addSubCategory(subCategory, categoryId);
     }
 
-    /**
-     * Edit subcategory
-     * PUT /api/sub-categories/{id}?categoryId=1
-     */
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<SubCategory>> editSubCategory(
             @PathVariable Long id,
@@ -76,10 +60,6 @@ public class SubCategoryController {
         return subCategoryService.editSubCategory(id, subCategory, categoryId);
     }
 
-    /**
-     * Get subcategory by ID
-     * GET /api/sub-categories/get-by-id/{id}
-     */
     @GetMapping("/get-by-id/{id}")
     public ResponseEntity<ApiResponse<SubCategory>> getById(
             @PathVariable Long id
@@ -87,10 +67,6 @@ public class SubCategoryController {
         return subCategoryService.getById(id);
     }
 
-    /**
-     * Delete subcategory
-     * DELETE /api/sub-categories/{id}
-     */
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Object>> deleteSubCategory(
             @PathVariable Long id
