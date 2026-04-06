@@ -37,11 +37,6 @@ public class NewsService {
         SubCategory subCategory = subCategoryRepo.findById(request.subCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundException("SubCategory not found"));
 
-        List<String> imagesUrl = request.imagesUrl();
-        if (imagesUrl == null || imagesUrl.isEmpty()) {
-            throw new BadRequestException("Danh sach anh khong duoc de trong");
-        }
-
         News news = new News();
         news.setTitle(request.title());
         news.setDescription(request.description());
@@ -49,13 +44,17 @@ public class NewsService {
         news.setSubCategory(subCategory);
         news.setCreatedAt(Instant.now());
         news.setWriter(username);
-        news.setThumbnail(imagesUrl.get(0));
         newsRepository.save(news);
 
-        for (String url : imagesUrl) {
-            ImageKit image = imageKitRepo.findByUrl(url);
-            image.setNews(news);
-            imageKitRepo.save(image);
+        List<String> imagesUrl = request.imagesUrl();
+        if (imagesUrl != null && !imagesUrl.isEmpty()) {
+            news.setThumbnail(imagesUrl.getFirst());
+            newsRepository.save(news);
+            for (String url : imagesUrl) {
+                ImageKit image = imageKitRepo.findByUrl(url);
+                image.setNews(news);
+                imageKitRepo.save(image);
+            }
         }
 
         return ResponseEntity.ok(ApiResponse.builder()
