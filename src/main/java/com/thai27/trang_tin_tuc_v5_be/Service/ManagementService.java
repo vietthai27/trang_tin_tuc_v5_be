@@ -32,7 +32,7 @@ public class ManagementService {
 
         TrangTinTucUser user = trangTinTucUserRepo
                 .findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User không tồn tại"));
 
         List<Role> roles = user.getRoles();
 
