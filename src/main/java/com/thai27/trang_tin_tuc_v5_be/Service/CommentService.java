@@ -30,10 +30,10 @@ public class CommentService {
 
     public ResponseEntity<ApiResponse<Object>> addComment(String username, Long newsId, CommentRequest request) {
         TrangTinTucUser user = userRepo.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User khong ton tai"));
+                .orElseThrow(() -> new ResourceNotFoundException("User không tồn tại"));
 
         News news = newsRepo.findById(newsId)
-                .orElseThrow(() -> new ResourceNotFoundException("News khong ton tai"));
+                .orElseThrow(() -> new ResourceNotFoundException("News không tồn tại"));
 
         Comment comment = new Comment();
         comment.setContent(request.getContent());
@@ -43,7 +43,7 @@ public class CommentService {
 
         return ResponseEntity.ok(ApiResponse.builder()
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Da them binh luan")
+                .message("Đã thêm bình luận")
                 .data(null)
                 .build());
     }
@@ -55,17 +55,17 @@ public class CommentService {
             CommentRequest request) {
 
         TrangTinTucUser user = userRepo.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User khong ton tai"));
+                .orElseThrow(() -> new ResourceNotFoundException("User không tồn tại"));
 
         Comment comment = commentRepo.findById(commentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Comment khong ton tai"));
+                .orElseThrow(() -> new ResourceNotFoundException("Comment không tồn tại"));
 
         if (!comment.getUser().getId().equals(user.getId())) {
-            throw new ForbiddenException("Khong co quyen sua comment nay");
+            throw new ForbiddenException("Không có quyền sửa comment này");
         }
 
         if (!comment.getNews().getId().equals(newsId)) {
-            throw new ForbiddenException("Comment khong thuoc bai viet nay");
+            throw new ForbiddenException("Comment không thuộc bài viết này");
         }
 
         comment.setContent(request.getContent());
@@ -79,13 +79,13 @@ public class CommentService {
 
     public ResponseEntity<ApiResponse<Object>> deleteComment(Long commentId) {
         Comment comment = commentRepo.findById(commentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Comment khong ton tai"));
+                .orElseThrow(() -> new ResourceNotFoundException("Comment không tồn tại"));
 
         commentRepo.delete(comment);
 
         return ResponseEntity.ok(ApiResponse.builder()
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Da xoa binh luan")
+                .message("Đã xóa bình luận")
                 .data(null)
                 .build());
     }
@@ -105,7 +105,7 @@ public class CommentService {
 
         return ResponseEntity.ok(ApiResponse.<List<CommentResponseDTO>>builder()
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Lay danh sach binh luan thanh cong")
+                .message("Lấy danh sách bình luận thành công")
                 .data(comments)
                 .build());
     }

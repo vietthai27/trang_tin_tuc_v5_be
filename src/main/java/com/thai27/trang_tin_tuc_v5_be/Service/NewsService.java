@@ -35,7 +35,7 @@ public class NewsService {
 
     public ResponseEntity<ApiResponse<Object>> create(NewsCreateRequest request, String username) {
         SubCategory subCategory = subCategoryRepo.findById(request.subCategoryId())
-                .orElseThrow(() -> new ResourceNotFoundException("SubCategory not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Danh mục con không tồn tại"));
 
         News news = new News();
         news.setTitle(request.title());
@@ -59,17 +59,17 @@ public class NewsService {
 
         return ResponseEntity.ok(ApiResponse.builder()
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Them bai bao thanh cong")
+                .message("Thêm bài báo thành công")
                 .data(null)
                 .build());
     }
 
     public ResponseEntity<ApiResponse<Object>> edit(Long id, NewsCreateRequest request) {
         News news = newsRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Khong tim thay bai bao voi id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy bài báo với id: " + id));
 
         SubCategory subCategory = subCategoryRepo.findById(request.subCategoryId())
-                .orElseThrow(() -> new ResourceNotFoundException("SubCategory not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Danh mục con không tồn tại"));
 
         news.setTitle(request.title());
         news.setDescription(request.description());
@@ -88,7 +88,7 @@ public class NewsService {
 
         return ResponseEntity.ok(ApiResponse.builder()
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Sua bai bao thanh cong")
+                .message("Sửa bài báo thành công")
                 .data(null)
                 .build());
     }
@@ -97,7 +97,7 @@ public class NewsService {
         PageRequest searchNewsPaging = PageRequest.of(pageNum, pageSize);
         return ResponseEntity.ok(ApiResponse.<Page<NewsListDTO>>builder()
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Lay du lieu thanh cong")
+                .message("Lấy dữ liệu thành công")
                 .data(newsRepository.findByTitleContainingIgnoreCaseOrderByCreatedAtDesc(title, searchNewsPaging))
                 .build());
     }
@@ -106,7 +106,7 @@ public class NewsService {
         PageRequest searchNewsPaging = PageRequest.of(pageNum, pageSize);
         return ResponseEntity.ok(ApiResponse.<Page<NewsListDTO>>builder()
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Lay du lieu thanh cong")
+                .message("Lấy dữ liệu thành công")
                 .data(newsRepository.findByTitleContainingIgnoreCaseAndSubCategory_IdOrderByCreatedAtDesc(title, categoryId, searchNewsPaging))
                 .build());
     }
@@ -114,14 +114,14 @@ public class NewsService {
     public ResponseEntity<ApiResponse<List<NewsListDTO>>> getLatestNews() {
         return ResponseEntity.ok(ApiResponse.<List<NewsListDTO>>builder()
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Lay du lieu thanh cong")
+                .message("Lấy dữ liệu thành công")
                 .data(newsRepository.findTop5ByOrderByIdDesc())
                 .build());
     }
 
     public ResponseEntity<ApiResponse<GetNewsByIdResponse>> getById(Long id) {
         News news = newsRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Khong tim thay bai bao voi id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy bài báo với id: " + id));
         List<ImageKit> listNewsImages = imageKitRepo.findByNewsId(id);
         GetNewsByIdResponse getNewsByIdResponse = new GetNewsByIdResponse();
         getNewsByIdResponse.setNews(news);
@@ -130,25 +130,25 @@ public class NewsService {
         getNewsByIdResponse.setCategoryId(news.getSubCategory().getCategory().getId());
         return ResponseEntity.ok(ApiResponse.<GetNewsByIdResponse>builder()
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Lay du lieu thanh cong")
+                .message("Lấy dữ liệu thành công")
                 .data(getNewsByIdResponse)
                 .build());
     }
 
     public ResponseEntity<ApiResponse<News>> getNewsDetail(Long id) {
         News news = newsRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Khong tim thay bai bao voi id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy bài báo với id: " + id));
 
         return ResponseEntity.ok(ApiResponse.<News>builder()
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Lay du lieu thanh cong")
+                .message("Lấy dữ liệu thành công")
                 .data(news)
                 .build());
     }
 
     public ResponseEntity<ApiResponse<Object>> deleteNews(Long id) {
         News news = newsRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Khong tim thay bai bao voi id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy bài báo với id: " + id));
 
         List<ImageKit> listNewsImages = imageKitRepo.findByNewsId(id);
         for (ImageKit imageInfo : listNewsImages) {
@@ -157,7 +157,7 @@ public class NewsService {
         newsRepository.delete(news);
         return ResponseEntity.ok(ApiResponse.builder()
                 .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Xoa bai bao thanh cong")
+                .message("Xóa bài báo thành công")
                 .data(null)
                 .build());
     }
