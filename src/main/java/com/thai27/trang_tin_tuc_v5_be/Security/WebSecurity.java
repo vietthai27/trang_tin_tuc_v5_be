@@ -54,7 +54,7 @@ public class WebSecurity {
 		CorsConfiguration configuration = new CorsConfiguration();
 
 		configuration.setAllowedOrigins(List.of(
-				"http://localhost:3000",
+				"http://localhost:5173",
 				"https://trang-tin-tuc-v5-fe.onrender.com"
 		));
 

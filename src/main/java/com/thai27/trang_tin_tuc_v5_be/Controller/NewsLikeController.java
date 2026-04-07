@@ -33,7 +33,7 @@ public class NewsLikeController {
     }
 
     @GetMapping("/{newsId}/is-like-by-user")
-    public ResponseEntity<ApiResponse<Boolean>> isLikeByUser(@PathVariable Long newsId,  @RequestParam String username) {
+    public ResponseEntity<ApiResponse<Boolean>> isLikeByUser(@PathVariable Long newsId, @RequestParam String username) {
         return newsLikeService.isLikedByUser(username, newsId);
     }
 }

@@ -7,17 +7,21 @@ public class Constant {
     public static final String ROLE_USER = "USER";
     public static final String ADMIN_USERNAME = "ADMIN";
 
-    public static final String MANAGEMENT_PAGE = "Danh mục";
-    public static final String MANAGEMENT_PAGE_PATH = "assignment-page";
-    public static final String MANAGEMENT_PAGE_ICON = "assignment";
+    public static final String MANAGEMENT_PAGE = "Quản lý truy cập";
+    public static final String MANAGEMENT_PAGE_PATH = "management-page";
+    public static final String MANAGEMENT_PAGE_ICON = "management";
 
-    public static final String CATEGORY_PAGE = "Menu";
-    public static final String CATEGORY_PAGE_PATH = "menu-page";
-    public static final String CATEGORY_PAGE_ICON = "menu";
+    public static final String CATEGORY_PAGE = "Quản lý danh mục";
+    public static final String CATEGORY_PAGE_PATH = "category-page";
+    public static final String CATEGORY_PAGE_ICON = "category";
 
-    public static final String USER_PAGE = "Người dùng";
+    public static final String USER_PAGE = "Quản lý người dùng";
     public static final String USER_PAGE_PATH = "user-page";
-    public static final String USER_PAGE_ICON = "user_attributes";
+    public static final String USER_PAGE_ICON = "user";
+
+    public static final String NEWS_PAGE = "Quản lý bài báo";
+    public static final String NEWS_PAGE_PATH = "news-page";
+    public static final String NEWS_PAGE_ICON = "news";
 
     public static final int RESPONSE_CODE_SUCCESS = 200;
 

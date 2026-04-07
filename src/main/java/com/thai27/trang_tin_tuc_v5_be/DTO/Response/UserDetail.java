@@ -1,4 +1,4 @@
-package com.thai27.trang_tin_tuc_v5_be.DTO;
+package com.thai27.trang_tin_tuc_v5_be.DTO.Response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

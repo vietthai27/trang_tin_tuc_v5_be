@@ -48,11 +48,15 @@ public class InitData {
         }
         if (managementRepo.findAll().isEmpty()) {
 
+            Role adminRole = roleRepo.findByRoleName(Constant.ROLE_ADMIN)
+                    .orElseGet(() -> roleRepo.save(new Role(Constant.ROLE_ADMIN)));
+
+            Role moderRole = roleRepo.findByRoleName(Constant.ROLE_MODER)
+                    .orElseGet(() -> roleRepo.save(new Role(Constant.ROLE_MODER)));
+
             Management managementPage = new Management();
             managementPage.setName(Constant.MANAGEMENT_PAGE);
             managementPage.setIcon(Constant.MANAGEMENT_PAGE_ICON);
-            Role adminRole = roleRepo.findByRoleName(Constant.ROLE_ADMIN)
-                    .orElseGet(() -> roleRepo.save(new Role(Constant.ROLE_ADMIN)));
             managementPage.setRolesManage(List.of(adminRole));
             managementPage.setPath(Constant.MANAGEMENT_PAGE_PATH);
             managementRepo.save(managementPage);
@@ -60,8 +64,6 @@ public class InitData {
             Management categoryPage = new Management();
             categoryPage.setName(Constant.CATEGORY_PAGE);
             categoryPage.setIcon(Constant.CATEGORY_PAGE_ICON);
-            Role moderRole = roleRepo.findByRoleName(Constant.ROLE_MODER)
-                    .orElseGet(() -> roleRepo.save(new Role(Constant.ROLE_MODER)));
             categoryPage.setRolesManage(List.of(adminRole, moderRole));
             categoryPage.setPath(Constant.CATEGORY_PAGE_PATH);
             managementRepo.save(categoryPage);
@@ -72,6 +74,13 @@ public class InitData {
             userPage.setRolesManage(List.of(adminRole));
             userPage.setPath(Constant.USER_PAGE_PATH);
             managementRepo.save(userPage);
+
+            Management newsPage = new Management();
+            newsPage.setName(Constant.NEWS_PAGE);
+            newsPage.setIcon(Constant.NEWS_PAGE_ICON);
+            newsPage.setRolesManage(List.of(adminRole, moderRole));
+            newsPage.setPath(Constant.NEWS_PAGE_PATH);
+            managementRepo.save(newsPage);
 
         }
     }

@@ -1,21 +1,10 @@
 {
   "info": {
-    "_postman_id": "b2b37378-0611-4d52-8a56-67d381e966f8",
+    "_postman_id": "ba778778-efce-460f-bd14-52796bba71bb",
     "name": "trang_tin_tuc_v5_be",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "21233533"
   },
-  "variable": [
-    { "key": "baseUrl", "value": "http://localhost:8080" },
-    { "key": "token", "value": "" },
-    { "key": "username", "value": "admin" },
-    { "key": "categoryId", "value": "1" },
-    { "key": "subCategoryId", "value": "1" },
-    { "key": "newsId", "value": "1" },
-    { "key": "commentId", "value": "1" },
-    { "key": "managementId", "value": "1" },
-    { "key": "tagId", "value": "1" },
-    { "key": "userId", "value": "1" }
-  ],
   "item": [
     {
       "name": "CategoryController",
@@ -24,69 +13,181 @@
           "name": "Search Categories",
           "request": {
             "method": "GET",
-            "url": "{{baseUrl}}/api/categories/search?search=&pageNum=0&pageSize=10"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories/search?search=&pageNum=0&pageSize=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": ""
+                },
+                {
+                  "key": "pageNum",
+                  "value": "0"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get All Categories",
           "request": {
             "method": "GET",
-            "url": "{{baseUrl}}/api/categories/permit/get-all"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories/permit/get-all",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories",
+                "permit",
+                "get-all"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Category By Category Id",
           "request": {
             "method": "GET",
-            "url": "{{baseUrl}}/api/categories/get-by-category-id/{{categoryId}}"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories/get-by-category-id/{{categoryId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories",
+                "get-by-category-id",
+                "{{categoryId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Category By Id",
           "request": {
             "method": "GET",
-            "url": "{{baseUrl}}/api/categories/get-by-id/{{categoryId}}"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories/get-by-id/{{categoryId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories",
+                "get-by-id",
+                "{{categoryId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Add Category",
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"name\": \"Tin moi\",\n  \"icon\": \"newspaper\"\n}"
             },
-            "url": "{{baseUrl}}/api/categories"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Edit Category",
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"name\": \"Tin cap nhat\",\n  \"icon\": \"edit\"\n}"
             },
-            "url": "{{baseUrl}}/api/categories/{{categoryId}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/categories/{{categoryId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories",
+                "{{categoryId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Delete Category",
           "request": {
             "method": "DELETE",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
-            "url": "{{baseUrl}}/api/categories/{{categoryId}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/categories/{{categoryId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories",
+                "{{categoryId}}"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -98,47 +199,131 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"content\": \"Bai viet hay\"\n}"
             },
-            "url": "{{baseUrl}}/api/comments?username={{username}}&newsId={{newsId}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/comments?username={{username}}&newsId={{newsId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "comments"
+              ],
+              "query": [
+                {
+                  "key": "username",
+                  "value": "{{username}}"
+                },
+                {
+                  "key": "newsId",
+                  "value": "{{newsId}}"
+                }
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Edit Comment",
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"content\": \"Binh luan da sua\"\n}"
             },
-            "url": "{{baseUrl}}/api/comments?commentId={{commentId}}&username={{username}}&newsId={{newsId}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/comments?commentId={{commentId}}&username={{username}}&newsId={{newsId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "comments"
+              ],
+              "query": [
+                {
+                  "key": "commentId",
+                  "value": "{{commentId}}"
+                },
+                {
+                  "key": "username",
+                  "value": "{{username}}"
+                },
+                {
+                  "key": "newsId",
+                  "value": "{{newsId}}"
+                }
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Delete Comment",
           "request": {
             "method": "DELETE",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
-            "url": "{{baseUrl}}/api/comments/{{commentId}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/comments/{{commentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "comments",
+                "{{commentId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Comments By News",
           "request": {
             "method": "GET",
-            "url": "{{baseUrl}}/api/comments/permit/news/{{newsId}}"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/comments/permit/news/{{newsId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "comments",
+                "permit",
+                "news",
+                "{{newsId}}"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -150,80 +335,223 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
-            "url": "{{baseUrl}}/api/managements/search?search=&pageNum=0&pageSize=10"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/managements/search?search=&pageNum=0&pageSize=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "managements",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": ""
+                },
+                {
+                  "key": "pageNum",
+                  "value": "0"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get All Roles",
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
-            "url": "{{baseUrl}}/api/managements/get-all-role"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/managements/get-all-role",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "managements",
+                "get-all-role"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get All Managements By Username",
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
-            "url": "{{baseUrl}}/api/managements?username={{username}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/managements?username={{username}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "managements"
+              ],
+              "query": [
+                {
+                  "key": "username",
+                  "value": "{{username}}"
+                }
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Add Management",
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"name\": \"USER_MANAGEMENT\",\n  \"icon\": \"assignment\",\n  \"path\": \"user-page\"\n}"
             },
-            "url": "{{baseUrl}}/api/managements?roleIds=1&roleIds=2"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/managements?roleIds=1&roleIds=2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "managements"
+              ],
+              "query": [
+                {
+                  "key": "roleIds",
+                  "value": "1"
+                },
+                {
+                  "key": "roleIds",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Management By Id",
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
-            "url": "{{baseUrl}}/api/managements/get-by-id/{{managementId}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/managements/get-by-id/{{managementId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "managements",
+                "get-by-id",
+                "{{managementId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Edit Management",
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"name\": \"USER_MANAGEMENT_UPDATED\",\n  \"icon\": \"assignment\",\n  \"path\": \"user-page\"\n}"
             },
-            "url": "{{baseUrl}}/api/managements/{{managementId}}?roleIds=1&roleIds=2"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/managements/{{managementId}}?roleIds=1&roleIds=2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "managements",
+                "{{managementId}}"
+              ],
+              "query": [
+                {
+                  "key": "roleIds",
+                  "value": "1"
+                },
+                {
+                  "key": "roleIds",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Delete Management",
           "request": {
             "method": "DELETE",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
-            "url": "{{baseUrl}}/api/managements/{{managementId}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/managements/{{managementId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "managements",
+                "{{managementId}}"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -235,107 +563,294 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"title\": \"Bai viet moi\",\n  \"description\": \"Mo ta ngan\",\n  \"content\": \"Noi dung bai viet\",\n  \"subCategoryId\": {{subCategoryId}},\n  \"imagesUrl\": [\n    \"https://example.com/image-1.jpg\"\n  ]\n}"
             },
-            "url": "{{baseUrl}}/api/news"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/news",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "news"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Edit News",
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"title\": \"Bai viet cap nhat\",\n  \"description\": \"Mo ta cap nhat\",\n  \"content\": \"Noi dung cap nhat\",\n  \"subCategoryId\": {{subCategoryId}},\n  \"imagesUrl\": [\n    \"https://example.com/image-1.jpg\"\n  ]\n}"
             },
-            "url": "{{baseUrl}}/api/news/{{newsId}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/news/{{newsId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "news",
+                "{{newsId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Search News",
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
-            "url": "{{baseUrl}}/api/news/search?title=&pageNum=0&pageSize=10"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/news/search?title=&pageNum=0&pageSize=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "news",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "title",
+                  "value": ""
+                },
+                {
+                  "key": "pageNum",
+                  "value": "0"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Upload Image",
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
             "body": {
               "mode": "formdata",
               "formdata": [
-                { "key": "file", "type": "file", "src": [] }
+                {
+                  "key": "file",
+                  "type": "file",
+                  "value": null
+                }
               ]
             },
-            "url": "{{baseUrl}}/api/news/imagekit/upload"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/news/imagekit/upload",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "news",
+                "imagekit",
+                "upload"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Delete Image",
           "request": {
             "method": "DELETE",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
-            "url": "{{baseUrl}}/api/news/imagekit?url=https://example.com/image-1.jpg"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/news/imagekit?url=https://example.com/image-1.jpg",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "news",
+                "imagekit"
+              ],
+              "query": [
+                {
+                  "key": "url",
+                  "value": "https://example.com/image-1.jpg"
+                }
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Delete News",
           "request": {
             "method": "DELETE",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
-            "url": "{{baseUrl}}/api/news/{{newsId}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/news/{{newsId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "news",
+                "{{newsId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get News By Id",
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
-            "url": "{{baseUrl}}/api/news/get-by-id/{{newsId}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/news/get-by-id/{{newsId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "news",
+                "get-by-id",
+                "{{newsId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Latest News",
           "request": {
             "method": "GET",
-            "url": "{{baseUrl}}/api/news/permit/get-latest-news"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/news/permit/get-latest-news",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "news",
+                "permit",
+                "get-latest-news"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get News Detail",
           "request": {
             "method": "GET",
-            "url": "{{baseUrl}}/api/news/permit/get-news-detail/{{newsId}}"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/news/permit/get-news-detail/{{newsId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "news",
+                "permit",
+                "get-news-detail",
+                "{{newsId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get News By Sub Category",
           "request": {
             "method": "GET",
-            "url": "{{baseUrl}}/api/news/permit/get-news-by-sub-category?title=&categoryId={{subCategoryId}}&pageNum=0&pageSize=10"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/news/permit/get-news-by-sub-category?title=&categoryId={{subCategoryId}}&pageNum=0&pageSize=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "news",
+                "permit",
+                "get-news-by-sub-category"
+              ],
+              "query": [
+                {
+                  "key": "title",
+                  "value": ""
+                },
+                {
+                  "key": "categoryId",
+                  "value": "{{subCategoryId}}"
+                },
+                {
+                  "key": "pageNum",
+                  "value": "0"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -347,37 +862,114 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
-            "url": "{{baseUrl}}/api/news-like/{{newsId}}/like?username={{username}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/news-like/{{newsId}}/like?username={{username}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "news-like",
+                "{{newsId}}",
+                "like"
+              ],
+              "query": [
+                {
+                  "key": "username",
+                  "value": "{{username}}"
+                }
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Unlike News",
           "request": {
             "method": "DELETE",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
-            "url": "{{baseUrl}}/api/news-like/{{newsId}}/unlike?username={{username}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/news-like/{{newsId}}/unlike?username={{username}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "news-like",
+                "{{newsId}}",
+                "unlike"
+              ],
+              "query": [
+                {
+                  "key": "username",
+                  "value": "{{username}}"
+                }
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Count Likes",
           "request": {
             "method": "GET",
-            "url": "{{baseUrl}}/api/news-like/permit/{{newsId}}/count"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/news-like/permit/{{newsId}}/count",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "news-like",
+                "permit",
+                "{{newsId}}",
+                "count"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Is Like By User",
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
-            "url": "{{baseUrl}}/api/news-like/{{newsId}}/is-like-by-user?username={{username}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/news-like/{{newsId}}/is-like-by-user?username={{username}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "news-like",
+                "{{newsId}}",
+                "is-like-by-user"
+              ],
+              "query": [
+                {
+                  "key": "username",
+                  "value": "{{username}}"
+                }
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -388,80 +980,187 @@
           "name": "Get All News Tags",
           "request": {
             "method": "GET",
-            "url": "{{baseUrl}}/api/news-tags/permit/get-all"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/news-tags/permit/get-all",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "news-tags",
+                "permit",
+                "get-all"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get News Tags By News Id",
           "request": {
             "method": "GET",
-            "url": "{{baseUrl}}/api/news-tags/permit/by-news/{{newsId}}"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/news-tags/permit/by-news/{{newsId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "news-tags",
+                "permit",
+                "by-news",
+                "{{newsId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Add News Tag",
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"tagName\": \"java\"\n}"
             },
-            "url": "{{baseUrl}}/api/news-tags"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/news-tags",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "news-tags"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Edit News Tag",
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"tagName\": \"spring-boot\"\n}"
             },
-            "url": "{{baseUrl}}/api/news-tags/{{tagId}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/news-tags/{{tagId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "news-tags",
+                "{{tagId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get News Tag By Id",
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
-            "url": "{{baseUrl}}/api/news-tags/get-by-id/{{tagId}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/news-tags/get-by-id/{{tagId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "news-tags",
+                "get-by-id",
+                "{{tagId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Delete News Tag",
           "request": {
             "method": "DELETE",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
-            "url": "{{baseUrl}}/api/news-tags/{{tagId}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/news-tags/{{tagId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "news-tags",
+                "{{tagId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Remove Tags From News",
           "request": {
             "method": "DELETE",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "[1, 2]"
             },
-            "url": "{{baseUrl}}/api/news-tags/remove-from-news/{{newsId}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/news-tags/remove-from-news/{{newsId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "news-tags",
+                "remove-from-news",
+                "{{newsId}}"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -473,77 +1172,212 @@
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
-            "url": "{{baseUrl}}/api/sub-categories/search?search=&categoryId={{categoryId}}&pageNum=0&pageSize=10"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/sub-categories/search?search=&categoryId={{categoryId}}&pageNum=0&pageSize=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sub-categories",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": ""
+                },
+                {
+                  "key": "categoryId",
+                  "value": "{{categoryId}}"
+                },
+                {
+                  "key": "pageNum",
+                  "value": "0"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Sub Categories By Category Id",
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
-            "url": "{{baseUrl}}/api/sub-categories/by-category/{{categoryId}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/sub-categories/by-category/{{categoryId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sub-categories",
+                "by-category",
+                "{{categoryId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Sub Categories By Category Id Permit",
           "request": {
             "method": "GET",
-            "url": "{{baseUrl}}/api/sub-categories/permit/by-category/{{categoryId}}"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/sub-categories/permit/by-category/{{categoryId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sub-categories",
+                "permit",
+                "by-category",
+                "{{categoryId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Add Sub Category",
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"name\": \"Cong nghe\",\n  \"icon\": \"memory\"\n}"
             },
-            "url": "{{baseUrl}}/api/sub-categories?categoryId={{categoryId}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/sub-categories?categoryId={{categoryId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sub-categories"
+              ],
+              "query": [
+                {
+                  "key": "categoryId",
+                  "value": "{{categoryId}}"
+                }
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Edit Sub Category",
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"name\": \"Cong nghe moi\",\n  \"icon\": \"memory\"\n}"
             },
-            "url": "{{baseUrl}}/api/sub-categories/{{subCategoryId}}?categoryId={{categoryId}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/sub-categories/{{subCategoryId}}?categoryId={{categoryId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sub-categories",
+                "{{subCategoryId}}"
+              ],
+              "query": [
+                {
+                  "key": "categoryId",
+                  "value": "{{categoryId}}"
+                }
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Sub Category By Id",
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
-            "url": "{{baseUrl}}/api/sub-categories/get-by-id/{{subCategoryId}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/sub-categories/get-by-id/{{subCategoryId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sub-categories",
+                "get-by-id",
+                "{{subCategoryId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Delete Sub Category",
           "request": {
             "method": "DELETE",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
-            "url": "{{baseUrl}}/api/sub-categories/{{subCategoryId}}"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/sub-categories/{{subCategoryId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sub-categories",
+                "{{subCategoryId}}"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -552,108 +1386,308 @@
       "item": [
         {
           "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const jsonData = pm.response.json();\r",
+                  "pm.collectionVariables.set(\"token\", jsonData.data.token);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"123456\"\n}"
+              "raw": "{\n  \"username\": \"ADMIN\",\n  \"password\": \"ADMIN\"\n}"
             },
-            "url": "{{baseUrl}}/api/user/permit/login"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/user/permit/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "permit",
+                "login"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Signup Request",
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"username\": \"newuser\",\n  \"password\": \"123456\",\n  \"email\": \"newuser@example.com\"\n}"
             },
-            "url": "{{baseUrl}}/api/user/permit/signup-request"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/user/permit/signup-request",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "permit",
+                "signup-request"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Signup Validate",
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"newuser@example.com\",\n  \"validateCode\": \"12345\"\n}"
             },
-            "url": "{{baseUrl}}/api/user/permit/signup"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/user/permit/signup",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "permit",
+                "signup"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Reset Password",
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"username\": \"admin\",\n  \"email\": \"admin@example.com\"\n}"
             },
-            "url": "{{baseUrl}}/api/user/permit/reset-password"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/user/permit/reset-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "permit",
+                "reset-password"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Change Password",
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"token\": \"{{token}}\",\n  \"oldPassword\": \"123456\",\n  \"newPassword\": \"654321\"\n}"
             },
-            "url": "{{baseUrl}}/api/user/auth/change-password"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/user/auth/change-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "auth",
+                "change-password"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Change Role Moder",
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"userId\": {{userId}},\n  \"setModer\": true\n}"
             },
-            "url": "{{baseUrl}}/api/user/auth/change-role-moder"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/user/auth/change-role-moder",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "auth",
+                "change-role-moder"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Search Users",
           "request": {
             "method": "GET",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
             ],
-            "url": "{{baseUrl}}/api/user/auth/search-users?search=&pageNum=0&pageSize=10"
-          }
+            "url": {
+              "raw": "{{baseUrl}}/api/user/auth/search-users?search=&pageNum=0&pageSize=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "auth",
+                "search-users"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": ""
+                },
+                {
+                  "key": "pageNum",
+                  "value": "0"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Claims From Token",
           "request": {
             "method": "GET",
-            "url": "{{baseUrl}}/api/user/permit/get-claims-from-token?token={{token}}"
-          }
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/permit/get-claims-from-token?token={{token}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "permit",
+                "get-claims-from-token"
+              ],
+              "query": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            }
+          },
+          "response": []
         }
       ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "username",
+      "value": "admin"
+    },
+    {
+      "key": "categoryId",
+      "value": "1"
+    },
+    {
+      "key": "subCategoryId",
+      "value": "1"
+    },
+    {
+      "key": "newsId",
+      "value": "1"
+    },
+    {
+      "key": "commentId",
+      "value": "1"
+    },
+    {
+      "key": "managementId",
+      "value": "1"
+    },
+    {
+      "key": "tagId",
+      "value": "1"
+    },
+    {
+      "key": "userId",
+      "value": "1"
     }
   ]
 }

@@ -20,7 +20,6 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    /* ========== Thêm bình luận ========== */
     @PostMapping
     public ResponseEntity<ApiResponse<Object>> addComment(
             @RequestParam String username,
@@ -38,14 +37,12 @@ public class CommentController {
         return commentService.editComment(commentId, username, newsId, request);
     }
 
-    /* ========== Xóa bình luận ========== */
     @DeleteMapping("/{commentId}")
     public ResponseEntity<ApiResponse<Object>> deleteComment(
             @PathVariable Long commentId) {
         return commentService.deleteComment(commentId);
     }
 
-    /* ========== Lấy comment theo bài báo ========== */
     @GetMapping("/permit/news/{newsId}")
     public ResponseEntity<ApiResponse<List<CommentResponseDTO>>> getCommentsByNews(
             @PathVariable Long newsId) {
