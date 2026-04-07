@@ -30,9 +30,6 @@ public class ImageKitService {
     @Value("${imagekit.private-key}")
     private String privateKey;
 
-    @Value("${imagekit.url-endpoint}")
-    private String urlEndpoint;
-
     public ResponseEntity<ApiResponse<ImageKit>> upload(MultipartFile file) throws IOException {
 
         String auth = Base64.getEncoder()
