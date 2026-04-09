@@ -65,24 +65,6 @@ public class GlobalExceptionHandler {
 		return buildErrorResponse(HttpStatus.UNAUTHORIZED, ex.getMessage(), request);
 	}
 
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<ErrorDetails> methodArgumentNotValidException(MethodArgumentNotValidException ex, WebRequest request) {
-		List<String> errors = ex.getBindingResult().getFieldErrors().stream().map(this::formatFieldError).toList();
-		ErrorDetails errorDetails = new ErrorDetails(
-				Instant.now(),
-				HttpStatus.BAD_REQUEST.value(),
-				"Validation failed",
-				request.getDescription(false),
-				errors
-		);
-		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
-	}
-
-	@ExceptionHandler(HttpMessageNotReadableException.class)
-	public ResponseEntity<ErrorDetails> httpMessageNotReadableException(HttpMessageNotReadableException ex, WebRequest request) {
-		return buildErrorResponse(HttpStatus.BAD_REQUEST, "Malformed request body", request);
-	}
-
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorDetails> globalExceptionHandler(Exception ex, WebRequest request) {
 		return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), request);
@@ -96,10 +78,6 @@ public class GlobalExceptionHandler {
 				request.getDescription(false)
 		);
 		return new ResponseEntity<>(errorDetails, status);
-	}
-
-	private String formatFieldError(FieldError fieldError) {
-		return fieldError.getField() + ": " + fieldError.getDefaultMessage();
 	}
 
 }

@@ -1,17 +1,16 @@
 package com.thai27.trang_tin_tuc_v5_be.Service;
 
+import com.thai27.trang_tin_tuc_v5_be.DTO.Request.SubCategoryRequest;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Response.CategoryNewResponse;
+import com.thai27.trang_tin_tuc_v5_be.DTO.Response.SubCategoryResponse;
 import com.thai27.trang_tin_tuc_v5_be.Entity.Category;
 import com.thai27.trang_tin_tuc_v5_be.Entity.SubCategory;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
 import com.thai27.trang_tin_tuc_v5_be.Repository.CategoryRepo;
 import com.thai27.trang_tin_tuc_v5_be.Repository.SubCategoryRepo;
-import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
-import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,104 +20,91 @@ import java.util.List;
 public class SubCategoryService {
 
     private final SubCategoryRepo subCategoryRepo;
-
     private final CategoryRepo categoryRepo;
 
-    public ResponseEntity<ApiResponse<SubCategory>> addSubCategory(SubCategory subCategory, Long categoryId) throws ResourceNotFoundException {
+    public SubCategoryResponse addSubCategory(SubCategoryRequest subCategory, Long categoryId) throws ResourceNotFoundException {
         if (categoryId == null) {
-            throw new ResourceNotFoundException("ID danh mục không được để trống");
+            throw new ResourceNotFoundException("ID danh má»¥c khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng");
         }
-        Category category = categoryRepo.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục với id: " + categoryId));
-        
+        Category category = categoryRepo.findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("KhÃ´ng tÃ¬m tháº¥y danh má»¥c vá»›i id: " + categoryId));
+
         SubCategory addSubCategory = new SubCategory();
         addSubCategory.setName(subCategory.getName());
         addSubCategory.setIcon(subCategory.getIcon());
         addSubCategory.setCategory(category);
-        
-        return ResponseEntity.ok(ApiResponse.<SubCategory>builder()
-                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Thêm dữ liệu thành công")
-                .data(subCategoryRepo.save(addSubCategory))
-                .build());
+        return toSubCategoryResponse(subCategoryRepo.save(addSubCategory));
     }
 
-    public ResponseEntity<ApiResponse<SubCategory>> editSubCategory(Long id, SubCategory subCategory, Long categoryId) throws ResourceNotFoundException {
+    public SubCategoryResponse editSubCategory(Long id, SubCategoryRequest subCategory, Long categoryId) throws ResourceNotFoundException {
         if (id == null) {
-            throw new ResourceNotFoundException("ID không được để trống");
+            throw new ResourceNotFoundException("ID khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng");
         }
-        SubCategory editSubCategory = subCategoryRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục con với id: " + id));
-        
+        SubCategory editSubCategory = subCategoryRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("KhÃ´ng tÃ¬m tháº¥y danh má»¥c con vá»›i id: " + id));
+
         if (subCategory.getName() != null && !subCategory.getName().isBlank()) {
             editSubCategory.setName(subCategory.getName());
         }
         if (subCategory.getIcon() != null) {
             editSubCategory.setIcon(subCategory.getIcon());
         }
-        
         if (categoryId != null) {
-            Category category = categoryRepo.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục với id: " + categoryId));
+            Category category = categoryRepo.findById(categoryId)
+                    .orElseThrow(() -> new ResourceNotFoundException("KhÃ´ng tÃ¬m tháº¥y danh má»¥c vá»›i id: " + categoryId));
             editSubCategory.setCategory(category);
         }
-        
+
         editSubCategory.setId(id);
-        return ResponseEntity.ok(ApiResponse.<SubCategory>builder()
-                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Sửa dữ liệu thành công")
-                .data(subCategoryRepo.save(editSubCategory))
-                .build());
+        return toSubCategoryResponse(subCategoryRepo.save(editSubCategory));
     }
 
-    public ResponseEntity<ApiResponse<Object>> deleteSubCategory(Long id) throws ResourceNotFoundException {
+    public void deleteSubCategory(Long id) throws ResourceNotFoundException {
         if (id == null) {
-            throw new ResourceNotFoundException("ID không được để trống");
+            throw new ResourceNotFoundException("ID khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng");
         }
-        SubCategory deleteSubCategory = subCategoryRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục con với id: " + id));
-        if (deleteSubCategory == null) {
-            throw new ResourceNotFoundException("Không tìm thấy danh mục con");
-        }
+        SubCategory deleteSubCategory = subCategoryRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("KhÃ´ng tÃ¬m tháº¥y danh má»¥c con vá»›i id: " + id));
         subCategoryRepo.delete(deleteSubCategory);
-        return ResponseEntity.ok(ApiResponse.builder()
-                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Xóa dữ liệu thành công")
-                .data(null)
-                .build());
     }
 
-    public ResponseEntity<ApiResponse<SubCategory>> getById(Long id) throws ResourceNotFoundException {
+    public SubCategoryResponse getById(Long id) throws ResourceNotFoundException {
         if (id == null) {
-            throw new ResourceNotFoundException("ID không được để trống");
+            throw new ResourceNotFoundException("ID khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng");
         }
-        SubCategory subCategory = subCategoryRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục con với id: " + id));
-        return ResponseEntity.ok(ApiResponse.<SubCategory>builder()
-                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Lấy dữ liệu thành công")
-                .data(subCategory)
-                .build());
+        SubCategory subCategory = subCategoryRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("KhÃ´ng tÃ¬m tháº¥y danh má»¥c con vá»›i id: " + id));
+        return toSubCategoryResponse(subCategory);
     }
 
-    public ResponseEntity<ApiResponse<Page<SubCategory>>> searchAllSubCategory(String search, Long categoryId, int pageNum, int pageSize) {
+    public Page<SubCategoryResponse> searchAllSubCategory(String search, Long categoryId, int pageNum, int pageSize) {
         PageRequest searchSubCategoryPaging = PageRequest.of(pageNum, pageSize);
         String searchLike = "%" + search + "%";
-        return ResponseEntity.ok(ApiResponse.<Page<SubCategory>>builder()
-                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Lấy dữ liệu thành công")
-                .data(subCategoryRepo.findAllByNameLikeIgnoreCaseAndCategory_IdOrderById(searchLike, categoryId, searchSubCategoryPaging))
-                .build());
+        return subCategoryRepo
+                .findAllByNameLikeIgnoreCaseAndCategory_IdOrderById(searchLike, categoryId, searchSubCategoryPaging)
+                .map(this::toSubCategoryResponse);
     }
 
-    public ResponseEntity<ApiResponse<CategoryNewResponse>> getSubCategoriesByCategoryId(Long categoryId) throws ResourceNotFoundException {
+    public CategoryNewResponse getSubCategoriesByCategoryId(Long categoryId) throws ResourceNotFoundException {
         if (categoryId == null) {
-            throw new ResourceNotFoundException("ID danh mục không được để trống");
+            throw new ResourceNotFoundException("ID danh má»¥c khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng");
         }
-        Category category = categoryRepo.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục với id: " + categoryId));
+        Category category = categoryRepo.findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("KhÃ´ng tÃ¬m tháº¥y danh má»¥c vá»›i id: " + categoryId));
         List<SubCategory> subCategories = subCategoryRepo.findByCategory(category);
         CategoryNewResponse categoryNewResponse = new CategoryNewResponse();
         categoryNewResponse.setCategoryName(category.getName());
-        categoryNewResponse.setData(subCategories);
-        return ResponseEntity.ok(ApiResponse.<CategoryNewResponse>builder()
-                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Lấy dữ liệu thành công")
-                .data(categoryNewResponse)
-                .build());
+        categoryNewResponse.setData(subCategories.stream().map(this::toSubCategoryResponse).toList());
+        return categoryNewResponse;
+    }
+
+    private SubCategoryResponse toSubCategoryResponse(SubCategory subCategory) {
+        return new SubCategoryResponse(
+                subCategory.getId(),
+                subCategory.getName(),
+                subCategory.getIcon(),
+                subCategory.getCategory() != null ? subCategory.getCategory().getId() : null,
+                subCategory.getCategory() != null ? subCategory.getCategory().getName() : null
+        );
     }
 }

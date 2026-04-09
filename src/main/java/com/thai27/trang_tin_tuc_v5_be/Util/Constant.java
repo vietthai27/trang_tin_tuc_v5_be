@@ -23,6 +23,4 @@ public class Constant {
     public static final String NEWS_PAGE_PATH = "news-page";
     public static final String NEWS_PAGE_ICON = "news";
 
-    public static final int RESPONSE_CODE_SUCCESS = 200;
-
 }

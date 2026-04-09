@@ -3,20 +3,17 @@ package com.thai27.trang_tin_tuc_v5_be.Service;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Request.NewsCreateRequest;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Response.GetNewsByIdResponse;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Response.NewsListDTO;
+import com.thai27.trang_tin_tuc_v5_be.DTO.Response.NewsResponse;
 import com.thai27.trang_tin_tuc_v5_be.Entity.ImageKit;
 import com.thai27.trang_tin_tuc_v5_be.Entity.News;
 import com.thai27.trang_tin_tuc_v5_be.Entity.SubCategory;
-import com.thai27.trang_tin_tuc_v5_be.Exception.BadRequestException;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
 import com.thai27.trang_tin_tuc_v5_be.Repository.ImageKitRepo;
 import com.thai27.trang_tin_tuc_v5_be.Repository.NewsRepo;
 import com.thai27.trang_tin_tuc_v5_be.Repository.SubCategoryRepo;
-import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
-import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,9 +30,9 @@ public class NewsService {
     private final ImageKitRepo imageKitRepo;
     private final ImageKitService imageKitService;
 
-    public ResponseEntity<ApiResponse<Object>> create(NewsCreateRequest request, String username) {
+    public void create(NewsCreateRequest request, String username) {
         SubCategory subCategory = subCategoryRepo.findById(request.subCategoryId())
-                .orElseThrow(() -> new ResourceNotFoundException("Danh mục con không tồn tại"));
+                .orElseThrow(() -> new ResourceNotFoundException("Danh má»¥c con khÃ´ng tá»“n táº¡i"));
 
         News news = new News();
         news.setTitle(request.title());
@@ -56,20 +53,14 @@ public class NewsService {
                 imageKitRepo.save(image);
             }
         }
-
-        return ResponseEntity.ok(ApiResponse.builder()
-                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Thêm bài báo thành công")
-                .data(null)
-                .build());
     }
 
-    public ResponseEntity<ApiResponse<Object>> edit(Long id, NewsCreateRequest request) {
+    public void edit(Long id, NewsCreateRequest request) {
         News news = newsRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy bài báo với id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("KhÃ´ng tÃ¬m tháº¥y bÃ i bÃ¡o vá»›i id: " + id));
 
         SubCategory subCategory = subCategoryRepo.findById(request.subCategoryId())
-                .orElseThrow(() -> new ResourceNotFoundException("Danh mục con không tồn tại"));
+                .orElseThrow(() -> new ResourceNotFoundException("Danh má»¥c con khÃ´ng tá»“n táº¡i"));
 
         news.setTitle(request.title());
         news.setDescription(request.description());
@@ -85,81 +76,64 @@ public class NewsService {
                 imageKitRepo.save(image);
             }
         }
-
-        return ResponseEntity.ok(ApiResponse.builder()
-                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Sửa bài báo thành công")
-                .data(null)
-                .build());
     }
 
-    public ResponseEntity<ApiResponse<Page<NewsListDTO>>> searchAllNews(String title, int pageNum, int pageSize) {
+    public Page<NewsListDTO> searchAllNews(String title, int pageNum, int pageSize) {
         PageRequest searchNewsPaging = PageRequest.of(pageNum, pageSize);
-        return ResponseEntity.ok(ApiResponse.<Page<NewsListDTO>>builder()
-                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Lấy dữ liệu thành công")
-                .data(newsRepository.findByTitleContainingIgnoreCaseOrderByCreatedAtDesc(title, searchNewsPaging))
-                .build());
+        return newsRepository.findByTitleContainingIgnoreCaseOrderByCreatedAtDesc(title, searchNewsPaging);
     }
 
-    public ResponseEntity<ApiResponse<Page<NewsListDTO>>> getNewsBySubCategory(String title, Long categoryId, int pageNum, int pageSize) {
+    public Page<NewsListDTO> getNewsBySubCategory(String title, Long categoryId, int pageNum, int pageSize) {
         PageRequest searchNewsPaging = PageRequest.of(pageNum, pageSize);
-        return ResponseEntity.ok(ApiResponse.<Page<NewsListDTO>>builder()
-                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Lấy dữ liệu thành công")
-                .data(newsRepository.findByTitleContainingIgnoreCaseAndSubCategory_IdOrderByCreatedAtDesc(title, categoryId, searchNewsPaging))
-                .build());
+        return newsRepository.findByTitleContainingIgnoreCaseAndSubCategory_IdOrderByCreatedAtDesc(title, categoryId, searchNewsPaging);
     }
 
-    public ResponseEntity<ApiResponse<List<NewsListDTO>>> getLatestNews() {
-        return ResponseEntity.ok(ApiResponse.<List<NewsListDTO>>builder()
-                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Lấy dữ liệu thành công")
-                .data(newsRepository.findTop5ByOrderByIdDesc())
-                .build());
+    public List<NewsListDTO> getLatestNews() {
+        return newsRepository.findTop5ByOrderByIdDesc();
     }
 
-    public ResponseEntity<ApiResponse<GetNewsByIdResponse>> getById(Long id) {
+    public GetNewsByIdResponse getById(Long id) {
         News news = newsRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy bài báo với id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("KhÃ´ng tÃ¬m tháº¥y bÃ i bÃ¡o vá»›i id: " + id));
         List<ImageKit> listNewsImages = imageKitRepo.findByNewsId(id);
         GetNewsByIdResponse getNewsByIdResponse = new GetNewsByIdResponse();
-        getNewsByIdResponse.setNews(news);
-        getNewsByIdResponse.setListImage(listNewsImages);
+        getNewsByIdResponse.setNews(toNewsResponse(news));
+        getNewsByIdResponse.setListImage(listNewsImages.stream().map(imageKitService::toImageKitResponse).toList());
         getNewsByIdResponse.setSubCategoryId(news.getSubCategory().getId());
         getNewsByIdResponse.setCategoryId(news.getSubCategory().getCategory().getId());
-        return ResponseEntity.ok(ApiResponse.<GetNewsByIdResponse>builder()
-                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Lấy dữ liệu thành công")
-                .data(getNewsByIdResponse)
-                .build());
+        return getNewsByIdResponse;
     }
 
-    public ResponseEntity<ApiResponse<News>> getNewsDetail(Long id) {
+    public NewsResponse getNewsDetail(Long id) {
         News news = newsRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy bài báo với id: " + id));
-
-        return ResponseEntity.ok(ApiResponse.<News>builder()
-                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Lấy dữ liệu thành công")
-                .data(news)
-                .build());
+                .orElseThrow(() -> new ResourceNotFoundException("KhÃ´ng tÃ¬m tháº¥y bÃ i bÃ¡o vá»›i id: " + id));
+        return toNewsResponse(news);
     }
 
-    public ResponseEntity<ApiResponse<Object>> deleteNews(Long id) {
+    public void deleteNews(Long id) {
         News news = newsRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy bài báo với id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("KhÃ´ng tÃ¬m tháº¥y bÃ i bÃ¡o vá»›i id: " + id));
 
         List<ImageKit> listNewsImages = imageKitRepo.findByNewsId(id);
         for (ImageKit imageInfo : listNewsImages) {
             imageKitService.deleteImage(imageInfo.getUrl());
         }
         newsRepository.delete(news);
-        return ResponseEntity.ok(ApiResponse.builder()
-                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Xóa bài báo thành công")
-                .data(null)
-                .build());
     }
 
+    private NewsResponse toNewsResponse(News news) {
+        return new NewsResponse(
+                news.getId(),
+                news.getTitle(),
+                news.getDescription(),
+                news.getWriter(),
+                news.getThumbnail(),
+                news.getContent(),
+                news.getCreatedAt(),
+                news.getSubCategory() != null ? news.getSubCategory().getId() : null,
+                news.getSubCategory() != null ? news.getSubCategory().getName() : null,
+                news.getSubCategory() != null && news.getSubCategory().getCategory() != null ? news.getSubCategory().getCategory().getId() : null,
+                news.getSubCategory() != null && news.getSubCategory().getCategory() != null ? news.getSubCategory().getCategory().getName() : null
+        );
+    }
 }

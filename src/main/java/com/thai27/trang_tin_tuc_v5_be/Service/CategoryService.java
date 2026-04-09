@@ -1,15 +1,13 @@
 package com.thai27.trang_tin_tuc_v5_be.Service;
 
+import com.thai27.trang_tin_tuc_v5_be.DTO.Request.CategoryRequest;
+import com.thai27.trang_tin_tuc_v5_be.DTO.Response.CategoryResponse;
 import com.thai27.trang_tin_tuc_v5_be.Entity.Category;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
-
 import com.thai27.trang_tin_tuc_v5_be.Repository.CategoryRepo;
-import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
-import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,74 +18,56 @@ public class CategoryService {
 
     private final CategoryRepo categoryRepo;
 
-    public ResponseEntity<ApiResponse<Page<Category>>> searchAllCategory(String search, int pageNum, int pageSize) {
+    public Page<CategoryResponse> searchAllCategory(String search, int pageNum, int pageSize) {
         PageRequest searchCategoryPaging = PageRequest.of(pageNum, pageSize);
         String searchLike = "%" + search + "%";
-        return ResponseEntity.ok(ApiResponse.<Page<Category>>builder()
-                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Lấy dữ liệu thành công")
-                .data(categoryRepo.findAllByNameLikeIgnoreCaseOrderById(searchLike, searchCategoryPaging))
-                .build());
+        return categoryRepo
+                .findAllByNameLikeIgnoreCaseOrderById(searchLike, searchCategoryPaging)
+                .map(this::toCategoryResponse);
     }
 
-    public ResponseEntity<ApiResponse<List<Category>>> getAllCategory() {
-        return ResponseEntity.ok(ApiResponse.<List<Category>>builder()
-                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Lấy dữ liệu thành công")
-                .data(categoryRepo.findAll())
-                .build());
+    public List<CategoryResponse> getAllCategory() {
+        return categoryRepo.findAll().stream().map(this::toCategoryResponse).toList();
     }
 
-    public ResponseEntity<ApiResponse<Category>> addCategory(Category category) {
+    public CategoryResponse addCategory(CategoryRequest category) {
         Category addCategory = new Category();
         addCategory.setName(category.getName());
-        return ResponseEntity.ok(ApiResponse.<Category>builder()
-                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Thêm dữ liệu thành công")
-                .data(categoryRepo.save(addCategory))
-                .build());
+        addCategory.setIcon(category.getIcon());
+        return toCategoryResponse(categoryRepo.save(addCategory));
     }
 
-    public ResponseEntity<ApiResponse<Category>> editCategory(Long id, Category category) throws ResourceNotFoundException {
+    public CategoryResponse editCategory(Long id, CategoryRequest category) throws ResourceNotFoundException {
         if (id == null) {
-            throw new ResourceNotFoundException("ID không được để trống");
+            throw new ResourceNotFoundException("ID khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng");
         }
-        Category editCategory = categoryRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục với id:" + id));
+        Category editCategory = categoryRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("KhÃ´ng tÃ¬m tháº¥y danh má»¥c vá»›i id:" + id));
         editCategory.setName(category.getName());
+        editCategory.setIcon(category.getIcon());
         editCategory.setId(id);
-        return ResponseEntity.ok(ApiResponse.<Category>builder()
-                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Sửa dữ liệu thành công")
-                .data(categoryRepo.save(editCategory))
-                .build());
+        return toCategoryResponse(categoryRepo.save(editCategory));
     }
 
-    public ResponseEntity<ApiResponse<Category>> getById(Long id) throws ResourceNotFoundException {
+    public CategoryResponse getById(Long id) throws ResourceNotFoundException {
         if (id == null) {
-            throw new ResourceNotFoundException("ID không được để trống");
+            throw new ResourceNotFoundException("ID khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng");
         }
-        Category category = categoryRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục với id:" + id));
-        return ResponseEntity.ok(ApiResponse.<Category>builder()
-                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Lấy dữ liệu thành công")
-                .data(category)
-                .build());
+        Category category = categoryRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("KhÃ´ng tÃ¬m tháº¥y danh má»¥c vá»›i id:" + id));
+        return toCategoryResponse(category);
     }
 
-    public ResponseEntity<ApiResponse<Object>> deleteCategory(Long id) throws ResourceNotFoundException {
+    public void deleteCategory(Long id) throws ResourceNotFoundException {
         if (id == null) {
-            throw new ResourceNotFoundException("ID không được để trống");
+            throw new ResourceNotFoundException("ID khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng");
         }
-        Category deleteCategory = categoryRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục với id:" + id));
-        if (deleteCategory == null) {
-            throw new ResourceNotFoundException("Không tìm thấy danh mục");
-        }
+        Category deleteCategory = categoryRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("KhÃ´ng tÃ¬m tháº¥y danh má»¥c vá»›i id:" + id));
         categoryRepo.delete(deleteCategory);
-        return ResponseEntity.ok(ApiResponse.builder()
-                .responseCode(Constant.RESPONSE_CODE_SUCCESS)
-                .message("Xóa dữ liệu thành công")
-                .data(null)
-                .build());
     }
 
+    private CategoryResponse toCategoryResponse(Category category) {
+        return new CategoryResponse(category.getId(), category.getName(), category.getIcon());
+    }
 }
