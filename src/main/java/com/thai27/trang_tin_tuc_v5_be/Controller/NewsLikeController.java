@@ -2,7 +2,9 @@ package com.thai27.trang_tin_tuc_v5_be.Controller;
 
 import com.thai27.trang_tin_tuc_v5_be.Service.NewsLikeService;
 import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
+import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,35 +16,33 @@ public class NewsLikeController {
     private final NewsLikeService newsLikeService;
 
     @PostMapping("/{newsId}/like")
-    public ResponseEntity<ApiResponse<Object>> like(@PathVariable Long newsId, @RequestParam String username) {
+    public ResponseEntity<ApiResponse<Void>> like(@PathVariable Long newsId, @RequestParam String username) {
         newsLikeService.likeNews(username, newsId);
-        return ResponseEntity.ok(ApiResponse.builder()
-                .message("Da like bai bao")
-                .data(null)
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Void>builder()
+                .message("Like thành công")
                 .build());
     }
 
     @DeleteMapping("/{newsId}/unlike")
-    public ResponseEntity<ApiResponse<Object>> unlike(@PathVariable Long newsId, @RequestParam String username) {
+    public ResponseEntity<ApiResponse<Void>> unlike(@PathVariable Long newsId, @RequestParam String username) {
         newsLikeService.unlikeNews(username, newsId);
-        return ResponseEntity.ok(ApiResponse.builder()
-                .message("Da huy like bai bao")
-                .data(null)
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Void>builder()
+                .message("Hủy like thành công")
                 .build());
     }
 
     @GetMapping("/permit/{newsId}/count")
     public ResponseEntity<ApiResponse<Long>> countLikes(@PathVariable Long newsId) {
-        return ResponseEntity.ok(ApiResponse.<Long>builder()
-                .message("ÄÃ£ like bÃ i bÃ¡o")
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Long>builder()
+                .message(Constant.GET_DATA_SUCCESS)
                 .data(newsLikeService.countLikes(newsId))
                 .build());
     }
 
     @GetMapping("/{newsId}/is-like-by-user")
     public ResponseEntity<ApiResponse<Boolean>> isLikeByUser(@PathVariable Long newsId, @RequestParam String username) {
-        return ResponseEntity.ok(ApiResponse.<Boolean>builder()
-                .message("ÄÃ£ like bÃ i bÃ¡o")
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Boolean>builder()
+                .message(Constant.GET_DATA_SUCCESS)
                 .data(newsLikeService.isLikedByUser(username, newsId))
                 .build());
     }

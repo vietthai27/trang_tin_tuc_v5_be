@@ -23,4 +23,10 @@ public class Constant {
     public static final String NEWS_PAGE_PATH = "news-page";
     public static final String NEWS_PAGE_ICON = "news";
 
+    public static final String EDITED = "Sửa thành công";
+    public static final String ADDED = "Thêm thành công";
+    public static final String DELETED = "Xóa thành công";
+    public static final String GET_DATA_SUCCESS = "Lấy dữ liệu thành công";
+    public static final String UPLOADED = "Upload thành công";
+
 }

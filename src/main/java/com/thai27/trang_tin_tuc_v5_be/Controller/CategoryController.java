@@ -5,6 +5,7 @@ import com.thai27.trang_tin_tuc_v5_be.DTO.Response.CategoryResponse;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
 import com.thai27.trang_tin_tuc_v5_be.Service.CategoryService;
 import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
+import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -26,24 +27,24 @@ public class CategoryController {
             @RequestParam(defaultValue = "0") int pageNum,
             @RequestParam(defaultValue = "10") int pageSize
     ) {
-        return ResponseEntity.ok(ApiResponse.<Page<CategoryResponse>>builder()
-                .message("Láº¥y dá»¯ liá»‡u thÃ nh cÃ´ng")
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Page<CategoryResponse>>builder()
+                .message(Constant.GET_DATA_SUCCESS)
                 .data(categoryService.searchAllCategory(search, pageNum, pageSize))
                 .build());
     }
 
     @GetMapping("/get-by-category-id/{id}")
     public ResponseEntity<ApiResponse<CategoryResponse>> getByCategoryId(@PathVariable Long id) throws ResourceNotFoundException {
-        return ResponseEntity.ok(ApiResponse.<CategoryResponse>builder()
-                .message("Láº¥y dá»¯ liá»‡u thÃ nh cÃ´ng")
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<CategoryResponse>builder()
+                .message(Constant.GET_DATA_SUCCESS)
                 .data(categoryService.getById(id))
                 .build());
     }
 
     @GetMapping("/permit/get-all")
     public ResponseEntity<ApiResponse<List<CategoryResponse>>> getAllCategory() {
-        return ResponseEntity.ok(ApiResponse.<List<CategoryResponse>>builder()
-                .message("Láº¥y dá»¯ liá»‡u thÃ nh cÃ´ng")
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<List<CategoryResponse>>builder()
+                .message(Constant.GET_DATA_SUCCESS)
                 .data(categoryService.getAllCategory())
                 .build());
     }
@@ -51,7 +52,7 @@ public class CategoryController {
     @PostMapping
     public ResponseEntity<ApiResponse<CategoryResponse>> addCategory(@RequestBody CategoryRequest category) {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.<CategoryResponse>builder()
-                .message("ThÃªm dá»¯ liá»‡u thÃ nh cÃ´ng")
+                .message(Constant.ADDED)
                 .data(categoryService.addCategory(category))
                 .build());
     }
@@ -61,26 +62,25 @@ public class CategoryController {
             @PathVariable Long id,
             @RequestBody CategoryRequest category
     ) throws ResourceNotFoundException {
-        return ResponseEntity.ok(ApiResponse.<CategoryResponse>builder()
-                .message("Sá»­a dá»¯ liá»‡u thÃ nh cÃ´ng")
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<CategoryResponse>builder()
+                .message(Constant.EDITED)
                 .data(categoryService.editCategory(id, category))
                 .build());
     }
 
     @GetMapping("/get-by-id/{id}")
     public ResponseEntity<ApiResponse<CategoryResponse>> getById(@PathVariable Long id) throws ResourceNotFoundException {
-        return ResponseEntity.ok(ApiResponse.<CategoryResponse>builder()
-                .message("Láº¥y dá»¯ liá»‡u thÃ nh cÃ´ng")
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<CategoryResponse>builder()
+                .message(Constant.GET_DATA_SUCCESS)
                 .data(categoryService.getById(id))
                 .build());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Object>> deleteCategory(@PathVariable Long id) throws ResourceNotFoundException {
+    public ResponseEntity<ApiResponse<Void>> deleteCategory(@PathVariable Long id) throws ResourceNotFoundException {
         categoryService.deleteCategory(id);
-        return ResponseEntity.ok(ApiResponse.builder()
-                .message("XÃ³a dá»¯ liá»‡u thÃ nh cÃ´ng")
-                .data(null)
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Void>builder()
+                .message(Constant.DELETED)
                 .build());
     }
 }

@@ -1,7 +1,8 @@
 package com.thai27.trang_tin_tuc_v5_be.Service;
 
+import com.thai27.trang_tin_tuc_v5_be.DTO.Mapper.CommentResponseMapper;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Request.CommentRequest;
-import com.thai27.trang_tin_tuc_v5_be.DTO.Response.CommentResponseDTO;
+import com.thai27.trang_tin_tuc_v5_be.DTO.Response.CommentResponse;
 import com.thai27.trang_tin_tuc_v5_be.Entity.Comment;
 import com.thai27.trang_tin_tuc_v5_be.Entity.News;
 import com.thai27.trang_tin_tuc_v5_be.Entity.TrangTinTucUser;
@@ -24,13 +25,14 @@ public class CommentService {
     private final CommentRepository commentRepo;
     private final NewsRepo newsRepo;
     private final TrangTinTucUserRepo userRepo;
+    private final CommentResponseMapper commentResponseMapper;
 
     public void addComment(String username, Long newsId, CommentRequest request) {
         TrangTinTucUser user = userRepo.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User khÃ´ng tá»“n táº¡i"));
+                .orElseThrow(() -> new ResourceNotFoundException("User không tồn tại"));
 
         News news = newsRepo.findById(newsId)
-                .orElseThrow(() -> new ResourceNotFoundException("News khÃ´ng tá»“n táº¡i"));
+                .orElseThrow(() -> new ResourceNotFoundException("Bài báo không tồn tại"));
 
         Comment comment = new Comment();
         comment.setContent(request.getContent());
@@ -41,16 +43,16 @@ public class CommentService {
 
     public void editComment(Long commentId, String username, Long newsId, CommentRequest request) {
         TrangTinTucUser user = userRepo.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User khÃ´ng tá»“n táº¡i"));
+                .orElseThrow(() -> new ResourceNotFoundException("User không tồn tại"));
 
         Comment comment = commentRepo.findById(commentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Comment khÃ´ng tá»“n táº¡i"));
+                .orElseThrow(() -> new ResourceNotFoundException("Comment không tồn tại"));
 
         if (!comment.getUser().getId().equals(user.getId())) {
-            throw new ForbiddenException("KhÃ´ng cÃ³ quyá»n sá»­a comment nÃ y");
+            throw new ForbiddenException("Không khớp user");
         }
         if (!comment.getNews().getId().equals(newsId)) {
-            throw new ForbiddenException("Comment khÃ´ng thuá»™c bÃ i viáº¿t nÃ y");
+            throw new ForbiddenException("Không khớp bài báo");
         }
 
         comment.setContent(request.getContent());
@@ -58,20 +60,11 @@ public class CommentService {
 
     public void deleteComment(Long commentId) {
         Comment comment = commentRepo.findById(commentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Comment khÃ´ng tá»“n táº¡i"));
+                .orElseThrow(() -> new ResourceNotFoundException("Comment không tồn tại"));
         commentRepo.delete(comment);
     }
 
-    public List<CommentResponseDTO> getCommentsByNews(Long newsId) {
-        return commentRepo.findByNews_IdOrderByCreatedAtDesc(newsId)
-                .stream()
-                .map(c -> new CommentResponseDTO(
-                        c.getId(),
-                        c.getContent(),
-                        c.getCreatedAt(),
-                        c.getUser().getId(),
-                        c.getUser().getUsername()
-                ))
-                .toList();
+    public List<CommentResponse> getCommentsByNews(Long newsId) {
+        return commentRepo.findByNews_IdOrderByCreatedAtDesc(newsId).stream().map(commentResponseMapper::mapToDto).toList();
     }
 }

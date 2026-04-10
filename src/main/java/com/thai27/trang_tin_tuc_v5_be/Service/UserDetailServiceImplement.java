@@ -1,6 +1,6 @@
 package com.thai27.trang_tin_tuc_v5_be.Service;
 
-import com.thai27.trang_tin_tuc_v5_be.DTO.Response.UserDetail;
+import com.thai27.trang_tin_tuc_v5_be.DTO.UserDetail;
 import com.thai27.trang_tin_tuc_v5_be.Entity.TrangTinTucUser;
 import com.thai27.trang_tin_tuc_v5_be.Repository.TrangTinTucUserRepo;
 import lombok.RequiredArgsConstructor;

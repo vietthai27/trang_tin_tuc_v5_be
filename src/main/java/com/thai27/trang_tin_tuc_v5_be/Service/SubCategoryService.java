@@ -27,7 +27,7 @@ public class SubCategoryService {
             throw new ResourceNotFoundException("ID danh má»¥c khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng");
         }
         Category category = categoryRepo.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("KhÃ´ng tÃ¬m tháº¥y danh má»¥c vá»›i id: " + categoryId));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy bản ghi ID: " + categoryId));
 
         SubCategory addSubCategory = new SubCategory();
         addSubCategory.setName(subCategory.getName());
@@ -38,7 +38,7 @@ public class SubCategoryService {
 
     public SubCategoryResponse editSubCategory(Long id, SubCategoryRequest subCategory, Long categoryId) throws ResourceNotFoundException {
         if (id == null) {
-            throw new ResourceNotFoundException("ID khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng");
+            throw new ResourceNotFoundException("ID không được để trống");
         }
         SubCategory editSubCategory = subCategoryRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("KhÃ´ng tÃ¬m tháº¥y danh má»¥c con vá»›i id: " + id));
@@ -51,7 +51,7 @@ public class SubCategoryService {
         }
         if (categoryId != null) {
             Category category = categoryRepo.findById(categoryId)
-                    .orElseThrow(() -> new ResourceNotFoundException("KhÃ´ng tÃ¬m tháº¥y danh má»¥c vá»›i id: " + categoryId));
+                    .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy bản ghi ID: " + categoryId));
             editSubCategory.setCategory(category);
         }
 
@@ -61,7 +61,7 @@ public class SubCategoryService {
 
     public void deleteSubCategory(Long id) throws ResourceNotFoundException {
         if (id == null) {
-            throw new ResourceNotFoundException("ID khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng");
+            throw new ResourceNotFoundException("ID không được để trống");
         }
         SubCategory deleteSubCategory = subCategoryRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("KhÃ´ng tÃ¬m tháº¥y danh má»¥c con vá»›i id: " + id));
@@ -70,7 +70,7 @@ public class SubCategoryService {
 
     public SubCategoryResponse getById(Long id) throws ResourceNotFoundException {
         if (id == null) {
-            throw new ResourceNotFoundException("ID khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng");
+            throw new ResourceNotFoundException("ID không được để trống");
         }
         SubCategory subCategory = subCategoryRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("KhÃ´ng tÃ¬m tháº¥y danh má»¥c con vá»›i id: " + id));
@@ -90,7 +90,7 @@ public class SubCategoryService {
             throw new ResourceNotFoundException("ID danh má»¥c khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng");
         }
         Category category = categoryRepo.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("KhÃ´ng tÃ¬m tháº¥y danh má»¥c vá»›i id: " + categoryId));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy bản ghi ID: " + categoryId));
         List<SubCategory> subCategories = subCategoryRepo.findByCategory(category);
         CategoryNewResponse categoryNewResponse = new CategoryNewResponse();
         categoryNewResponse.setCategoryName(category.getName());

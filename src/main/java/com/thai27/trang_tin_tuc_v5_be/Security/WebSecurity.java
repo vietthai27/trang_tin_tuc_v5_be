@@ -55,7 +55,8 @@ public class WebSecurity {
 
 		configuration.setAllowedOrigins(List.of(
 				"http://localhost:5173",
-				"https://trang-tin-tuc-v5-fe.onrender.com"
+				"https://trang-tin-tuc-v5-fe.onrender.com",
+				"http://10.15.82.32:5173"
 		));
 
 		configuration.setAllowedMethods(List.of(

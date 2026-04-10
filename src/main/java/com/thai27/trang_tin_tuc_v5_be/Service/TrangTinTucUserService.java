@@ -4,13 +4,12 @@ import com.thai27.trang_tin_tuc_v5_be.DTO.Request.ChangeModerRoleRequest;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Request.LoginRequest;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Request.UserChangePasswordRequest;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Request.UserResetPasswordRequest;
-import com.thai27.trang_tin_tuc_v5_be.DTO.Request.UserSignupRequestDTO;
+import com.thai27.trang_tin_tuc_v5_be.DTO.Request.UserSignupRequest;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Request.UserValidateSignupRequest;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Response.LoginResponse;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Response.UserResponse;
 import com.thai27.trang_tin_tuc_v5_be.Entity.Role;
 import com.thai27.trang_tin_tuc_v5_be.Entity.TrangTinTucUser;
-import com.thai27.trang_tin_tuc_v5_be.Entity.UserSignupRequest;
 import com.thai27.trang_tin_tuc_v5_be.Exception.BadRequestException;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ConflictException;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
@@ -67,7 +66,7 @@ public class TrangTinTucUserService {
     }
 
     public void userSignup(UserValidateSignupRequest request) {
-        UserSignupRequest userSignupRequest = userSignupRequestRepo.findByRequestCode(request.getValidateCode())
+        com.thai27.trang_tin_tuc_v5_be.Entity.UserSignupRequest userSignupRequest = userSignupRequestRepo.findByRequestCode(request.getValidateCode())
                 .orElseThrow(() -> new ResourceNotFoundException("MÃ£ xÃ¡c thá»±c " + request.getValidateCode() + " khÃ´ng tá»“n táº¡i trong há»‡ thá»‘ng"));
 
         if (!userSignupRequestRepo.getCodeByEmail(request.getEmail()).equals(request.getValidateCode())) {
@@ -93,7 +92,7 @@ public class TrangTinTucUserService {
         }
     }
 
-    public void createSignupRequest(UserSignupRequestDTO userSignupRequest) {
+    public void createSignupRequest(UserSignupRequest userSignupRequest) {
         if (trangTinTucUserRepo.findByUsername(userSignupRequest.getUsername()).isPresent()) {
             throw new ConflictException("TÃªn ngÆ°á»i dÃ¹ng " + userSignupRequest.getUsername() + " Ä‘Ã£ tá»“n táº¡i");
         }
@@ -101,7 +100,7 @@ public class TrangTinTucUserService {
             throw new ConflictException("Email " + userSignupRequest.getEmail() + " Ä‘Ã£ tá»“n táº¡i");
         }
 
-        UserSignupRequest createUser = new UserSignupRequest();
+        com.thai27.trang_tin_tuc_v5_be.Entity.UserSignupRequest createUser = new com.thai27.trang_tin_tuc_v5_be.Entity.UserSignupRequest();
         createUser.setUsername(userSignupRequest.getUsername());
         createUser.setPassword(userSignupRequest.getPassword());
         createUser.setEmail(userSignupRequest.getEmail());

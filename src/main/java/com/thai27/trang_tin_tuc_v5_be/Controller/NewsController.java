@@ -3,12 +3,13 @@ package com.thai27.trang_tin_tuc_v5_be.Controller;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Request.NewsCreateRequest;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Response.GetNewsByIdResponse;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Response.ImageKitResponse;
-import com.thai27.trang_tin_tuc_v5_be.DTO.Response.NewsListDTO;
+import com.thai27.trang_tin_tuc_v5_be.DTO.Response.NewsListResponse;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Response.NewsResponse;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
 import com.thai27.trang_tin_tuc_v5_be.Service.ImageKitService;
 import com.thai27.trang_tin_tuc_v5_be.Service.NewsService;
 import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
+import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,99 +32,95 @@ public class NewsController {
     private final ImageKitService imageKitService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Object>> create(@Valid @RequestBody NewsCreateRequest request) {
+    public ResponseEntity<ApiResponse<Void>> create(@Valid @RequestBody NewsCreateRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         newsService.create(request, username);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.builder()
-                .message("ThÃªm bÃ i bÃ¡o thÃ nh cÃ´ng")
-                .data(null)
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.<Void>builder()
+                .message(Constant.ADDED)
                 .build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Object>> edit(
+    public ResponseEntity<ApiResponse<Void>> edit(
             @PathVariable Long id,
             @Valid @RequestBody NewsCreateRequest request
     ) throws ResourceNotFoundException {
         newsService.edit(id, request);
-        return ResponseEntity.ok(ApiResponse.builder()
-                .message("Sá»­a bÃ i bÃ¡o thÃ nh cÃ´ng")
-                .data(null)
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Void>builder()
+                .message(Constant.EDITED)
                 .build());
     }
 
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse<Page<NewsListDTO>>> searchCategory(
+    public ResponseEntity<ApiResponse<Page<NewsListResponse>>> searchCategory(
             @RequestParam(defaultValue = "") String title,
             @RequestParam(defaultValue = "0") int pageNum,
             @RequestParam(defaultValue = "10") int pageSize
     ) {
-        return ResponseEntity.ok(ApiResponse.<Page<NewsListDTO>>builder()
-                .message("Láº¥y dá»¯ liá»‡u thÃ nh cÃ´ng")
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Page<NewsListResponse>>builder()
+                .message(Constant.GET_DATA_SUCCESS)
                 .data(newsService.searchAllNews(title, pageNum, pageSize))
                 .build());
     }
 
     @PostMapping("/imagekit/upload")
     public ResponseEntity<ApiResponse<ImageKitResponse>> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
-        return ResponseEntity.ok(ApiResponse.<ImageKitResponse>builder()
-                .message("Upload áº£nh thÃ nh cÃ´ng")
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<ImageKitResponse>builder()
+                .message(Constant.UPLOADED)
                 .data(imageKitService.upload(file))
                 .build());
     }
 
     @DeleteMapping("/imagekit")
-    public ResponseEntity<ApiResponse<Object>> deleteImage(@RequestParam String url) {
+    public ResponseEntity<ApiResponse<Void>> deleteImage(@RequestParam String url) {
         imageKitService.deleteImage(url);
-        return ResponseEntity.ok(ApiResponse.builder()
-                .message("XÃ³a áº£nh thÃ nh cÃ´ng")
-                .data(null)
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Void>builder()
+                .message(Constant.DELETED)
                 .build());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Object>> deleteNews(@PathVariable Long id) throws ResourceNotFoundException {
+    public ResponseEntity<ApiResponse<Void>> deleteNews(@PathVariable Long id) throws ResourceNotFoundException {
         newsService.deleteNews(id);
-        return ResponseEntity.ok(ApiResponse.builder()
-                .message("XÃ³a bÃ i bÃ¡o thÃ nh cÃ´ng")
-                .data(null)
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Void>builder()
+                .message(Constant.DELETED)
                 .build());
     }
 
     @GetMapping("/get-by-id/{id}")
     public ResponseEntity<ApiResponse<GetNewsByIdResponse>> getById(@PathVariable Long id) throws ResourceNotFoundException {
-        return ResponseEntity.ok(ApiResponse.<GetNewsByIdResponse>builder()
-                .message("Láº¥y dá»¯ liá»‡u thÃ nh cÃ´ng")
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<GetNewsByIdResponse>builder()
+                .message(Constant.GET_DATA_SUCCESS)
                 .data(newsService.getById(id))
                 .build());
     }
 
     @GetMapping("/permit/get-latest-news")
-    public ResponseEntity<ApiResponse<List<NewsListDTO>>> getLatestNews() {
-        return ResponseEntity.ok(ApiResponse.<List<NewsListDTO>>builder()
-                .message("Láº¥y dá»¯ liá»‡u thÃ nh cÃ´ng")
+    public ResponseEntity<ApiResponse<List<NewsListResponse>>> getLatestNews() {
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<List<NewsListResponse>>builder()
+                .message(Constant.GET_DATA_SUCCESS)
                 .data(newsService.getLatestNews())
                 .build());
     }
 
     @GetMapping("/permit/get-news-detail/{id}")
     public ResponseEntity<ApiResponse<NewsResponse>> getNewsDetail(@PathVariable Long id) throws ResourceNotFoundException {
-        return ResponseEntity.ok(ApiResponse.<NewsResponse>builder()
-                .message("Láº¥y dá»¯ liá»‡u thÃ nh cÃ´ng")
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<NewsResponse>builder()
+                .message(Constant.GET_DATA_SUCCESS)
                 .data(newsService.getNewsDetail(id))
                 .build());
     }
 
     @GetMapping("/permit/get-news-by-sub-category")
-    public ResponseEntity<ApiResponse<Page<NewsListDTO>>> getNewsBySubCategory(
+    public ResponseEntity<ApiResponse<Page<NewsListResponse>>> getNewsBySubCategory(
             @RequestParam(defaultValue = "") String title,
             @RequestParam(defaultValue = "0") Long categoryId,
             @RequestParam(defaultValue = "0") int pageNum,
             @RequestParam(defaultValue = "10") int pageSize
     ) {
-        return ResponseEntity.ok(ApiResponse.<Page<NewsListDTO>>builder()
-                .message("Láº¥y dá»¯ liá»‡u thÃ nh cÃ´ng")
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Page<NewsListResponse>>builder()
+                .message(Constant.GET_DATA_SUCCESS)
                 .data(newsService.getNewsBySubCategory(title, categoryId, pageNum, pageSize))
                 .build());
     }

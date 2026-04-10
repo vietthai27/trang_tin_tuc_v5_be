@@ -28,7 +28,7 @@ public class ManagementService {
 
     public List<ManagementResponse> getAllManagement(String username) throws ResourceNotFoundException {
         TrangTinTucUser user = trangTinTucUserRepo.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User khÃ´ng tá»“n táº¡i"));
+                .orElseThrow(() -> new ResourceNotFoundException("User không tồn tại"));
 
         return user.getRoles().stream()
                 .flatMap(role -> role.getManagements().stream())
@@ -57,7 +57,7 @@ public class ManagementService {
 
     public ManagementResponse getById(Long id) throws ResourceNotFoundException {
         if (id == null) {
-            throw new ResourceNotFoundException("ID khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng");
+            throw new ResourceNotFoundException("ID không được để trống");
         }
         Management management = managementRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("KhÃ´ng tÃ¬m tháº¥y quáº£n lÃ½ vá»›i id: " + id));
@@ -67,7 +67,7 @@ public class ManagementService {
     @Transactional
     public ManagementResponse editManagement(Long id, ManagementRequest request, List<Long> roleIds) throws ResourceNotFoundException {
         if (id == null) {
-            throw new ResourceNotFoundException("ID khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng");
+            throw new ResourceNotFoundException("ID không được để trống");
         }
         Management management = managementRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("KhÃ´ng tÃ¬m tháº¥y quáº£n lÃ½ vá»›i id: " + id));
@@ -99,7 +99,7 @@ public class ManagementService {
 
     public void deleteManagement(Long id) throws ResourceNotFoundException {
         if (id == null) {
-            throw new ResourceNotFoundException("ID khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng");
+            throw new ResourceNotFoundException("ID không được để trống");
         }
         Management management = managementRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("KhÃ´ng tÃ¬m tháº¥y quáº£n lÃ½ vá»›i id: " + id));

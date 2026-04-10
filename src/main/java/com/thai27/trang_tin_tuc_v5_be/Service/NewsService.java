@@ -2,7 +2,7 @@ package com.thai27.trang_tin_tuc_v5_be.Service;
 
 import com.thai27.trang_tin_tuc_v5_be.DTO.Request.NewsCreateRequest;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Response.GetNewsByIdResponse;
-import com.thai27.trang_tin_tuc_v5_be.DTO.Response.NewsListDTO;
+import com.thai27.trang_tin_tuc_v5_be.DTO.Response.NewsListResponse;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Response.NewsResponse;
 import com.thai27.trang_tin_tuc_v5_be.Entity.ImageKit;
 import com.thai27.trang_tin_tuc_v5_be.Entity.News;
@@ -12,6 +12,8 @@ import com.thai27.trang_tin_tuc_v5_be.Repository.ImageKitRepo;
 import com.thai27.trang_tin_tuc_v5_be.Repository.NewsRepo;
 import com.thai27.trang_tin_tuc_v5_be.Repository.SubCategoryRepo;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 public class NewsService {
+
+    private static final Logger log = LoggerFactory.getLogger(NewsService.class);
 
     private final NewsRepo newsRepository;
     private final SubCategoryRepo subCategoryRepo;
@@ -78,22 +82,22 @@ public class NewsService {
         }
     }
 
-    public Page<NewsListDTO> searchAllNews(String title, int pageNum, int pageSize) {
+    public Page<NewsListResponse> searchAllNews(String title, int pageNum, int pageSize) {
         PageRequest searchNewsPaging = PageRequest.of(pageNum, pageSize);
         return newsRepository.findByTitleContainingIgnoreCaseOrderByCreatedAtDesc(title, searchNewsPaging);
     }
 
-    public Page<NewsListDTO> getNewsBySubCategory(String title, Long categoryId, int pageNum, int pageSize) {
+    public Page<NewsListResponse> getNewsBySubCategory(String title, Long categoryId, int pageNum, int pageSize) {
         PageRequest searchNewsPaging = PageRequest.of(pageNum, pageSize);
         return newsRepository.findByTitleContainingIgnoreCaseAndSubCategory_IdOrderByCreatedAtDesc(title, categoryId, searchNewsPaging);
     }
 
-    public List<NewsListDTO> getLatestNews() {
+    public List<NewsListResponse> getLatestNews() {
         return newsRepository.findTop5ByOrderByIdDesc();
     }
 
     public GetNewsByIdResponse getById(Long id) {
-        News news = newsRepository.findById(id)
+        News news = newsRepository.findDetailById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("KhÃ´ng tÃ¬m tháº¥y bÃ i bÃ¡o vá»›i id: " + id));
         List<ImageKit> listNewsImages = imageKitRepo.findByNewsId(id);
         GetNewsByIdResponse getNewsByIdResponse = new GetNewsByIdResponse();
@@ -105,7 +109,7 @@ public class NewsService {
     }
 
     public NewsResponse getNewsDetail(Long id) {
-        News news = newsRepository.findById(id)
+        News news = newsRepository.findDetailById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("KhÃ´ng tÃ¬m tháº¥y bÃ i bÃ¡o vá»›i id: " + id));
         return toNewsResponse(news);
     }
@@ -122,7 +126,9 @@ public class NewsService {
     }
 
     private NewsResponse toNewsResponse(News news) {
-        return new NewsResponse(
+        long start = System.currentTimeMillis();
+        log.info("myFunction START");
+        NewsResponse testst =  new NewsResponse(
                 news.getId(),
                 news.getTitle(),
                 news.getDescription(),
@@ -135,5 +141,8 @@ public class NewsService {
                 news.getSubCategory() != null && news.getSubCategory().getCategory() != null ? news.getSubCategory().getCategory().getId() : null,
                 news.getSubCategory() != null && news.getSubCategory().getCategory() != null ? news.getSubCategory().getCategory().getName() : null
         );
+        long end = System.currentTimeMillis();
+        log.info("myFunction END - took {} ms", (end - start));
+        return testst;
     }
 }
