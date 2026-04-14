@@ -1,5 +1,6 @@
 package com.thai27.trang_tin_tuc_v5_be.Controller;
 
+import com.thai27.trang_tin_tuc_v5_be.Service.MessageService;
 import com.thai27.trang_tin_tuc_v5_be.Service.NewsLikeService;
 import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
 import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 public class NewsLikeController {
 
     private final NewsLikeService newsLikeService;
+
+    private final MessageService messageService;
 
     @PostMapping("/{newsId}/like")
     public ResponseEntity<ApiResponse<Void>> like(@PathVariable Long newsId, @RequestParam String username) {
@@ -34,7 +37,7 @@ public class NewsLikeController {
     @GetMapping("/permit/{newsId}/count")
     public ResponseEntity<ApiResponse<Long>> countLikes(@PathVariable Long newsId) {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Long>builder()
-                .message(Constant.GET_DATA_SUCCESS)
+                .message(messageService.getMessage("get.success"))
                 .data(newsLikeService.countLikes(newsId))
                 .build());
     }
@@ -42,7 +45,7 @@ public class NewsLikeController {
     @GetMapping("/{newsId}/is-like-by-user")
     public ResponseEntity<ApiResponse<Boolean>> isLikeByUser(@PathVariable Long newsId, @RequestParam String username) {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Boolean>builder()
-                .message(Constant.GET_DATA_SUCCESS)
+                .message(messageService.getMessage("get.success"))
                 .data(newsLikeService.isLikedByUser(username, newsId))
                 .build());
     }

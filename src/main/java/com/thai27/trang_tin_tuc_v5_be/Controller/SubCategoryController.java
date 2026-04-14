@@ -4,6 +4,7 @@ import com.thai27.trang_tin_tuc_v5_be.DTO.Request.SubCategoryRequest;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Response.CategoryNewResponse;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Response.SubCategoryResponse;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
+import com.thai27.trang_tin_tuc_v5_be.Service.MessageService;
 import com.thai27.trang_tin_tuc_v5_be.Service.SubCategoryService;
 import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
 import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
@@ -20,6 +21,8 @@ public class SubCategoryController {
 
     private final SubCategoryService subCategoryService;
 
+    private final MessageService messageService;
+
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<Page<SubCategoryResponse>>> searchSubCategory(
             @RequestParam(defaultValue = "") String search,
@@ -28,7 +31,7 @@ public class SubCategoryController {
             @RequestParam(defaultValue = "10") int pageSize
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Page<SubCategoryResponse>>builder()
-                .message(Constant.GET_DATA_SUCCESS)
+                .message(messageService.getMessage("get.success"))
                 .data(subCategoryService.searchAllSubCategory(search, categoryId, pageNum, pageSize))
                 .build());
     }
@@ -36,7 +39,7 @@ public class SubCategoryController {
     @GetMapping("/by-category/{categoryId}")
     public ResponseEntity<ApiResponse<CategoryNewResponse>> getSubCategoriesByCategoryId(@PathVariable Long categoryId) throws ResourceNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<CategoryNewResponse>builder()
-                .message(Constant.GET_DATA_SUCCESS)
+                .message(messageService.getMessage("get.success"))
                 .data(subCategoryService.getSubCategoriesByCategoryId(categoryId))
                 .build());
     }
@@ -44,7 +47,7 @@ public class SubCategoryController {
     @GetMapping("/permit/by-category/{categoryId}")
     public ResponseEntity<ApiResponse<CategoryNewResponse>> getSubCategoriesByCategoryIdPermit(@PathVariable Long categoryId) throws ResourceNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<CategoryNewResponse>builder()
-                .message(Constant.GET_DATA_SUCCESS)
+                .message(messageService.getMessage("get.success"))
                 .data(subCategoryService.getSubCategoriesByCategoryId(categoryId))
                 .build());
     }
@@ -55,7 +58,7 @@ public class SubCategoryController {
             @RequestParam Long categoryId
     ) throws ResourceNotFoundException {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.<SubCategoryResponse>builder()
-                .message(Constant.ADDED)
+                .message(messageService.getMessage("add.success"))
                 .data(subCategoryService.addSubCategory(subCategory, categoryId))
                 .build());
     }
@@ -67,7 +70,7 @@ public class SubCategoryController {
             @RequestParam(required = false) Long categoryId
     ) throws ResourceNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<SubCategoryResponse>builder()
-                .message(Constant.EDITED)
+                .message(messageService.getMessage("edit.success"))
                 .data(subCategoryService.editSubCategory(id, subCategory, categoryId))
                 .build());
     }
@@ -75,7 +78,7 @@ public class SubCategoryController {
     @GetMapping("/get-by-id/{id}")
     public ResponseEntity<ApiResponse<SubCategoryResponse>> getById(@PathVariable Long id) throws ResourceNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<SubCategoryResponse>builder()
-                .message(Constant.GET_DATA_SUCCESS)
+                .message(messageService.getMessage("get.success"))
                 .data(subCategoryService.getById(id))
                 .build());
     }
@@ -84,7 +87,7 @@ public class SubCategoryController {
     public ResponseEntity<ApiResponse<Void>> deleteSubCategory(@PathVariable Long id) throws ResourceNotFoundException {
         subCategoryService.deleteSubCategory(id);
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Void>builder()
-                .message(Constant.DELETED)
+                .message(messageService.getMessage("delete.success"))
                 .build());
     }
 }

@@ -1,4 +1,4 @@
-package com.thai27.trang_tin_tuc_v5_be.Security;
+package com.thai27.trang_tin_tuc_v5_be.Config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

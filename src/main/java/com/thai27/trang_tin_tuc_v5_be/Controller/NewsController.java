@@ -7,6 +7,7 @@ import com.thai27.trang_tin_tuc_v5_be.DTO.Response.NewsListResponse;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Response.NewsResponse;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
 import com.thai27.trang_tin_tuc_v5_be.Service.ImageKitService;
+import com.thai27.trang_tin_tuc_v5_be.Service.MessageService;
 import com.thai27.trang_tin_tuc_v5_be.Service.NewsService;
 import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
 import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
@@ -29,7 +30,10 @@ import java.util.List;
 public class NewsController {
 
     private final NewsService newsService;
+    
     private final ImageKitService imageKitService;
+
+    private final MessageService messageService;
 
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> create(@Valid @RequestBody NewsCreateRequest request) {
@@ -37,7 +41,7 @@ public class NewsController {
         String username = authentication.getName();
         newsService.create(request, username);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.<Void>builder()
-                .message(Constant.ADDED)
+                .message(messageService.getMessage("add.success"))
                 .build());
     }
 
@@ -48,7 +52,7 @@ public class NewsController {
     ) throws ResourceNotFoundException {
         newsService.edit(id, request);
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Void>builder()
-                .message(Constant.EDITED)
+                .message(messageService.getMessage("edit.success"))
                 .build());
     }
 
@@ -59,7 +63,7 @@ public class NewsController {
             @RequestParam(defaultValue = "10") int pageSize
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Page<NewsListResponse>>builder()
-                .message(Constant.GET_DATA_SUCCESS)
+                .message(messageService.getMessage("get.success"))
                 .data(newsService.searchAllNews(title, pageNum, pageSize))
                 .build());
     }
@@ -67,7 +71,7 @@ public class NewsController {
     @PostMapping("/imagekit/upload")
     public ResponseEntity<ApiResponse<ImageKitResponse>> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<ImageKitResponse>builder()
-                .message(Constant.UPLOADED)
+                .message(messageService.getMessage("upload.success"))
                 .data(imageKitService.upload(file))
                 .build());
     }
@@ -76,7 +80,7 @@ public class NewsController {
     public ResponseEntity<ApiResponse<Void>> deleteImage(@RequestParam String url) {
         imageKitService.deleteImage(url);
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Void>builder()
-                .message(Constant.DELETED)
+                .message(messageService.getMessage("delete.success"))
                 .build());
     }
 
@@ -84,14 +88,14 @@ public class NewsController {
     public ResponseEntity<ApiResponse<Void>> deleteNews(@PathVariable Long id) throws ResourceNotFoundException {
         newsService.deleteNews(id);
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Void>builder()
-                .message(Constant.DELETED)
+                .message(messageService.getMessage("delete.success"))
                 .build());
     }
 
     @GetMapping("/get-by-id/{id}")
     public ResponseEntity<ApiResponse<GetNewsByIdResponse>> getById(@PathVariable Long id) throws ResourceNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<GetNewsByIdResponse>builder()
-                .message(Constant.GET_DATA_SUCCESS)
+                .message(messageService.getMessage("get.success"))
                 .data(newsService.getById(id))
                 .build());
     }
@@ -99,7 +103,7 @@ public class NewsController {
     @GetMapping("/permit/get-latest-news")
     public ResponseEntity<ApiResponse<List<NewsListResponse>>> getLatestNews() {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<List<NewsListResponse>>builder()
-                .message(Constant.GET_DATA_SUCCESS)
+                .message(messageService.getMessage("get.success"))
                 .data(newsService.getLatestNews())
                 .build());
     }
@@ -107,7 +111,7 @@ public class NewsController {
     @GetMapping("/permit/get-news-detail/{id}")
     public ResponseEntity<ApiResponse<NewsResponse>> getNewsDetail(@PathVariable Long id) throws ResourceNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<NewsResponse>builder()
-                .message(Constant.GET_DATA_SUCCESS)
+                .message(messageService.getMessage("get.success"))
                 .data(newsService.getNewsDetail(id))
                 .build());
     }
@@ -120,7 +124,7 @@ public class NewsController {
             @RequestParam(defaultValue = "10") int pageSize
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Page<NewsListResponse>>builder()
-                .message(Constant.GET_DATA_SUCCESS)
+                .message(messageService.getMessage("get.success"))
                 .data(newsService.getNewsBySubCategory(title, categoryId, pageNum, pageSize))
                 .build());
     }

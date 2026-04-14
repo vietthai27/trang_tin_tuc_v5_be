@@ -5,6 +5,7 @@ import com.thai27.trang_tin_tuc_v5_be.DTO.Response.ManagementResponse;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Response.RoleResponse;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
 import com.thai27.trang_tin_tuc_v5_be.Service.ManagementService;
+import com.thai27.trang_tin_tuc_v5_be.Service.MessageService;
 import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
 import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,8 @@ public class ManagementController {
 
     private final ManagementService managementService;
 
+    private final MessageService messageService;
+
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<Page<ManagementResponse>>> searchManagement(
             @RequestParam(defaultValue = "") String search,
@@ -29,7 +32,7 @@ public class ManagementController {
             @RequestParam(defaultValue = "10") int pageSize
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Page<ManagementResponse>>builder()
-                .message(Constant.GET_DATA_SUCCESS)
+                .message(messageService.getMessage("get.success"))
                 .data(managementService.searchAllManagement(search, pageNum, pageSize))
                 .build());
     }
@@ -37,7 +40,7 @@ public class ManagementController {
     @GetMapping("/get-all-role")
     public ResponseEntity<ApiResponse<List<RoleResponse>>> getAllRole() {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<List<RoleResponse>>builder()
-                .message(Constant.GET_DATA_SUCCESS)
+                .message(messageService.getMessage("get.success"))
                 .data(managementService.getAllRole())
                 .build());
     }
@@ -45,7 +48,7 @@ public class ManagementController {
     @GetMapping
     public ResponseEntity<ApiResponse<List<ManagementResponse>>> getAllManagement(@RequestParam String username) throws ResourceNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<List<ManagementResponse>>builder()
-                .message(Constant.GET_DATA_SUCCESS)
+                .message(messageService.getMessage("get.success"))
                 .data(managementService.getAllManagement(username))
                 .build());
     }
@@ -56,7 +59,7 @@ public class ManagementController {
             @RequestParam(required = false) List<Long> roleIds
     ) throws ResourceNotFoundException {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.<ManagementResponse>builder()
-                .message(Constant.ADDED)
+                .message(messageService.getMessage("add.success"))
                 .data(managementService.addManagement(management, roleIds))
                 .build());
     }
@@ -64,7 +67,7 @@ public class ManagementController {
     @GetMapping("/get-by-id/{id}")
     public ResponseEntity<ApiResponse<ManagementResponse>> getById(@PathVariable Long id) throws ResourceNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<ManagementResponse>builder()
-                .message(Constant.GET_DATA_SUCCESS)
+                .message(messageService.getMessage("get.success"))
                 .data(managementService.getById(id))
                 .build());
     }
@@ -76,7 +79,7 @@ public class ManagementController {
             @RequestParam(required = false) List<Long> roleIds
     ) throws ResourceNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<ManagementResponse>builder()
-                .message(Constant.EDITED)
+                .message(messageService.getMessage("edit.success"))
                 .data(managementService.editManagement(id, management, roleIds))
                 .build());
     }
@@ -85,7 +88,7 @@ public class ManagementController {
     public ResponseEntity<ApiResponse<Void>> deleteManagement(@PathVariable Long id) throws ResourceNotFoundException {
         managementService.deleteManagement(id);
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Void>builder()
-                .message(Constant.DELETED)
+                .message(messageService.getMessage("delete.success"))
                 .build());
     }
 }

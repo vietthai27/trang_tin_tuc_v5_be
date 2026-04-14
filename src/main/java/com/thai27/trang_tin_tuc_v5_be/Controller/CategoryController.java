@@ -4,6 +4,7 @@ import com.thai27.trang_tin_tuc_v5_be.DTO.Request.CategoryRequest;
 import com.thai27.trang_tin_tuc_v5_be.DTO.Response.CategoryResponse;
 import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
 import com.thai27.trang_tin_tuc_v5_be.Service.CategoryService;
+import com.thai27.trang_tin_tuc_v5_be.Service.MessageService;
 import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
 import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,8 @@ import java.util.List;
 public class CategoryController {
 
     private final CategoryService categoryService;
+    
+    private final MessageService messageService;
 
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<Page<CategoryResponse>>> searchCategory(
@@ -28,7 +31,7 @@ public class CategoryController {
             @RequestParam(defaultValue = "10") int pageSize
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Page<CategoryResponse>>builder()
-                .message(Constant.GET_DATA_SUCCESS)
+                .message(messageService.getMessage("get.success"))
                 .data(categoryService.searchAllCategory(search, pageNum, pageSize))
                 .build());
     }
@@ -36,7 +39,7 @@ public class CategoryController {
     @GetMapping("/get-by-category-id/{id}")
     public ResponseEntity<ApiResponse<CategoryResponse>> getByCategoryId(@PathVariable Long id) throws ResourceNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<CategoryResponse>builder()
-                .message(Constant.GET_DATA_SUCCESS)
+                .message(messageService.getMessage("get.success"))
                 .data(categoryService.getById(id))
                 .build());
     }
@@ -44,7 +47,7 @@ public class CategoryController {
     @GetMapping("/permit/get-all")
     public ResponseEntity<ApiResponse<List<CategoryResponse>>> getAllCategory() {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<List<CategoryResponse>>builder()
-                .message(Constant.GET_DATA_SUCCESS)
+                .message(messageService.getMessage("get.success"))
                 .data(categoryService.getAllCategory())
                 .build());
     }
@@ -52,7 +55,7 @@ public class CategoryController {
     @PostMapping
     public ResponseEntity<ApiResponse<CategoryResponse>> addCategory(@RequestBody CategoryRequest category) {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.<CategoryResponse>builder()
-                .message(Constant.ADDED)
+                .message(messageService.getMessage("add.success"))
                 .data(categoryService.addCategory(category))
                 .build());
     }
@@ -63,7 +66,7 @@ public class CategoryController {
             @RequestBody CategoryRequest category
     ) throws ResourceNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<CategoryResponse>builder()
-                .message(Constant.EDITED)
+                .message(messageService.getMessage("edit.success"))
                 .data(categoryService.editCategory(id, category))
                 .build());
     }
@@ -71,7 +74,7 @@ public class CategoryController {
     @GetMapping("/get-by-id/{id}")
     public ResponseEntity<ApiResponse<CategoryResponse>> getById(@PathVariable Long id) throws ResourceNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<CategoryResponse>builder()
-                .message(Constant.GET_DATA_SUCCESS)
+                .message(messageService.getMessage("get.success"))
                 .data(categoryService.getById(id))
                 .build());
     }
@@ -80,7 +83,7 @@ public class CategoryController {
     public ResponseEntity<ApiResponse<Void>> deleteCategory(@PathVariable Long id) throws ResourceNotFoundException {
         categoryService.deleteCategory(id);
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Void>builder()
-                .message(Constant.DELETED)
+                .message(messageService.getMessage("delete.success"))
                 .build());
     }
 }

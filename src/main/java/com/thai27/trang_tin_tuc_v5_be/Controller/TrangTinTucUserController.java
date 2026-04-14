@@ -12,6 +12,7 @@ import com.thai27.trang_tin_tuc_v5_be.Exception.ResourceNotFoundException;
 import com.thai27.trang_tin_tuc_v5_be.Exception.SignUpCodeExpiredException;
 import com.thai27.trang_tin_tuc_v5_be.Exception.TokenExpiredException;
 import com.thai27.trang_tin_tuc_v5_be.Exception.UserInfoAlreadyExistException;
+import com.thai27.trang_tin_tuc_v5_be.Service.MessageService;
 import com.thai27.trang_tin_tuc_v5_be.Service.TrangTinTucUserService;
 import com.thai27.trang_tin_tuc_v5_be.Util.ApiResponse;
 import com.thai27.trang_tin_tuc_v5_be.Util.Constant;
@@ -29,10 +30,12 @@ public class TrangTinTucUserController {
 
     private final TrangTinTucUserService userService;
 
+    private final MessageService messageService;
+
     @PostMapping("/permit/login")
     public ResponseEntity<ApiResponse<LoginResponse>> login(@RequestBody LoginRequest user) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<LoginResponse>builder()
-                .message("Đăng nhập thành công")
+                .message(messageService.getMessage("login.success"))
                 .data(userService.login(user))
                 .build());
     }
@@ -86,7 +89,7 @@ public class TrangTinTucUserController {
             @RequestParam(defaultValue = "10") int pageSize
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.<Page<UserResponse>>builder()
-                .message(Constant.GET_DATA_SUCCESS)
+                .message(messageService.getMessage("get.success"))
                 .data(userService.searchUserByUsername(search, pageNum, pageSize))
                 .build());
     }
